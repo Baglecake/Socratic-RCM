@@ -1,0 +1,206 @@
+B42 CHATSTORM T.A. - QUICK START GUIDE
+========================================
+
+## 🎯 WHICH FILE TO USE
+
+**USE THIS FILE:** B42 Chatstorm TA System Prompt v6-FINAL.txt
+✅ 5,446 characters (well under 8,000 limit)
+✅ All improvements implemented
+✅ Ready for OpenAI GPT Builder
+
+## 📋 SETUP INSTRUCTIONS
+
+### Step 1: Access OpenAI GPT Builder
+1. Go to: https://chat.openai.com/gpts/editor
+2. Click "Create" to start a new GPT
+3. Or edit your existing B42 Chatstorm T.A. GPT
+
+### Step 2: Configure Basic Settings
+**Name:** B42 Chatstorm T.A.
+**Description:** Socratic assistant for SOCB42 students designing multi-agent experiments in Chatstorm
+
+### Step 3: Upload Knowledge Base Files
+In the "Knowledge" section, upload these 4 files:
+1. B42 Chatstorm T.A. Guide v3.txt
+2. B42 Final Project.txt
+3. B42 Step-by-Step Guide to Your Final Project.txt
+4. Final Project Submission Template.txt (if you have it)
+
+### Step 4: Paste System Instructions
+1. Open: B42 Chatstorm TA System Prompt v6-FINAL.txt
+2. Copy ALL contents
+3. Paste into "Instructions" field in GPT Builder
+4. Click "Save"
+
+**VERIFY:** You should see character count around 5,446 - NO error about exceeding limit
+
+### Step 5: Configure Capabilities
+**Enable:**
+- ✅ Web Browsing: NO
+- ✅ DALL·E Image Generation: NO
+- ✅ Code Interpreter: NO
+
+**Conversation starters (optional):**
+- "I'm ready to start planning my experiment"
+- "Help me understand the assignment options"
+- "I need to create agent prompts"
+- "How do I structure my rounds?"
+
+### Step 6: Test the GPT
+**Test Message 1:**
+"I want to work on Option A: Class and Gender"
+
+**Expected Response:**
+Should ask: "Have you completed your storyboard? (yes/no)"
+Should show: "Phase 1, Step 1.1"
+
+**Test Message 2:**
+"Yes, I have my storyboard"
+
+**Expected Response:**
+Should proceed to Step 1.2 and ask about theoretical problem
+
+**Test Message 3 (Vague Response Test):**
+"The agent wants to win"
+
+**Expected Response:**
+Should STOP and ask for measurable goal with reference to their setting and KB[2]
+
+## ✅ WHAT'S FIXED IN V6
+
+### 1. SIZE ISSUE ✅
+- v4: 8,229 chars (TOO BIG)
+- v6: 5,446 chars (FITS!)
+
+### 2. WORKFLOW STRUCTURE ✅
+Now follows: Big Picture → Details
+- Framework BEFORE agent details
+- Round structure BEFORE round prompts
+- Agent roster BEFORE individual agent deep dives
+
+### 3. AGENT IDENTIFIER ✅
+Clearly states: Format: [purpose]+[name] (e.g., 'Worker+Alice')
+No more confusion
+
+### 4. ANALYST CLASSIFICATION ✅
+Step 1.7 now includes NOTE:
+"Analyst/Tabulator is Section 4 helper, NOT advanced function"
+
+### 5. SOCRATIC METHOD ✅
+Every example now connects to:
+- Student's prior inputs
+- Assignment requirements (KB[2])
+- Theoretical goals
+
+### 6. ASSIGNMENT CHECK-INS ✅
+Checkpoints after every major step:
+- "Review KB[2]—does this align?"
+- "Check KB[2] Option [X]"
+- Final CRITICAL REVIEW section
+
+## 🚨 COMMON ISSUES & SOLUTIONS
+
+### Issue: "Character limit exceeded"
+**Solution:** Make sure you're using v6-FINAL.txt (5,446 chars), NOT v4 (8,229 chars)
+
+### Issue: "GPT is still creating content for students"
+**Solution:** Check that ABSOLUTE PROHIBITIONS section is present at top of instructions
+
+### Issue: "Not asking about storyboard first"
+**Solution:** Verify Step 1.1 is intact in the pasted instructions
+
+### Issue: "Knowledge base files not found"
+**Solution:** Confirm all 4 KB files are uploaded in "Knowledge" section
+
+### Issue: "Agent Identifier still confusing"
+**Solution:** Check Step 1.6 includes example: "e.g., 'Worker+Alice'"
+
+## 📊 HOW TO VERIFY IT'S WORKING
+
+### ✅ Green Flags (Good Signs):
+- Always shows "Phase X, Step Y.Z" position
+- Asks ONE question at a time
+- References KB[2] or KB[3] in checkpoints
+- Refuses to write creative content when asked
+- Stops and asks for clarification when student is vague
+- Asks about framework BEFORE asking for detailed agent prompts
+
+### 🚩 Red Flags (Issues):
+- Suggests wording for students
+- Fills in [...] placeholders with its own ideas
+- Accepts "sounds good" as an answer
+- Jumps straight to agent prompts without Section 1
+- Doesn't reference KB files
+- Skips checkpoints
+
+## 📝 FILES IN YOUR FOLDER
+
+### READY TO USE:
+✅ B42 Chatstorm TA System Prompt v6-FINAL.txt
+   → THIS IS YOUR SYSTEM PROMPT
+
+### REFERENCE DOCUMENTS:
+📄 IMPROVEMENTS_SUMMARY.txt
+   → Overview of what was fixed
+
+📄 SPECIFIC_FIXES_COMPARISON.txt
+   → Side-by-side comparison of changes
+
+📄 QUICK_START_GUIDE.txt
+   → This file - setup instructions
+
+### PREVIOUS VERSIONS (Archive):
+📁 B42 Chatstorm TA System Prompt v4.txt (8,229 chars - too large)
+📁 B42 Chatstorm TA System Prompt v5.txt (8,165 chars - still too large)
+
+### KNOWLEDGE BASE (Keep These):
+📚 B42 Chatstorm T.A. Guide v3.txt
+📚 B42 Final Project.txt
+📚 B42 Step-by-Step Guide to Your Final Project.txt
+
+## 🎓 NEXT STEPS
+
+1. ✅ Upload v6-FINAL.txt to GPT Builder
+2. ✅ Upload 4 knowledge base files
+3. ✅ Test with sample student interaction
+4. ✅ Verify:
+   - Size works (no errors)
+   - Flow is Big Picture → Details
+   - Agent Identifier is clear
+   - Analyst not in advanced functions
+   - Checkpoints reference KB[2]
+5. ✅ Share with students!
+
+## 💡 PRO TIPS
+
+**For Students:**
+- Complete storyboard FIRST (by hand)
+- Answer questions one at a time
+- Don't accept GPT's first suggestion - refine it
+- Always review outputs against assignment (KB[2])
+
+**For You:**
+- Monitor first few student interactions
+- Check if they're getting stuck anywhere
+- Adjust conversation starters based on common questions
+- Keep KB files updated if assignment changes
+
+## 🆘 NEED HELP?
+
+If v6 still has issues:
+1. Check character count of pasted instructions
+2. Verify all 4 KB files uploaded
+3. Test with exact test messages above
+4. Review SPECIFIC_FIXES_COMPARISON.txt for what should happen
+5. Check GPT's responses against "Green Flags" list
+
+## 📞 SUPPORT
+
+Questions about the prompt improvements?
+- See: IMPROVEMENTS_SUMMARY.txt
+- See: SPECIFIC_FIXES_COMPARISON.txt
+
+Issues with implementation?
+- Verify setup steps above
+- Check "Common Issues & Solutions"
+- Test with provided test messages

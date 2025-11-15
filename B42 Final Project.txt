@@ -1,0 +1,99 @@
+﻿SOCB42: Final Project: Building a Theoretical Experiment
+Objective
+This final project is the culmination of the skills and theoretical knowledge you have developed throughout the course. Your task is to move beyond analyzing and modifying existing simulations to design, execute, and analyze an original experiment from the ground up. The goal is to place the core ideas of classical theorists into a direct dialogue, using the simulation to explore a point of tension, contradiction, or synergy between their perspectives.
+This assignment requires you to demonstrate mastery of the simulation design skills practiced in previous assignments. Your project must be a multi-round design that includes:
+* Custom Agent and Round Prompts: You will build the entire simulation from scratch.
+* Advanced Functions: Your design must incorporate at least two of the following skills: a moderator agent to guide the interaction, the use of self-reflections to capture an agent's internal state, or a non-anthropomorphic agent (e.g., "The State," "Public Opinion").
+* Summary Round: Your simulation may conclude with a final round that includes a dedicated "Analyst" or "Tabulator" agent. This agent's sole purpose is to analyze the preceding rounds and produce a concise summary of the key outcomes in a table format (this can be quantitative or qualitative).
+It is crucial to carefully read the Step-by-Step guide before you begin your work, it provides key information about the process and questions that should guide you through the project. 
+Submission and Deliverables
+Your final submission is a comprehensive research report that documents your entire scientific process, from initial idea to final analysis. Your submission is based on the Final Project Submission Template.
+Your submission must include four key components, all of which are required. Carefully read all assignment materials, including the submission template, step-by-step guide, and grading philosophy and rubric. 
+1. Your Written Analysis. The completed Submission Template, submitted as a Word or pdf file. The file should be named in the following format, and should use the provided template: Lastname_Firstname_studentID_FinalProject
+2. Your Story Board: A scan or clear photograph of your handwritten story board. See the step-by-step guide for details.
+3. Your Planning & Refinement Log (Submit ONE of the following)
+* Option A (GPT Log): A link to the log of your interactions with the Custom GPT (link to the GPT to be provided)
+* Option B (Handwritten Manual Documentation): If you did not use the Custom GPT, submit hand-written documentation showing your answers to the conceptualization and planning questions from the step-by-step guide. This should either be a scan of your handwritten documents or a photo.
+4. Your Annotated Transcripts: The full transcripts for your baseline simulation and all final experimental simulations you analyzed. Each transcript must have at least three key moments highlighted and annotated. Annotation means labeling key quotations or moments and explaining in a detailed and insightful way why they are important. 
+This final project is graded on the quality of your analytical engagement with sociological theory, your creativity and skill in designing an original experiment, and your analysis of the simulation data you generated. The benchmark for a high-quality submission is a thoughtful, critical, and evidence-based project that demonstrates you are actively thinking about the theoretical problems, the experimental design, and the data.
+Your grade will be based on four key areas, which correspond to the sections of your submission template:
+1. Your ability to define a clear, theoretically-grounded research problem and hypothesis (15%).
+2. The thoughtfulness, creativity, and theoretical justification of your experimental design (40%).
+3. The depth and rigor of your analysis of the simulation results (30%).
+4. The quality of your methodological reflection on the design process (15%).
+The rubric is here: 
+A core component of this assignment is your own intellectual engagement. The goal is for you to develop, test, and analyze an experiment yourself. While an LLM can be a helpful tool for brainstorming or refining, it is a poor evaluator. LLM-generated hypotheses, prompts, or analyses are often initially generic, superficial, and based on statistical prediction, not on a close reading of the theories or a careful analysis of your specific data. Your job is to be the critical thinker and to iteratively deepen and clarify initial suggestions or validate them in creative and critical ways.
+Choose Your Theoretical Problem
+Select one of the following five options for your final project. Each option presents a core theoretical problem and a general direction for your simulation design. Your core task will be to 
+1. translate these ideas into a functioning, multi-round baseline model 
+2. to design an experimental intervention into this baseline
+Be Creative
+The options below provide direction and examples, but you are encouraged to creatively adapt or modify the suggestions below in creating your own experiments in social theory. You do not need to follow the exact suggestions below regarding agents or settings, in fact, you are encouraged to come up with your own ideas for alternative and potentially better ways to test the relevant theories. 
+
+
+Option A: Class and Gender
+Theorists: Karl Marx & Mary Wollstonecraft
+Theoretical Problem: Marx’s theory of alienation focuses on the worker's experience in the factory. Wollstonecraft’s analysis, however, posits the patriarchal home as a primary site of domination. This raises a key question: How do these two systems interact? Does the patriarchal home relieve the male worker's alienation (by making him "boss" at home), or does it deepen his alienation in a new form, while also creating a distinct form of alienation for his wife?
+Your Task: Design a simulation to model this intersection. Your simulation will move between two spheres, Work and Home.
+Baseline Simulation (The Patriarchal Structure):
+Your baseline should model the following dynamics:
+1. At Work: First, establish the Male Worker's alienation in the factory (e.g., from his labor, the product, other workers, and his nature). However, distinct from Assignment 3, in this design, he should know he is a he, and that after work he will be able to go home to his wife.
+2. At Home: Second, model the patriarchal home. Here, the Male Worker may feel a sense of relief or control (he is "at-home-with himself" because he is in charge).
+3. The Contradiction: Your simulation should explore how this home dynamic also creates a distinct form of alienation for his Wife (following Wollstonecraft's theory of sexual alienation) and simultaneously perpetuates the Male Worker's own alienation.
+Experimental Simulation (Probing the Structure):
+Your experiment should test the structural nature of this alienation. You can choose one of the following experiments to run:
+* Experiment 1: The "Nice Husband". Modify the Male Worker agent to be a "nice husband" who is kind, generous, and "allows" his wife to do or have whatever she wants. Your analysis should then investigate: Does this remove her alienation? Does it remove his? Why or why not?
+* Experiment 2: The "Friendship Marriage". Modify the rules of the home. Change the marriage from one based on dominance and property to one based on friendship, following Wollstonecraft's theory of marriage as friendship. Your analysis should then investigate: How does this new structure alter the alienation of both the husband and wife? Does it have any effect on the husband's alienation back at work? 
+Analysis Round: You should consider concluding your simulation with a final summary round. This round could include a dedicated "Analyst" or "Tabulator" agent whose prompt instructs it to analyze the preceding rounds (baseline and experiment) and produce a summary table of the key outcomes.
+Option B: Democracy's Internal Threats
+Theorist: Alexis de Tocqueville
+Theoretical Problem: Tocqueville argued that democratic societies, which value equality above all, are susceptible to a "tyranny of the majority." This is not a tyranny of government, but the immense social power of public opinion, which can silence dissent and enforce a stifling conformity without anyone needing to pass a law.
+Yet, he also believed that certain practices within democracy could combat this tendency, such as voluntary associations, administrative decentralization, a free press, the rule of law, and mediocre leadership.
+Your Task: Design a simulation that tests Tocqueville's diagnosis and at least one of his proposed cures.
+Baseline Simulation (The Tyranny of the Majority):
+Your baseline should model the process of a "tyranny of the majority" forming. The setting could be a public meeting where a group of "Citizen" agents must debate an issue.
+The key to this simulation is the agent prompts. They must be designed so that agents always consider the opinions of others first and foremost. Your prompts should instruct agents to:
+* Worry about what the majority thinks before speaking.
+* Express suspicion or distrust of ideas that seem "extreme" or "unpopular."
+* Feel social pressure to agree with the emerging consensus.
+* Engage in a "politics of resentment," focusing on bringing others down rather than raising all up.
+You might also include a "Mayor" agent whose prompt reflects "short-sighted leadership" by focusing only on polls.
+Your baseline should demonstrate a clear "winner" (the majority opinion) and the "silencing" of dissenters, where minority opinions are abandoned or not expressed.
+Experimental Simulation (Introducing a Corrective):
+Your experiment must copy your baseline and then introduce at least one of Tocqueville's "internal correctives" to see if it can break, slow, or disrupt the tyranny of the majority.
+* Voluntary Associations. You could introduce a "Civic Association" (like a neighborhood group or hobbyist club) as a new agent or a new round. This association could bring a subset of citizens together before the main public debate, allowing them to form a strong, independent opinion. Does this pre-formed "small group" solidarity help them resist the pressure of the majority?
+* Administrative Decentralization. You could test if local control can break the power of a central majority. Instead of one large debate where the majority rules over everyone, modify the simulation to model several independent "Local Councils." Each council debates and decides the issue for its own neighbourhood. A minority agent in the larger deliberation might be in the majority in their local council. Does this local autonomy prevent a single, dominant "tyranny of the majority" from forming? What is the effect on efficiency of decision-making?
+* The Independent Press. You could introduce one or a few "Newspaper" agents. This agent's role is not to debate, but to inject facts, critique the majority's assumptions, or give a platform to a dissenting agent in the minority. Can this source of independent information give dissenters the "cover" or "legitimacy" they need to speak?
+* The Rule of Law. You could introduce a moderator agent who acts as a judge, enforcing the rule of law. For example, the agent could be instructed to interrupt the debate if a minority is being silenced. The moderator-judge could also ensure that if a minority loses a specific election, it would still have a chance to win future elections. Can this procedural check break the social pressure of conformity?
+* Mediocre Leadership. You could introduce a "Mayor" agent as the moderator. This leader is "mediocre" (average) and, unlike an aristocrat with a long-term generational view, is short-sighted and focused on the immediate demands of the "median voter." Prompt them to be concerned with polls, finding a simple compromise, and avoiding passionate or "brilliant" long-term projects that might be unpopular. Your analysis should investigate: Does this short-sighted focus on the average person's immediate interests unintentionally lead to decisions that benefit the majority? 
+Analysis Round: You should consider concluding your simulation with a final summary round. This round could include a dedicated "Analyst" or "Tabulator" agent whose prompt instructs it to analyze the preceding rounds (baseline and experiment) and produce a summary table of the key outcomes.
+
+
+Option C: The Fate of Modernity
+Theorists: Karl Marx & Alexis de Tocqueville
+Theoretical Problem: Marx predicted that the internal contradictions of capitalism would inevitably lead to a proletarian revolution. Tocqueville argued the opposite: that revolutions would become rare in democratic societies. He believed that in a society of equals, many citizens would be middle-class property owners who fear instability and desire conformity more than they desire radical change.
+Your Task: Design a simulation that pits Marx’s prediction against Tocqueville’s. In contrast to Assignment 3, your focus is not on the boom-bust cycle, but rather on the call to revolution.
+Baseline Simulation (The Marxist Call to Action):
+Your baseline should model the conditions for Marxist revolution. Consider a secret meeting of "Proletarian" agents who are property-less and exploited. This could include multiple proletarians motivated to communicate their shared grievances, their sense of exploitation, and their lack of any property to lose. You could add an "Agitator" moderator whose role is to unite the workers by directing their discussion toward their shared enemy (capitalism) and increasing their revolutionary fervor.
+Whatever you choose, your baseline must demonstrate the formation of class consciousness and solidarity, with the Proletarians agreeing to the Agitator's call to action.
+Experimental Simulation (The Tocquevillian Response):
+Your experiment should test Tocqueville's theory. Copy your baseline simulation, but consider what changes would highlight Tocqueville's theories. You could, for example, replace the "Proletarians" with new "Citizen" agents who own a small house, business, or some stocks and bonds, and are risk-averse.
+These new agents could be strongly concerned with what their neighbors think, fear being seen as "extreme" or "radical," and be motivated by the desire to improve their own small lot in life, not necessarily by the good of the group. Your analysis should investigate what happens. Does the Agitator's call for revolution fail? Do the citizens reject the Agitator as a dangerous extremist? Does their individualism prevent them from forming solidarity?
+Alternative Experiment (Tocqueville's Fears):
+As an alternative, you could instead model Tocqueville's fears of stagnation and "soft despotism." This experiment would retain the Tocquevillian "Democratic Citizens" (conformist, individualist, risk-averse) but modify the moderator. Consider replacing the "Agitator" with a "Caring Government" agent to represent "soft despotism." This agent's prompt would instruct it to "take care of" all the citizens' small problems and manage public affairs for them.
+Your analysis should then investigate: Do the citizens become passive? Do they lose the "art of public action" and allow the government to gently manage their lives? 
+Analysis Round: You should consider concluding your simulation with a final summary round. This round could include a dedicated "Analyst" or "Tabulator" agent whose prompt instructs it to analyze the preceding rounds (baseline and experiment) and produce a summary table of the key outcomes.
+
+
+Option D: The Path to Modernity: Commerce or Providence?
+Theorists: Adam Smith & Alexis de Tocqueville
+Theoretical Problem: Adam Smith and Alexis de Tocqueville offer different master narratives for the transition from feudalism to modernity. Smith's "engine" is the bottom-up, unintentional force of commercial self-interest. Tocqueville's "engine" is a long-term, "providential" trend toward the equality of conditions. This project explores a central question of sociological theory: How does the theory of the pathway to modernity shape the theory of modernity itself?
+Your Task: Design a simulation to model and compare these two "engines" of history.
+Baseline Simulation (Smith's Commercial Engine):
+Your baseline should model a feudal society being destabilized by commerce. It could be set in a world of feudal estates structured by a patronage hierarchy among "King", multiple "Barons", their respective "Knights" and "Peasants", and an urban "Merchant." Your goal is to model how the "Merchant's" commercial activity (e.g., offering luxury goods) unintentionally destabilizes the Barons' land-based power and loyalty from their Knights, creating the foundation for a new, commercial social order.
+Experimental Simulation (Tocqueville's Leveling Engine):
+Your experiment should test Tocqueville's "engine." Copy your baseline, but consider removing the "Merchant" and introducing a new, non-commercial "leveling" agent. These could include one or more of a "Clergy" agent (who preaches the equality of all souls, undermining the Baron's "natural" authority); A "Lawyer" agent (who uses new, universal legal codes to challenge the Baron's traditional power); A "Printer" agent (a non-human agent representing the spread of new, leveling ideas); a "Gun" agent (a non-human agent representing a technology that neutralizes the Knight's military advantage).
+Your analysis should compare the two simulations. What new basis of power and what new central conflicts emerge in the baseline versus the experiment? Use the specific transformations of the original feudal agents (what happened to the "King", "Baron", and "Peasant"?) as your primary evidence to compare the two resulting "modernities."
+Analysis Round: You should consider concluding your simulation with a final summary round. This round could include a dedicated "Analyst" or "Tabulator" agent whose prompt instructs it to analyze the preceding rounds (baseline and experiment) and produce a summary table of the key outcomes.
+Option E: Independent Proposal
+For students who wish to explore a different theoretical pairing or problem. This option requires you to submit a 1-page proposal to the Instructor. The proposal must outline your theorists, research questions, core concepts, and hypotheses. You must receive instructor approval before proceeding.

@@ -1,0 +1,213 @@
+SPECIFIC FIXES - SIDE-BY-SIDE COMPARISON
+==========================================
+
+## FIX #1: AGENT IDENTIFIER CONFUSION
+
+### v4 (CONFUSING):
+```
+## STEP 1.6 - AGENT DETAILS (Individual Deep Dives)
+Navigate: KB[1] "[S1-VALUES]" - Agent-Specific Values
+For EACH agent separately:
+1. "Now let's detail [Agent Name]. What is their formal identifier?
+   Format: [purpose]+[name] (e.g., 'Worker+Alice')"
+```
+
+Wait, this actually looks correct in v4! Let me check line 71 more carefully...
+
+Line 71 in v4 reads:
+"1. "Now let's detail [Agent Name]. What is their formal identifier?
+   Format: [purpose]+[name] (e.g., 'Worker+Alice')"
+
+### Actually, the issue may be elsewhere. Let me check the Guide v3 for "X + Y":
+
+In Guide v3.txt, line 107:
+"[Agent Identifier] = [[purpose]+[name]]"
+
+The "X + Y" confusion might be coming from how students interpret this.
+
+### v6 (CLEARER):
+```
+**1.6 Agent Details (One at a Time)**
+For EACH agent:
+1. "Agent Identifier for [Name]? Format: [purpose]+[name] (e.g., 'Worker+Alice')"
+```
+
+**Improvement:** More direct, no "formal identifier" language, immediate example
+
+
+## FIX #2: ANALYST CLASSIFICATION ERROR
+
+### v4 (INCORRECT):
+```
+## STEP 1.7 - ADVANCED FUNCTIONS
+Navigate: KB[1] "[S1-VALUES]" - Advanced Functions
+"Your project requires 2+ advanced functions:
+- Moderator agent (controls flow/probes)
+- Self-Reflections (SELF tags)
+- Non-anthropomorphic agent (object/institution)
+Which will you use?"
+```
+
+Actually, v4 DOES NOT list Analyst here. The error must be in the Guide v3 file itself.
+
+Let me check Guide v3 lines 119-122:
+```
+* [[Advanced Functions] - Student authentically conceives and specifies any 2 of:
+   * [Moderator agent]:
+   * [Self-Reflections]
+   * [Non-anthropomorphic agent]]
+```
+
+And then lines 113-114:
+```
+* [Analyst]:  For qualitative purposes - [[Analyst]+[purpose]]
+* [Tabulator]: For quantitative purposes - [[Tabulator] + [purpose]]
+```
+
+So Guide v3 actually has this CORRECT - Analyst is separate from Advanced Functions.
+
+### The confusion likely stems from HOW this is presented to students.
+
+### v6 (EXPLICITLY CLARIFIED):
+```
+**1.7 Advanced Functions**
+"KB[2] requires 2+ functions:
+- Moderator (controls flow)
+- Self-Reflections (SELF tags)
+- Non-anthropomorphic agent (institution/object)
+
+NOTE: Analyst/Tabulator is Section 4 helper, NOT advanced function."
+```
+
+**Improvement:** Explicit NOTE that Analyst ≠ advanced function
+
+
+## FIX #3: WORKFLOW STRUCTURE (Big Picture → Details)
+
+### v4 (LESS STRUCTURED):
+Step 1.5: "Agent Roster" asks for basic name/role
+Step 1.6: "Agent Details" immediately dives into identifier, goal, personality
+
+This happens in quick succession without emphasizing the shift from overview to details.
+
+### v6 (MORE STRUCTURED):
+```
+**1.4 Setting & Rounds**
+CHECKPOINT: Display table. "Review against KB[3] Phase 1."
+
+**1.5 Agent Roster (Overview)**  ← CLEAR "OVERVIEW" LABEL
+CHECKPOINT: "Roster: [list]. Do these agents represent key positions from KB[2]?"
+
+**1.6 Agent Details (One at a Time)**  ← CLEAR "DETAILS" LABEL
+For EACH agent:
+Complete fully before next agent.  ← EMPHASIS ON DEPTH
+```
+
+**Improvement:**
+- Labels emphasize Overview vs. Details
+- Checkpoints between each major step
+- "One at a Time" and "Complete fully before next" reinforces depth-first approach
+
+
+## FIX #4: SOCRATIC METHOD
+
+### v4:
+```
+Example:
+Student: "The agent wants to win"
+Response: "The Agent Goal needs to be measurable (2-3 sentences). Given your setting of [their setting], what specific, measurable outcome constitutes 'winning' for this agent?"
+```
+
+**Missing:** Connection to theoretical problem/assignment
+
+### v6:
+```
+Example: Student: "Agent wants to win"
+→ "Goal must be measurable (2-3 sentences). Given [their setting] and KB[2] Option [X], what specific outcome = 'winning' to test your theory?"
+```
+
+**Improvement:**
+- Connects to KB[2] (assignment)
+- Explicitly ties to "test your theory"
+- More concise, action-oriented
+
+
+## FIX #5: ASSIGNMENT CHECK-INS
+
+### v4:
+Limited checkpoints:
+- Step 1.2: "CHECKPOINT: Summarize..."
+- Step 1.3: "CHECKPOINT: Baseline/Experiment..."
+- Step 1.4: "CHECKPOINT: Display round structure..."
+- Step 1.5: "CHECKPOINT: Agent roster..."
+- Step 1.9: "Section 1 Complete!"
+
+**Missing:** Explicit references to reviewing ASSIGNMENT REQUIREMENTS
+
+### v6:
+Enhanced checkpoints with assignment references:
+- Step 1.2: "Review KB[2]—does this align with assignment?"
+- Step 1.3: "Check KB[2] Option [X]—does this test the theory?"
+- Step 1.4: "Review against KB[3] Phase 1."
+- Step 1.5: "Do these agents represent key positions from KB[2]?"
+- Step 1.7: "ASSIGNMENT CHECK: Selected 2+ functions per KB[2]?"
+- Step 2.1: "CHECK: Does this agent represent theory from KB[2]?"
+- Step 2.2: "CHECK: Does this test your hypothesis?"
+- Step 2.3: "CHECK: Do functions serve theoretical goals per KB[2]?"
+- Phase 3: **"CRITICAL REVIEW"** section with 3-point verification
+
+**Improvement:**
+- Every major step ties back to KB[2] or KB[3]
+- Uses action verbs: "Review," "Check," "Verify"
+- Final phase has comprehensive review protocol
+- Student responsibility emphasized: "YOU must review/adjust"
+
+
+## FIX #6: SIZE REDUCTION TECHNIQUES
+
+### Compression strategies used:
+1. **Removed redundancy:** v4 repeated instructions in multiple formats
+2. **Shorter navigation tags:** "KB[1] [S1-TEMPLATE]" vs. full explanations
+3. **Concise formatting:** Arrows (→) instead of full sentences
+4. **Eliminated examples in some sections:** Referenced KB files instead
+5. **Streamlined interrupt protocols:** Bullet lists instead of paragraphs
+6. **Combined related concepts:** "Style/Creativity" instead of separate sections
+
+### Result:
+v4: 8,229 characters
+v6: 5,446 characters
+**Reduction: 2,783 characters (33.8% smaller)**
+
+While maintaining:
+✅ All core functionality
+✅ All workflow steps
+✅ All critical prohibitions
+✅ Enhanced Socratic method
+✅ More assignment check-ins
+
+
+## SUMMARY OF ALL IMPROVEMENTS
+
+| Issue | v4 Status | v6 Status |
+|-------|-----------|-----------|
+| Size (< 8,000 chars) | ❌ 8,229 | ✅ 5,446 |
+| Big Picture → Details flow | ⚠️ Unclear | ✅ Explicit |
+| Agent Identifier clarity | ⚠️ Could be clearer | ✅ Very clear |
+| Analyst classification | ⚠️ Potentially confusing | ✅ Explicitly noted |
+| Socratic approach | ⚠️ Good, needs theory tie-in | ✅ Theory-grounded |
+| Assignment check-ins | ⚠️ Some checkpoints | ✅ Every major step |
+| Position tracking | ✅ Present | ✅ Enhanced |
+| KB navigation | ✅ Present | ✅ Clearer tags |
+
+## TESTING CHECKLIST
+
+When you test v6 in GPT Builder:
+
+□ Size: Does it save without errors?
+□ Flow: Does it ask for framework before agent details?
+□ Clarity: Is Agent Identifier format clear?
+□ Accuracy: Does Step 1.7 exclude Analyst from advanced functions?
+□ Socratic: Does it connect vague answers to theory/assignment?
+□ Alignment: Does every checkpoint reference KB files?
+□ Navigation: Can you easily find KB sections?
+□ Prohibitions: Does it refuse to create content?

@@ -1,0 +1,133 @@
+﻿A Step-by-Step Guide to Your Final Project
+This final project is the culmination of our efforts to create an artificial laboratory for conducting experiments on classical sociological theories. You are moving from analyzing and modifying existing simulations to designing, executing, and analyzing an original experiment from the ground up.
+This guide provides a structured workflow for this process, moving through brainstorming, storyboarding, and a Custom GPT TA assistant to help you formulate your ideas and turn them into prompts. Follow these steps, and you will have a clear path from a theoretical idea to a finished project.
+Phase 1: Conceptualization and Planning
+Before you write a single prompt, you need a clear plan. This phase is about brainstorming and making your key design decisions. You will capture this initial plan using a hand-drawn storyboard.
+This storyboard is a mandatory, human-created sketch of your experimental idea. It is a record of your thought process. While it can be sketchy and provisional, it must be legible. You will be required to submit a scan or photo of your completed storyboard sheets as part of your final project.
+Choose Your Theoretical Problem
+First, read the Final Project assignment sheet carefully. Select one of the five options that interests you the most:
+* Option A: Class and Gender (Marx & Wollstonecraft)
+* Option B: Democracy's Internal Threats (Tocqueville)
+* Option C: Engines of History (Marx & Tocqueville)
+* Option D: The Path to Modernity (Smith & Tocqueville)
+* Option E: Independent Proposal (Requires Instructor Approval)
+Define Your Baseline vs. Experiment
+Your project requires you to first build a baseline simulation that models a core theory, and then design an experimental intervention that introduces a new variable to test a theoretical problem.
+* Baseline: What is the default state of your chosen theory? For example, in Assignment 1, the "Trade and Productivity" scenario was the baseline for the Part 2 experiments. In Assignment 3, "The Artisan's Workshop and Factory" was the baseline, and the "Benevolent Boss" was the experiment, which copied the same scenario and altered the prompts of key agents or the environment.
+* Experiment: What is the key change you will make to test the theoretical problem? In Assignment 1, we experimented by adding "Sources of Economic Advantage" (Theme 1), "Market Inconveniences" (Theme 2), or "Alternative Motivations" (Theme 3). In Assignment 2, we compared a baseline where class emerged from "External Rules"(2A) with an experiment where we "Stabilized Class Roles" using custom agent prompts (2B). In Assignment 3, we experimented by creating "The 'Benevolent' Factory" (1B), which modified the factory rules and The Boss agent.
+Storyboard Your Simulation
+Now that you have a theoretical problem and a baseline/experiment concept, it is time to visualize your simulation. You must do this by hand before moving to the computer or the custom GPT.
+Use the provided 4-panel storyboard template (like the provided blank_storyboard_template_4_panel.pdf). You may use as many pages as you need.
+For each panel, draw a key "scene" or component of your simulation. In the notes section next to each drawing, explain by hand what is happening.
+Your storyboard should be a visual answer to the core brainstorming questions. Use the panels and notes to sketch out the "world" of your simulation. Use these questions to guide your drawings and written notes:
+* A. The Setting (The "Where" and its Rules): Draw and label the environment. Is it a marketplace, a factory, or something abstract? In the notes, write down preliminary ideas about the key rules of this setting.
+* B. The Agents (The "Who"): Draw and label your agents. Are they individuals, institutions, or objects? In the notes, give your initial thoughts as to their names, roles, goals, and personality traits.
+* C. The Key Interaction (The 'What'): Sketch a key moment of interaction. What does it look like when your agents follow their prompts? How does the experiment change this interaction? Brainstorm in the notes what you think this will look like when it is run.
+* D. The Structure (Comparison & Flow): How will you structure your baseline and experiment? You have two main options to sketch:
+   * Option 1 (Single Design): Use panels to show your baseline (e.g., Round 1) and your experiment (e.g., Round 2) happening in one multi-round simulation. In the notes, explain the flow (e.g., "Round 1 runs, then Round 2 starts").
+   * Option 2 (Separate Designs): Use panels to show a key moment from your "Baseline" simulation. Then, use other panels to show the same moment in your separate, altered "Experiment" simulation. In the notes, explain what change you made to the experimental design (e.g., "This is the 'Experiment' copy, with the Boss agent's prompt changed").
+This manual step is crucial. It forces you to think through the visual and logical structure of your experiment before you get into the details of writing prompts.
+Refine Your Plan 
+Once you have completed your hand-drawn storyboard. Our custom GPT TA will help you move from this conceptual sketch to a detailed design. This GPT is designed to help you work through the planning and drafting phases. You must submit a link to the log of all your conversations with the Custom GPT TA. You can generate this link by clicking on "share" in the upper right corner, and then selecting "copy link." 
+Think of the GPT as an assistant. You will describe your storyboarded plan to it. It will help you refine your ideas, draft agent prompts, and structure your rounds. Having completed the storyboard first, you will be prepared to ask the GPT specific questions and guide its output.
+You are not required to use the output of the GPT as your answers. In fact, it is better to treat them as a material for you to edit and refine for your final submission. 
+The GPT will help you to think through the following questions. Spend some time thinking about them and writing down your thoughts about them before you start working with the GPT, and take care to think about them carefully with it as well.
+If you do not wish to use the GPT, you may refine your plan by answering the below questions yourself on a handwritten document. You must submit this handwritten document as a scan or photo. 
+A. The Setting (The "Where" and its Rules):
+   * What is the environment where your simulation takes place? Recall how we moved from Smith's "marketplace" in Assignments 1 and 2 to Marx's "workshop" and "factory" in Assignment 3.
+   * What are the rules of this setting? These rules define the social structure. Think about the survival rules from Assignment 1, the rules of private property from Assignment 2, or the employment contracts from Assignment 3.
+   * Will your baseline and experiment happen in the same setting? Or will the experiment involve changing the rules of the setting. Or will it involve moving the agents to a new setting?
+* B. The Agents (The "Who"):
+   * What agents do you need to represent the theoretical ideas?
+   * Consider the different types of agents you might create. Examples from the previous assignments include:
+      * Individuals: The Artisan, Craft Client, Capitalist 1, Alpha, Beta, Gamma, The Boss.
+      * Institutions/Groups: The Capitalist State (from your Assignment 3 options).
+      * Non-Human Objects: The Product.
+      * Abstract Processes: Historical Dialectic.
+      * Evaluators/Analysts: Agents designed to summarize, tabulate, or evaluate outcomes. One option is to build this function into other agents (like the Boss in Assignment 3 or the Production reports in Assignments 1 and 2). Another is to create a distinct Analyst agent for this purpose.
+   * Will your experiment add new agents, remove agents, or modify the prompts of existing agents? .
+* C. Agent Properties (Prompts):
+   * What will you build into your agent prompts? Think about their core motivations (like Smith's propensities or Marx's theory of labor), their goals, and their specific roles.
+   * How will they behave? Recall the interactional styles of the Boss vs. the Worker in Assignment 3 or the style of the Landlord, Capitalist, and Workers in Assignment 2.
+* D. The Structure (Rounds & Flow):
+   * How many rounds will you have? Your project must include a baseline and an experiment. You can achieve this in two primary ways:
+      * Multi-Round Design (Recommended): Build a single design where different rounds represent the baseline, the experiment, and potentially a summary. This keeps everything in one place. A simple, effective structure would be:
+         * Round 1: Baseline Simulation
+         * Round 2: Experimental Intervention
+         * Round 3 (Optional): Summary Round (if you choose to create an Analyst agent)
+      * Separate Single-Round Designs: You could create two separate, single-round designs (one for the baseline, one for the experiment) and then compare their transcripts.
+   * You could also design a more complex multi-round structure, like the Boom/Bust cycles from Assignment 3.
+Plan Your Platform Functions
+For each round you design, you must consciously decide which ChatStorm functions you will use, or not use. Your choices should be driven by your theoretical goals. Ask yourself what theoretical question activating (or deactivating) each function allows you to pursue.
+* Agent Settings:
+   * Ask Questions: Will agents be able to ask questions? Or would this disrupt a dynamic you are trying to model?
+   * Self-Reflection: Will you use this? It is crucial for capturing the difference between internal experience and public action (e.g., alienation, public vs. private opinion).
+* Style Settings (Response Detail & Creativity):
+   * Response Detail: How long and detailed should agent messages be? The default, Dynamic, is often best as it adapts. You can also choose:
+      * minimal or brief: Good for fast-paced simulations.
+      * medium: The default option. Provides a balance.
+      * thorough or exhaustive: Use if you need longer, more detailed explanations from agents.
+   * Creativity: The default, Creative, is usually fine. You can also choose:
+      * Standard or Precise: Good for an Analyst agent to make it more factual.
+      * Dynamic or Experimental: Use if you want to see if unexpected behaviors emerge.
+* Flow of Interaction (Participant Order):
+   * Cycle through all participants: Creates a very orderly, structured (perhaps "bureaucratic") interaction.
+   * Let the active agent decide: Allows for a more "natural" or "chaotic" free-flowing conversation.
+   * Let a moderator decide: Gives control to a specific agent, which is essential for modeling power or abstract forces (like the Market Moderator or Historical Dialectic).
+   * Random: Introduces chance. When might this be theoretically interesting?
+* How to End the Round:
+   * After a fixed number of messages: Guarantees the round is a specific length.
+   * After a number of messages per agent: Ensures everyone gets to speak a certain amount.
+   * After a moderator decides: The most powerful option. It allows the round to end when a specific condition is met (e.g., "all four aspects of alienation are revealed" or "the revolution is triggered").
+* What to do When Round Ends (Transition):
+   * Automatically start the next round: Good for simple linear narratives.
+   * Pause for the user to start the next round: This is the default setting and will stop the simulation. This is what you should select for the final round so it does not loop infinitely.
+   * Let a moderator decide the next round: Allows for conditional, branching narratives (e.g., the Historical Dialectic deciding to go to "Revolution," or "End of History" based on what happened in the "Bust" round).
+Plan Your Evaluation Strategy
+A crucial part of your experiment is planning how you will evaluate the outcomes. What will you be looking for in the transcripts? You have several options, and you can combine them.
+* Manual Transcript Analysis (Required): You must read, study, and annotate the full transcripts. This is your primary method of analysis and the main source of evidence for your paper. Annotation means labeling key quotations or moments and explaining in a detailed and insightful way why they are important. 
+* Agent Reports: You can build reporting functions into your agents, like the production tables and trade logs from the Smith simulations in Assignment 1.
+* Create an Analyst Agent (Optional): You can design a final round with a dedicated Analyst or Tabulator agent. This agent can be instructed to read the previous rounds and produce a summary.
+   * Prompt Tip (If you build an Analyst): The Analyst's prompt is crucial. Be specific. e.g., "Your task is to analyze the dialogue from Round 1 and Round 2. Produce a table that compares..."
+   * Be Careful! Any AI-generated analysis or tabulation will likely contain errors. You must always check its work against the raw transcript. Your own manual analysis is the final authority.
+Review Your Final Project Requirements Checklist
+As you plan, make sure your design meets the mandatory requirements of the final project.
+* Baseline and Experiment: Your project must include a baseline simulation and an experimental simulation (either as separate rounds in one design or as two separate designs).
+* Advanced Skills (Must use at least TWO of these):
+   * A Moderator Agent: Will you use a moderator to guide the flow? (Like the Market Moderator in Assignment 2 or Historical Dialectic in Assignment 3).
+   * Self-Reflection: Will you use <SELF> reflections to capture the agents' internal states?
+   * A Non-Anthropomorphic Agent: Will you include an agent that represents an institution (The State), an object (The Product), or an idea (Public Opinion)?
+Phase 2: Drafting and Design
+Once you have a detailed plan, begin writing the prompts for your agents and rounds. You can write these manually, or work with the Custom GPT TA to help you formulate them. If you do, you must submit a link to the log of all your conversations with the Custom GPT TA.
+Write Your Prompts
+* Agent Prompts: For each agent, write a clear system prompt. Define their Role (who they are), Goal (what they want), and Task (what they are supposed to do).
+* Round Instructions: For each round, write the Custom Instructions that set the scene and define the rules of interaction.
+Phase 3: Implementation and Testing
+Now you move from "designer" to "scientist." This phase is about iterative testing.
+Build Your Simulation in ChatStorm
+Go into the ChatStorm platform and build your design.
+1. Create and name a new "Design."
+2. Create each of your agents, pasting in their prompts.
+3. Create each of your rounds. For each round, configure the:
+   * Participants: Add the correct agents.
+   * Flow: Set up the participant order, end-the-round logic, and round transitions (e.g., "Automatically start the next round" or "Let a moderator decide"). If you use a moderator, paste in your moderator prompts where appropriate.
+   * Style. Select your desired response detail and creativity.
+   * Options: Add your Custom Instructions and check the boxes for Self-Reflection or Ask Questions if your design requires them.
+Test, Iterate, and Be a Scientist Your simulation will very likely not work perfectly on the first try. This is expected.
+1. Run a Test: Start a live chat and run your simulation.
+2. Observe: Watch the agents. Are they following their prompts? Is the Moderator ending the round correctly? Is the logic sound?
+3. Debug: If agents are behaving strangely or the flow is wrong, stop the simulation manually.
+4. Iterate: Go back to your Design. Tweak the prompts. Adjust the round flow. Document your adjustments in your lab notebook (e.g., "My Analyst agent's summary was too vague. I will add a sentence to its prompt demanding a table format.").
+5. Document: Keep notes on what you changed and why. This is your "lab notebook." You are a scientist in the lab! This documentation is part of your research process.
+Phase 4: Final Execution and Analysis
+Once your design is stable and working as intended, you are ready for the final steps.
+Run Your Final Experiment
+Run the full experiment from start to finish without stopping it. This is the "official" experiment.
+Study and Annotate Your Results
+Export the full transcript. Read it carefully. Just as in the previous assignments, highlight and annotate at least three key moments that are central to your analysis. In addition to your main hypothesis, consider 3-4 specific, probing questions you will use to analyze your transcripts. These questions should help you investigate the mechanisms of your theory and guide your analysis. Look for:
+* Key turning points.
+* Surprising outcomes.
+* Clear evidence of the theories in action.
+* Mistakes or inconsistencies (especially if you used an Analyst agent).
+Complete the Assignment Template
+With your annotated transcript in hand, open the final submission template. Answer all the questions, using direct quotations from your transcript as evidence for every claim you make.

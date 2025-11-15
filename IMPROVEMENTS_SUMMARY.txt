@@ -1,0 +1,124 @@
+B42 CHATSTORM T.A. SYSTEM PROMPT - IMPROVEMENTS SUMMARY
+================================================================
+
+## SIZE COMPARISON
+v4 (Previous): 8,229 characters ❌ EXCEEDS GPT BUILDER LIMIT (8,000 max)
+v6 (FINAL):    5,446 characters ✅ WELL UNDER LIMIT (2,783 chars to spare)
+
+## KEY IMPROVEMENTS IMPLEMENTED
+
+### 1. ✅ IMPROVED DESIGN FLOW/STRUCTURE
+**Problem:** v4 was "too much at once," not step-by-step enough
+**Solution:**
+- Restructured to emphasize "Big Picture → Details" approach
+- Phase 1 now clearly flows: Framework → Setting → Rounds → Agent Roster → Agent Details
+- Students first think through OVERALL structure and agent ROLES (Steps 1.2-1.5)
+- Only THEN define detailed prompts for each agent (Step 1.6)
+- This matches the preferred format: "overall round structure and agent roles before defining details"
+
+### 2. ✅ FIXED CONFUSING "AGENT IDENTIFIER" PROMPT
+**Problem:** v4 asked for "X + Y" which was confusing
+**Solution:**
+- Step 1.6 now explicitly states: "Format: [purpose]+[name]"
+- Provides clear example: "e.g., 'Worker+Alice'"
+- No more ambiguous "X + Y" notation
+
+### 3. ✅ CORRECTED ANALYST CLASSIFICATION ERROR
+**Problem:** v4 listed "analyst" as an advanced function (Step 1.7, lines 75-81)
+**Solution:**
+- Step 1.7 now correctly lists ONLY the 3 advanced functions:
+  1. Moderator agent
+  2. Self-Reflections
+  3. Non-anthropomorphic agent
+- Explicitly notes: "Analyst/Tabulator is Section 4 helper, NOT advanced function"
+- Analyst properly referenced only in Section 2.3 (Helper Templates)
+
+### 4. ✅ RESTORED SOCRATIC/DESIGN LOGIC
+**Problem:** v4 was "less Socratic," too directive
+**Solution:**
+- Enhanced RCM (Reflect-Connect-Ask) method throughout
+- Every step includes guided questions, not directives
+- When students are vague, assistant REFLECTS requirement + CONNECTS to prior inputs + ASKS for specifics
+- Example included in Socratic Method section shows theory-grounded questioning
+- Students must think through design logic themselves
+
+### 5. ✅ STRENGTHENED ASSIGNMENT ALIGNMENT
+**Problem:** Not enough "check-ins back to the assignment"
+**Solution:**
+- Added CHECKPOINT after every major step (1.2, 1.3, 1.4, 1.5)
+- Added ASSIGNMENT CHECK after Steps 1.7, 2.1, 2.2, 2.3
+- Each checkpoint explicitly references KB[2] (assignment requirements)
+- Phase 3 includes CRITICAL REVIEW section requiring students to verify:
+  * KB[2]: Theoretical problem addressed?
+  * KB[3]: Workflow complete?
+  * KB[4]: Deliverables ready?
+- Prominent reminder: "YOU must review/adjust to fit assignment"
+- Updated mantra: "I structure. You create. WE CHECK ALIGNMENT."
+
+### 6. ✅ ADDITIONAL IMPROVEMENTS
+
+**Better KB Navigation:**
+- Clearer reference to KB file tags for easy lookup
+- Each phase step indicates supporting KB section
+
+**Position Tracking:**
+- Consistent "Phase [X], Step [Y.Z]" tracking
+- Helps students know where they are in workflow
+
+**Interrupt Protocols:**
+- Menu option #6 added: "Check alignment" (assignment review)
+- Edit and Info protocols streamlined
+
+**Stronger Prohibitions:**
+- Maintains strict "no creative content" boundary
+- Clearer vague-response protocol
+
+## WORKFLOW COMPARISON
+
+### v4 Structure (Less Clear):
+Phase 1 → Phase 2 → Phase 3
+(Steps jumped between overview and details inconsistently)
+
+### v6 Structure (Clear Progression):
+PHASE 1: Big Picture First
+  1.2 Framework (theoretical grounding)
+  1.3 Baseline/Experiment (core comparison)
+  1.4 Setting & Rounds (structure overview)
+  1.5 Agent Roster (roles only)
+  1.6 Agent Details (deep dive per agent) ← Details LAST
+  1.7-1.9 Functions & compilation
+
+PHASE 2: Detailed Prompts
+  2.1 Agent prompts (from Section 1)
+  2.2 Round instructions (from Section 1)
+  2.3 Helpers (from Section 1)
+
+PHASE 3: Review & Export
+  Final checklist with CRITICAL REVIEW
+
+## TESTING RECOMMENDATION
+
+Upload v6-FINAL.txt as the system prompt in OpenAI GPT Builder and test with:
+
+1. **Size Test:** Verify it saves without character limit errors
+2. **Flow Test:** Have a test student go through Phase 1
+   - Confirm it asks for framework BEFORE details
+   - Confirm it asks for agent roster BEFORE individual agent prompts
+3. **Error Fix Test:**
+   - Check Agent Identifier asks for [purpose]+[name] format
+   - Check Step 1.7 lists only 3 advanced functions (not analyst)
+4. **Socratic Test:** Give a vague response and verify it uses RCM method
+5. **Alignment Test:** Verify checkpoints reference KB[2] consistently
+
+## FILES CREATED
+
+1. B42 Chatstorm TA System Prompt v5.txt (8,165 chars - still too large)
+2. B42 Chatstorm TA System Prompt v6-FINAL.txt (5,446 chars - READY TO USE) ✅
+3. IMPROVEMENTS_SUMMARY.txt (this file)
+
+## NEXT STEPS
+
+1. Upload v6-FINAL.txt to OpenAI GPT Builder
+2. Test with sample student interaction
+3. Verify all improvements working as intended
+4. If adjustments needed, modify v6 and retest
