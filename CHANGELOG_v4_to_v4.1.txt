@@ -1,0 +1,416 @@
+B42 CHATSTORM T.A. - CHANGELOG v4 → v4.1
+══════════════════════════════════════════
+Date: 2025-11-15
+Type: CRITICAL CORRECTION
+Status: ✅ COMPLETE
+
+OVERVIEW
+════════
+This changelog documents the critical correction made in v4.1 to fix a fundamental misunderstanding about where agent behavioral heuristics belong in the system.
+
+Files Updated:
+• B42 Chatstorm T.A. Guide v4.txt → v4.1.txt
+• Appendix A v3.txt → v3.1.txt
+• System Prompt v7-FINAL.txt → v7.1-FINAL.txt
+
+Total Changes: 1 critical structural fix affecting multiple sections
+
+CHARACTER COUNT
+═══════════════
+System Prompt v7: 7,684 characters
+System Prompt v7.1: 7,575 characters (-109 chars from compression)
+✓ Still under 8,000 character limit (425 chars headroom)
+
+THE CRITICAL ISSUE DISCOVERED
+══════════════════════════════
+
+❌ **INCORRECT (v4):**
+Agent behavioral heuristics (If/Then and Rival) were placed in Section 2 (Agent Prompts):
+```
+ROLE: You are [Agent Identifier]
+PRIMARY GOAL: [Agent Goal]
+PERSONA & HEURISTICS:
+  Style: [2-4 adjectives]
+  Decision Heuristics:
+  - If [trigger], then [action] because [theory link]
+  - If [rival says X], then [update belief OR resist]
+```
+
+✅ **CORRECT (v4.1):**
+Agent prompts contain only WHO the agent is and WHAT they want:
+```
+ROLE: You are [Agent Identifier]
+PRIMARY GOAL: [Agent Goal]
+PERSONA: [2-3 sentence behavioral summary]
+```
+
+Behavioral heuristics belong in Section 3 (Round Custom Instructions):
+```
+ROUND: [number] — [title]
+SCENARIO: [...]
+OBJECTIVE: [...]
+
+AGENT BEHAVIORS (Optional):
+- If [trigger], then [action] because [theory link]
+- If [rival says X], then [update belief OR resist]
+[Additional custom rules]
+```
+
+RATIONALE FOR CORRECTION
+═════════════════════════
+
+**Pedagogical Logic:**
+- Round Custom Instructions set the CONTEXT and RULES for how agents behave in that specific round
+- Agent prompts define WHO the agent is and WHAT they want (general characteristics)
+- Same agent might behave differently in different rounds based on round-specific heuristics
+- Heuristics are OPTIONAL and flexible (If/Then, Rival, OR custom rules)
+
+**Proper Structure:**
+1. Section 1: Student plans BOTH Persona and Behaviors
+2. Section 2: Only Persona goes into agent prompt
+3. Section 3: Behaviors (if defined) go into round instructions
+
+THE FIX
+═══════
+
+### TERMINOLOGY CHANGE
+
+**Replaced:** `[Agent Descriptor]` (ambiguous single concept)
+
+**With TWO distinct concepts:**
+1. **[Agent Persona]**: 2-3 sentence behavioral summary
+   - Describes HOW the agent generally behaves and makes decisions
+   - Goes in Section 2 (agent system prompt)
+   - REQUIRED
+
+2. **[Agent Behaviors]**: Optional behavioral heuristics
+   - Governs WHAT RULES agents follow in specific round contexts
+   - Goes in Section 3 (round custom instructions)
+   - OPTIONAL but recommended
+   - Flexible: If/Then and Rival formats OR custom rules (1-2 sentences each)
+
+## CHANGES BY FILE
+
+### GUIDE v4 → v4.1
+═══════════════════
+
+**Section 1 Changes (Lines ~132-133):**
+
+OLD:
+```
+* [Agent Descriptor - Style]: [2–4 adjectives]
+* [Agent Descriptor - Heuristics]: If/Then and Rival structures
+```
+
+NEW:
+```
+* [Agent Persona]: 2-3 sentence behavioral summary describing how this agent behaves and makes decisions
+* [Agent Behaviors]: Optional behavioral heuristics for rounds (If/Then and Rival formats, OR custom rules; 1-2 sentences each)
+```
+
+**Section 2 Template Changes (Lines ~340-347):**
+
+OLD:
+```
+||
+ROLE: You are [Agent Identifier]
+PRIMARY GOAL: [Agent Goal]
+PERSONA & HEURISTICS:
+Style: [2-4 adjectives]
+Decision Heuristics:
+- If [trigger], then [action] because [theory link].
+- If [rival says X], then [update belief OR resist] with [brief reason].
+||
+```
+
+NEW:
+```
+||
+ROLE: You are [Agent Identifier]
+PRIMARY GOAL: [Agent Goal]
+PERSONA: [Agent Persona - 2-3 sentence behavioral summary]
+||
+```
+
+**Section 3 Template Addition (After TASKS THIS ROUND):**
+
+ADDED:
+```
+AGENT BEHAVIORS (Optional - governing heuristics for this round):
+- If [trigger], then [action] because [theory link]
+- If [rival says X], then [update belief OR resist] with [brief reason]
+[Additional student-specified behavioral rules; 1-2 sentences each]
+
+Note: Agent Behaviors are optional but recommended. Use If/Then and Rival formats, OR describe unique behavioral dynamics in 1-2 sentences per rule.
+```
+
+**Updated Throughout:**
+- All references to "Agent Descriptor - Style" → "Agent Persona"
+- All references to "Agent Descriptor - Heuristics" → "Agent Behaviors"
+- Added notes clarifying optional/flexible nature of Agent Behaviors
+- Updated cross-references in Section 2, Section 3, and Appendix references
+
+### APPENDIX A v3 → v3.1
+══════════════════════════
+
+**Section 1 Agent-Specific Values:**
+
+OLD:
+```
+* [Agent Descriptor - Style]: 2-4 adjectives
+* [Agent Descriptor - Heuristics]:
+  - [trigger] (for If/Then heuristic) - 1 sentence
+  - [action] (for If/Then heuristic) - 1 sentence
+  - [theory link] (for If/Then heuristic) - 2 sentences
+  - [rival says X] (for Rival heuristic) - 1 sentence
+  - [update belief OR resist] (for Rival heuristic) - 1 sentence
+  - [brief reason] (for Rival heuristic) - 2 sentences
+```
+
+NEW:
+```
+* [Agent Persona] - 2-3 sentence behavioral summary describing how this agent behaves and makes decisions (goes in Section 2 agent prompt)
+* [Agent Behaviors] - Optional behavioral heuristics for rounds (goes in Section 3 round instructions):
+  - If/Then format: If [trigger], then [action] because [theory link]
+  - Rival format: If [rival says X], then [update belief OR resist] with [brief reason]
+  - OR custom rules: [1-2 sentences each describing unique behavioral dynamics]
+  - Components:
+    * [trigger] - 1 sentence describing condition
+    * [action] - 1 sentence describing response
+    * [theory link] - 2 sentences explaining why trigger → action follows from theory
+    * [rival says X] - 1 sentence describing rival's statement
+    * [update belief OR resist] - 1 sentence describing agent's reaction
+    * [brief reason] - 2 sentences explaining theoretical justification
+```
+
+**Section 2 Agent Prompt Design:**
+
+OLD:
+```
+* [Agent Descriptor - Style]: 2-4 adjectives
+* [Agent Descriptor - Heuristics]:
+  - If [trigger], then [action] because [theory link]
+  - If [rival says X], then [update belief OR resist] with [brief reason]
+```
+
+NEW:
+```
+* [Agent Persona] - 2-3 sentence behavioral summary
+
+Note: Agent Persona is a concise behavioral summary that goes directly in the agent's system prompt. It describes HOW the agent behaves and makes decisions in general terms.
+```
+
+**Section 3 Round Custom Instructions Design:**
+
+ADDED:
+```
+* [AGENT BEHAVIORS] - Optional governing heuristics for this round:
+  - If [trigger], then [action] because [theory link]
+  - If [rival says X], then [update belief OR resist] with [brief reason]
+  - OR custom behavioral rules (1-2 sentences each)
+
+Note: Agent Behaviors are OPTIONAL but recommended. They govern how agents act within the specific context of this round. Use If/Then and Rival formats for theory-driven heuristics, OR describe unique behavioral dynamics in 1-2 sentences per rule.
+```
+
+**ADDED: Cross-Section Field Notes:**
+```
+† [Agent Persona] - Defined in Section 1, used in Section 2 (agent prompt)
+† [Agent Behaviors] - Defined in Section 1, used in Section 3 (round instructions) - OPTIONAL
+```
+
+**ADDED: Key Distinction Section:**
+```
+KEY DISTINCTION:
+• [Agent Persona] = General behavioral summary in agent's system prompt (Section 2)
+• [Agent Behaviors] = Round-specific behavioral heuristics in round instructions (Section 3)
+
+The persona describes WHO the agent is and HOW they generally behave.
+The behaviors govern WHAT RULES they follow in a specific round context.
+```
+
+### SYSTEM PROMPT v7 → v7.1
+═══════════════════════════
+
+**Step 1.6 Agent Details:**
+
+OLD:
+```
+3. "Agent Persona - How does [Name] behave and make decisions? (2-3 sentence summary)"
+4. "Decision heuristics - If [trigger], then [action] because [theory link]"
+5. "Rival heuristic - If [rival says X], then [update belief OR resist] with [brief reason]"
+```
+
+NEW:
+```
+3. "Agent Persona - How does [Name] behave and decide? (2-3 sentence summary)"
+4. "Agent Behaviors (OPTIONAL) - Use behavioral heuristics for rounds?
+   → If yes: 'If [trigger], then [action] because [theory link]'
+   → If yes: 'If [rival says X], then [update belief OR resist] with [brief reason]'
+   → Or custom rules (1-2 sentences each)"
+
+**NOTE:** Persona → agent prompt (Section 2). Behaviors (optional) → round instructions (Section 3).
+```
+
+**Step 2.1 Agent Prompts:**
+
+OLD:
+```
+3. Format:
+   ROLE: You are [Agent Identifier]
+   PRIMARY GOAL: [Agent Goal]
+   PERSONA & HEURISTICS:
+     Style: [2-4 adjectives]
+     Decision Heuristics:
+     - If [trigger], then [action] because [theory link]
+     - If [rival says X], then [update belief OR resist]
+```
+
+NEW:
+```
+3. Format:
+   ROLE: You are [Agent Identifier]
+   PRIMARY GOAL: [Agent Goal]
+   PERSONA: [Agent Persona]
+4. Output in ||...||
+
+CHECK: "Represents theory per KB[2]?"
+
+**NOTE:** Agent Behaviors NOT here—they go in Section 3.
+```
+
+**Step 2.2 Round Instructions:**
+
+ADDED:
+```
+3. If Agent Behaviors defined in Section 1, add:
+   AGENT BEHAVIORS (Optional):
+   - If [trigger], then [action] because [theory link]
+   - If [rival says X], then [update belief OR resist]
+   [Additional rules]
+```
+
+**Phase 3 Final Checklist:**
+
+ADDED:
+```
+✓ Persona in Section 2
+✓ Behaviors in Section 3 if used
+```
+
+**Key Terminology Section:**
+
+CHANGED:
+```
+OLD:
+- **[Agent Descriptor - Style]**: 2-4 adjectives → Section 2
+- **[Agent Descriptor - Heuristics]**: If/Then and Rival → Section 2
+
+NEW:
+- **[Agent Persona]**: 2-3 sentence behavioral summary → Section 2 (agent prompt)
+- **[Agent Behaviors]**: OPTIONAL If/Then, Rival, or custom rules → Section 3 (round instructions)
+```
+
+**ADDED: Critical Distinction Section:**
+```
+## CRITICAL DISTINCTION
+**Persona vs. Behaviors:**
+- **Persona** = WHO agent is, HOW they generally behave (in agent system prompt)
+- **Behaviors** = WHAT RULES they follow in specific rounds (in round instructions, OPTIONAL)
+```
+
+**Success Metrics:**
+
+CHANGED:
+```
+OLD:
+✓ Heuristics fully specified
+
+NEW:
+✓ Persona in agent prompts
+✓ Behaviors (if used) in round instructions
+```
+
+IMPACT ASSESSMENT
+═════════════════
+
+**Structural Clarity:**
+❌ v4: Confusion about where heuristics go
+✅ v4.1: Crystal clear - Persona in prompts, Behaviors in rounds
+
+**Flexibility:**
+❌ v4: Heuristics seemed required in agent prompts
+✅ v4.1: Behaviors are explicitly optional and flexible
+
+**Pedagogical Alignment:**
+❌ v4: Agent prompts contained round-specific rules
+✅ v4.1: Agent prompts contain general characteristics, rounds contain context-specific rules
+
+**Student Experience:**
+❌ v4: Students might duplicate heuristics or be confused about format
+✅ v4.1: Clear workflow: plan both → Persona to Section 2, Behaviors to Section 3 (if used)
+
+TESTING & VALIDATION
+═════════════════════
+
+✓ Terminology consistent across all 3 files
+✓ Templates updated correctly
+✓ Cross-references all pointing to correct locations
+✓ Optional nature of Behaviors emphasized
+✓ Flexibility of format (If/Then, Rival, OR custom) clarified
+✓ System Prompt under 8,000 character limit (7,575 chars)
+✓ All navigation tags preserved
+✓ All ||...|| template blocks intact
+
+BACKWARD COMPATIBILITY
+═══════════════════════
+
+**Students who started with v4:**
+- Can easily migrate to v4.1
+- If they already created Section 2 with heuristics, move them to Section 3
+- If they haven't created prompts yet, follow new v4.1 structure
+
+**Breaking Changes:**
+- Section 2 template simplified (heuristics removed)
+- Section 3 template expanded (heuristics added)
+- Terminology change (Agent Descriptor → Agent Persona + Agent Behaviors)
+
+**Migration Steps:**
+1. Review Section 1: Do you have Agent Descriptor heuristics?
+2. If yes, rename to Agent Behaviors
+3. Use persona summary (not adjectives) for Agent Persona
+4. In Section 2: Remove heuristics, keep only Persona
+5. In Section 3: Add AGENT BEHAVIORS section if applicable
+
+DEPLOYMENT CHECKLIST
+════════════════════
+
+□ Guide v4.1.txt created and validated ✅
+□ Appendix A v3.1.txt created and validated ✅
+□ System Prompt v7.1-FINAL.txt created and validated ✅
+□ Character count under 8,000 (7,575) ✅
+□ Changelog created ✅
+□ All cross-references updated ✅
+□ Optional nature emphasized ✅
+□ Ready for git commit ✅
+□ Ready for OpenAI GPT Builder upload ✅
+
+SUMMARY
+═══════
+
+v4.1 corrects a fundamental structural error in v4:
+
+**The Issue:** Agent behavioral heuristics were incorrectly placed in agent prompts (Section 2)
+
+**The Fix:** Split [Agent Descriptor] into:
+- [Agent Persona]: WHO agent is → Section 2 (agent prompt) - REQUIRED
+- [Agent Behaviors]: WHAT RULES they follow → Section 3 (round instructions) - OPTIONAL
+
+**The Result:** Clear, pedagogically sound structure where:
+- Agent prompts define the agent's identity and general characteristics
+- Round instructions govern context-specific behavioral rules
+- Students have flexibility in format and optional usage
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+v4.1 CRITICAL CORRECTION COMPLETE
+Ready for deployment to OpenAI GPT Builder
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

@@ -1,0 +1,210 @@
+[APPENDIX-A] Appendix A - Required Values Index v3.1
+The required values, indicated by bracketed placeholders ([...]) which must be authentically conceived and specified by the student, are listed below, organized by the section in which they appear:
+
+Section 1: Planning the Design
+═══════════════════════════════
+The following values are required for Section 1, encompassing the Experimental Design Template, Required Values, and Platform Functions:
+
+Design Structure and Variables:
+* [Structure choice]
+* [Theoretical Problem]
+* [Option]: [A], [B], [C], [D], [E]
+* [Goal of the project]
+* [Fictional setting] (This often involves choices like [workplace], [public sphere], [democratic community of small property owners], [feudal→modernity], or [approved other])
+* [Concept A] - 2-3 sentence definition from theory
+* [Concept B] - 2-3 sentence definition from theory
+* [Agents Involved]
+* [Round plan]
+* [Analyst] (OPTIONAL - for qualitative summary)
+* [Tabulator] (OPTIONAL - for quantitative summary)
+* [Outcomes]
+* [Outcome1]
+* [Outcome2]
+* [short hypothesis]
+* [Baseline]
+* [Experimental lever]
+* [baseline value] - The original value before modification (1-2 sentences)
+* [experimental value] - The modified value in experimental condition (1-2 sentences)
+* [Experiment]
+* [Advanced Functions] - Student must select at least 2 for the entire project:
+  - [Moderator agent]
+  - [Self-Reflections]
+  - [Non-anthropomorphic agent]
+  NOTE: [Analyst]/[Tabulator] is OPTIONAL and does NOT count toward the ≥2 requirement
+
+Agent-Specific Values (within Section 1):
+* [Agent Identifier]
+* [purpose] + [name] (format for Agent Identifier, e.g., "Worker+Alice")
+* [Agent Goal] - 2-3 sentences; measurable
+* [Agent Persona] - 2-3 sentence behavioral summary describing how this agent behaves and makes decisions (goes in Section 2 agent prompt)
+* [Agent Behaviors] - Optional behavioral heuristics for rounds (goes in Section 3 round instructions):
+  - If/Then format: If [trigger], then [action] because [theory link]
+  - Rival format: If [rival says X], then [update belief OR resist] with [brief reason]
+  - OR custom rules: [1-2 sentences each describing unique behavioral dynamics]
+  - Components:
+    * [trigger] - 1 sentence describing condition
+    * [action] - 1 sentence describing response
+    * [theory link] - 2 sentences explaining why trigger → action follows from theory
+    * [rival says X] - 1 sentence describing rival's statement
+    * [update belief OR resist] - 1 sentence describing agent's reaction
+    * [brief reason] - 2 sentences explaining theoretical justification
+* [List] (of Agents)
+* [agent count] (number of agents total)
+* [human]
+* [non-human if applicable]
+
+Round-Specific Values (within Section 1):
+* [round]
+* [n] - round index number
+* [round number] - the number of a specific round
+* [name] (attached to round)
+* [purpose] (attached to round or other values)
+
+Experiment Type Modifiers:
+* [Experimental lever] Variables (which can include: [round] + [purpose], [Agent Identifier] and [Agent Persona], [baseline value], [experimental value], [other modifier])
+* [student justifies their decision for "A" in 3 sentences]
+* [two sentence justification for choice of variable]
+* [3-sentence description of [Experiment]]
+
+Platform Functions and Flow:
+* [Participants] - Selected from the [Agents Involved] list
+* [Flow] - List of settings:
+  * [Who can send messages?]: requires [yes/no]
+  * [Participant Order]: requires [yes/no] for options (Default, Random, Let the active agent decide, Let a moderator decide)
+  * [End the round]: requires [message count] or [yes/no]
+  * [Transition]: requires [yes/no] for options (Pause for the user, Automatically start, Let a moderator decide)
+* [message count] (for total messages or messages per participant)
+* [Style]: Choice of [Minimal], [Brief], [Medium], [Thorough], [Exhaustive], [Dynamic]
+* [Creativity]: Choice of [Precise], [Standard], [Creative], [Dynamic], [Experimental]
+* [End Round Setting] (Platform function) - 1-2 sentences
+
+________________
+
+
+Section 2: Agent Prompt Design
+═══════════════════════════════
+These values are required to populate the Agent Prompt Template:
+
+* [Agent Identifier]
+* [purpose] + [name] (e.g., "Worker+Alice", "Boss+Management")
+* [human] / [non-human if applicable]
+* [Agent Goal] - 2-3 sentences; measurable
+* [Agent Persona] - 2-3 sentence behavioral summary
+* [forbidden behaviors]
+
+Note: Agent Persona is a concise behavioral summary that goes directly in the agent's system prompt. It describes HOW the agent behaves and makes decisions in general terms.
+
+________________
+
+
+Section 3: Round Custom Instructions Design
+════════════════════════════════════════════
+These values are required to populate the Round Custom Instructions Template:
+
+* [round number] — [title]
+* [Detailed setting description tied to theory; 4-5 sentences] (SCENARIO)
+* [Concept A; 2-3 sentences] - Round-specific application
+* [Concept B; 2-3 sentences] - Round-specific application
+* [Concept A vs Concept B tension]
+* [outline of roles; 1-2 sentences per role]
+* [AGENT BEHAVIORS] - Optional governing heuristics for this round:
+  - If [trigger], then [action] because [theory link]
+  - If [rival says X], then [update belief OR resist] with [brief reason]
+  - OR custom behavioral rules (1-2 sentences each)
+* [specific actions]
+* [INTERACTION RULES]
+* [forbidden behaviors] (e.g., agent drift / changing identity / changing rules)
+* [SEQUENCE] - How the round is to play out (student inputs sequence of dynamics)
+* [student specifies frame + rules; 2-3 sentences]
+* [student specifies: outline of roles and interactions]
+* [Student describes: SCENARIO; 2-3+ sentences]
+* [student indicates yes/no and defines the trigger in 1-2 sentences]
+* [Round Ending Instructions] (prompt-based) - 1-2 sentences explaining how round will end
+
+Note: Agent Behaviors are OPTIONAL but recommended. They govern how agents act within the specific context of this round. Use If/Then and Rival formats for theory-driven heuristics, OR describe unique behavioral dynamics in 1-2 sentences per rule.
+
+________________
+
+
+Section 4: Helper Templates
+════════════════════════════
+These values are required for the specific helper templates if the student chooses to use them:
+
+1. Analyst/Tabulator Template Required Values
+* [Concept A] (from Section 1)
+* [Concept B] (from Section 1)
+* [Outcome1] (from Section 1)
+* [Outcome2] (from Section 1)
+
+2. Moderator Template Required Values
+* [target concept] - specified as either [Concept A] or [Concept B] from Section 1
+* [Moderator End Criteria] (Moderator-specific) - 1-2 sentences for when moderator should end the round
+
+3. Self-Reflections Template Required Values
+* [reflection frequency] - after each turn / at specific triggers / end of round
+* [reflection prompt] - what agents should reflect on (e.g., "internal motivations vs public actions")
+
+4. Non-Anthropomorphic Agent Required Values
+* [student input (a); 2-3 sentences] (Role - e.g., "The State," "Public Opinion," "The Gun")
+* [student input (b); 1-2 sentences] (Trigger - what activates the signal)
+* [name] (Label/name of the non-anthropomorphic agent)
+* [brief text] - signal description
+* [A], [B], [...] (The list of affected agents by identifier)
+* ["A"], ["B"], [...] (Unique Agent Identifier for affected agents)
+
+________________
+
+
+CROSS-SECTION FIELD NOTES
+══════════════════════════
+
+Fields that appear in multiple sections:
+
+† [Agent Identifier] - Defined in Section 1, used in Sections 2, 3, 4
+† [Agent Persona] - Defined in Section 1, used in Section 2 (agent prompt)
+† [Agent Behaviors] - Defined in Section 1, used in Section 3 (round instructions) - OPTIONAL
+† [Concept A] & [Concept B] - Defined in Section 1, applied in Section 3, referenced in Section 4
+† [theory link] - Used in Sections 1, 3 for behavioral heuristics
+† END CONDITION has three forms:
+  - [End Round Setting]: Platform function (Section 1)
+  - [Round Ending Instructions]: Prompt-based (Section 3)
+  - [Moderator End Criteria]: Moderator-specific (Section 4)
+
+KEY DISTINCTION:
+• [Agent Persona] = General behavioral summary in agent's system prompt (Section 2)
+• [Agent Behaviors] = Round-specific behavioral heuristics in round instructions (Section 3)
+
+The persona describes WHO the agent is and HOW they generally behave.
+The behaviors govern WHAT RULES they follow in a specific round context.
+
+________________
+
+
+VERSION INFORMATION
+═══════════════════
+Appendix A - Required Values Index v3.1
+Companion to: B42 Chatstorm T.A. Guide v4.1
+Updated: 2025-11-15
+
+Key Changes from v3:
+- CRITICAL CORRECTION: Split [Agent Descriptor] into two distinct concepts:
+  * [Agent Persona]: 2-3 sentence summary for Section 2 (agent prompt)
+  * [Agent Behaviors]: Optional heuristics for Section 3 (round instructions)
+- Clarified that Agent Behaviors are OPTIONAL but recommended
+- Emphasized flexibility: If/Then and Rival formats OR custom rules
+- Updated all cross-references to use new terminology
+- Added KEY DISTINCTION section explaining Persona vs Behaviors
+- Removed Agent Descriptor terminology throughout
+
+Previous Changes from v2:
+- Fixed [Agent Designator] → [Agent Identifier]
+- Standardized [Concept A/B] capitalization
+- Added [Concept A] and [Concept B] to Section 1
+- Added [baseline value] and [experimental value] definitions
+- Clarified Analyst/Tabulator as OPTIONAL
+- Added Self-Reflections template values
+- Differentiated END CONDITION contexts
+- Used specific field names ([round number], [agent count], [message count])
+- Removed orphaned "Speaking order" field
+- Added [theory link] definition
+- Added Cross-Section Field Notes for clarity
