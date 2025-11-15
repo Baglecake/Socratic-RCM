@@ -1,0 +1,338 @@
+╔═══════════════════════════════════════════════════════════════════╗
+║         B42 CHATSTORM T.A. - v4.1 DEPLOYMENT PACKAGE              ║
+║              ✅ CRITICAL CORRECTION COMPLETE                       ║
+╚═══════════════════════════════════════════════════════════════════╝
+
+Date: 2025-11-15
+Version: v4.1 (Critical Correction)
+Status: ✅ READY FOR IMMEDIATE DEPLOYMENT
+
+══════════════════════════════════════════════════════════════════════
+
+🎯 CURRENT VERSION: v4.1
+══════════════════════════════════════════════════════════════════════
+
+**Primary Files:**
+✅ B42 Chatstorm T.A. Guide v4.1.txt
+✅ Appendix A - Required Values Index v3.1.txt
+✅ B42 Chatstorm TA System Prompt v7.1-FINAL.txt (7,575 chars)
+
+**Documentation:**
+✅ CHANGELOG_v4_to_v4.1.txt
+✅ README_v4.txt (still applicable, note v4.1 correction)
+✅ AUDIT_REPORT_FULL.txt
+✅ All previous changelogs and documentation
+
+**Git Repository:**
+✅ GitHub: https://github.com/Baglecake/B42_GPT
+✅ Branch: main
+✅ Latest commit: 6bc8c0f
+
+══════════════════════════════════════════════════════════════════════
+
+❗ WHAT CHANGED IN v4.1
+══════════════════════════════════════════════════════════════════════
+
+**THE CRITICAL ISSUE:**
+v4 incorrectly placed agent behavioral heuristics (If/Then and Rival) in
+Section 2 (Agent Prompts). This was pedagogically wrong.
+
+**THE CORRECTION:**
+Agent behavioral heuristics belong in Section 3 (Round Custom Instructions),
+not in agent prompts.
+
+**WHY THIS MATTERS:**
+- Round instructions set CONTEXT-SPECIFIC behavioral rules
+- Agent prompts define GENERAL agent characteristics
+- Same agent can behave differently in different rounds
+- This is pedagogically sound: context governs behavior, not identity
+
+**THE FIX:**
+Split [Agent Descriptor] into TWO distinct concepts:
+
+1. **[Agent Persona]** (REQUIRED)
+   - 2-3 sentence behavioral summary
+   - Describes HOW agent generally behaves and makes decisions
+   - Goes in Section 2 (agent system prompt)
+
+2. **[Agent Behaviors]** (OPTIONAL)
+   - Behavioral heuristics for specific rounds
+   - If/Then and Rival formats OR custom rules (1-2 sentences each)
+   - Goes in Section 3 (round custom instructions)
+
+══════════════════════════════════════════════════════════════════════
+
+📋 CORRECT STRUCTURE (v4.1)
+══════════════════════════════════════════════════════════════════════
+
+**Section 1 (Planning):**
+Students define BOTH:
+- Agent Persona: "Worker+Alice is cautious and risk-averse, always
+  considering family needs before acting, and tends to follow
+  established social norms."
+- Agent Behaviors (optional): "If boss threatens job, then comply
+  but resent because survival trumps dignity. If rival worker
+  says revolution is possible, then resist belief with brief
+  reason that risks are too high for family."
+
+**Section 2 (Agent Prompt):**
+```
+ROLE: You are Worker+Alice
+PRIMARY GOAL: Earn enough wages to support your family while
+maintaining your job security.
+PERSONA: You are cautious and risk-averse, always considering
+family needs before acting, and tend to follow established
+social norms.
+```
+(NO behavioral heuristics here!)
+
+**Section 3 (Round Instructions):**
+```
+ROUND: 1 — Factory Work
+
+SCENARIO: [4-5 sentences about factory setting]
+
+OBJECTIVE: Alienation vs. Class Consciousness tension
+
+AGENT BEHAVIORS (Optional):
+- If boss threatens job, then comply but resent because survival
+  trumps dignity
+- If rival worker says revolution is possible, then resist belief
+  with brief reason that risks are too high for family
+
+INTERACTION RULES: [...]
+TASKS THIS ROUND: [...]
+```
+
+══════════════════════════════════════════════════════════════════════
+
+🚀 DEPLOYMENT INSTRUCTIONS
+══════════════════════════════════════════════════════════════════════
+
+**Step 1: Open OpenAI GPT Builder**
+https://chat.openai.com/gpts/editor
+
+**Step 2: Upload Knowledge Base Files**
+Upload these 4 files to the Knowledge section:
+1. B42 Chatstorm T.A. Guide v4.1.txt
+2. Appendix A - Required Values Index v3.1.txt
+3. B42 Final Project.txt
+4. B42 Step-by-Step Guide to Your Final Project.txt
+
+**Step 3: Paste System Prompt**
+Copy the ENTIRE contents of:
+B42 Chatstorm TA System Prompt v7.1-FINAL.txt
+
+Paste into the Instructions field in GPT Builder
+
+**Step 4: Save**
+Click Save
+✓ Should save without errors (7,575 chars < 8,000 limit)
+
+**Step 5: Test**
+Test message: "I want to work on Option A: Class and Gender"
+
+Expected behavior:
+✓ Asks: "Have you completed your storyboard?"
+✓ Shows: "Phase 1, Step 1.1"
+✓ In Step 1.2: Asks for Concept A and Concept B definitions
+✓ In Step 1.6: Asks for Agent Persona (2-3 sentences)
+✓ In Step 1.6: Asks if using Agent Behaviors (optional)
+✓ In Step 2.1: Creates agent prompt with ONLY Persona
+✓ In Step 2.2: Adds Agent Behaviors to round instructions (if defined)
+
+══════════════════════════════════════════════════════════════════════
+
+✅ VERIFICATION CHECKLIST
+══════════════════════════════════════════════════════════════════════
+
+Before deploying to students, verify:
+
+□ System Prompt v7.1 saved without character limit error
+□ All 4 KB files uploaded to Knowledge Base
+□ GPT asks for Agent Persona in Step 1.6
+□ GPT clarifies Agent Behaviors are OPTIONAL in Step 1.6
+□ GPT notes Persona → Section 2, Behaviors → Section 3
+□ Section 2 template has NO heuristics
+□ Section 3 template has AGENT BEHAVIORS section (if applicable)
+□ GPT clarifies Analyst is optional (not counted toward ≥2)
+□ Position tracking shows "Phase X, Step Y.Z"
+
+══════════════════════════════════════════════════════════════════════
+
+📊 KEY DIFFERENCES: v4 vs v4.1
+══════════════════════════════════════════════════════════════════════
+
+| Aspect | v4 (INCORRECT) | v4.1 (CORRECT) |
+|--------|----------------|----------------|
+| Agent Descriptor | Single ambiguous concept | Split: Persona + Behaviors |
+| Section 2 | Persona + Heuristics | Persona ONLY |
+| Section 3 | No agent behaviors | Agent Behaviors (optional) |
+| Heuristics location | Agent prompts | Round instructions |
+| Flexibility | Heuristics seemed required | Behaviors explicitly optional |
+| Format | If/Then and Rival only | If/Then, Rival, OR custom |
+
+══════════════════════════════════════════════════════════════════════
+
+🎓 MIGRATION FROM v4
+══════════════════════════════════════════════════════════════════════
+
+**If students already started with v4:**
+
+Option A: Continue with v4 (still functional, just not ideal)
+Option B: Migrate to v4.1 (recommended):
+
+1. Review Section 1 - do you have "Agent Descriptor" heuristics?
+2. Rename to "Agent Behaviors"
+3. Create "Agent Persona" as 2-3 sentence summary (not adjectives)
+4. In Section 2: Remove heuristics, keep only Persona
+5. In Section 3: Add AGENT BEHAVIORS section if you defined them
+
+**For new students:**
+Start with v4.1 - follow the new structure from the beginning
+
+══════════════════════════════════════════════════════════════════════
+
+📁 FILE INVENTORY
+══════════════════════════════════════════════════════════════════════
+
+**CURRENT (v4.1 era) - USE THESE:**
+✅ B42 Chatstorm T.A. Guide v4.1.txt
+✅ Appendix A - Required Values Index v3.1.txt
+✅ B42 Chatstorm TA System Prompt v7.1-FINAL.txt
+✅ CHANGELOG_v4_to_v4.1.txt
+✅ V4.1_DEPLOYMENT_READY.txt (this file)
+
+**DOCUMENTATION (still relevant):**
+📄 README_v4.txt
+📄 AUDIT_REPORT_FULL.txt
+📄 CHANGELOG_v3_to_v4.txt
+📄 IMPLEMENTATION_COMPLETE.txt
+📄 QUICK_START_GUIDE.txt
+📄 IMPROVEMENTS_SUMMARY.txt
+📄 SPECIFIC_FIXES_COMPARISON.txt
+
+**ARCHIVE (previous versions):**
+📁 B42 Chatstorm T.A. Guide v4.txt
+📁 Appendix A v3.txt
+📁 System Prompt v7-FINAL.txt
+📁 Guide v3.txt
+📁 Appendix A v2.txt
+📁 System Prompts v4, v5, v6
+
+**ASSIGNMENT FILES (unchanged):**
+📚 B42 Final Project.txt
+📚 B42 Step-by-Step Guide to Your Final Project.txt
+
+══════════════════════════════════════════════════════════════════════
+
+💡 TEACHING POINTS FOR STUDENTS
+══════════════════════════════════════════════════════════════════════
+
+When explaining v4.1 to students, emphasize:
+
+1. **Agent Persona = WHO you are**
+   "You are cautious, family-oriented, and follow social norms"
+   → This goes in your agent's system prompt
+
+2. **Agent Behaviors = WHAT RULES you follow in THIS round**
+   "In the factory round, if threatened, then comply but resent"
+   → This goes in the round's custom instructions
+
+3. **Same agent, different contexts**
+   Worker+Alice might be deferential in factory (Round 1) but
+   assertive at home (Round 2) - behaviors change with context
+
+4. **Behaviors are OPTIONAL**
+   If your theory doesn't require specific If/Then heuristics,
+   you can describe behavioral dynamics in 1-2 sentences instead
+
+5. **Flexibility is key**
+   Use If/Then and Rival formats when they fit your theory, OR
+   write custom behavioral rules that better capture your dynamics
+
+══════════════════════════════════════════════════════════════════════
+
+🎯 SUCCESS METRICS
+══════════════════════════════════════════════════════════════════════
+
+v4.1 is successful if:
+
+✓ Students understand Persona vs Behaviors distinction
+✓ Agent prompts contain only general characteristics
+✓ Round instructions contain context-specific behavioral rules
+✓ Students feel flexibility in using/not using Behaviors
+✓ Students feel flexibility in choosing If/Then, Rival, OR custom format
+✓ No confusion about where heuristics belong
+✓ GPT consistently separates Persona (Section 2) and Behaviors (Section 3)
+
+══════════════════════════════════════════════════════════════════════
+
+📞 SUPPORT & TROUBLESHOOTING
+══════════════════════════════════════════════════════════════════════
+
+**Common Questions:**
+
+Q: "Do I have to use Agent Behaviors?"
+A: No! They're optional but recommended. If your theory doesn't
+   need specific heuristics, you can skip them or use custom rules.
+
+Q: "Can I use custom behavioral rules instead of If/Then/Rival?"
+A: Yes! Describe your behavioral dynamics in 1-2 sentences each.
+
+Q: "Where do Agent Behaviors go?"
+A: In Section 3 (Round Custom Instructions), NOT in Section 2
+   (Agent Prompts).
+
+Q: "What's the difference between Persona and Behaviors?"
+A: Persona = general behavioral summary (who the agent is).
+   Behaviors = context-specific rules (how they act in this round).
+
+**Troubleshooting:**
+
+Issue: "GPT is putting heuristics in agent prompts"
+→ Verify you're using System Prompt v7.1, not v7
+→ Check KB[1] is Guide v4.1, not v4
+
+Issue: "GPT says Agent Behaviors are required"
+→ Remind it: "Agent Behaviors are optional per Guide v4.1"
+→ Reference KB[4] Appendix A v3.1
+
+Issue: "I don't understand Persona vs Behaviors"
+→ See CHANGELOG_v4_to_v4.1.txt "THE CRITICAL ISSUE" section
+→ Example: Persona = "cautious and family-oriented" (general)
+→ Example: Behavior = "If threatened, then comply" (specific rule)
+
+══════════════════════════════════════════════════════════════════════
+
+✅ FINAL STATUS
+══════════════════════════════════════════════════════════════════════
+
+v4.1 Critical Correction: COMPLETE ✅
+
+Deliverables:
+✅ Guide v4.1 created (correct structure)
+✅ Appendix v3.1 created (updated terminology)
+✅ System Prompt v7.1 created (fits limit: 7,575 chars)
+✅ CHANGELOG created
+✅ Git committed and pushed
+✅ Ready for deployment
+
+Quality:
+✅ Structural error corrected
+✅ Terminology clarified (Persona vs Behaviors)
+✅ Optional nature emphasized
+✅ Flexibility highlighted
+✅ All validations passed
+
+Result:
+Pedagogically correct structure where agent prompts contain general
+characteristics and round instructions govern context-specific behavior.
+
+═══════════════════════════════════════════════════════════════════════
+║                   🎉 v4.1 READY FOR DEPLOYMENT 🎉                   ║
+║                                                                     ║
+║  Guide v4.1, Appendix v3.1, and System Prompt v7.1 are ready!      ║
+║  Critical structural correction applied and validated              ║
+║  Deploy to OpenAI GPT Builder and share with students              ║
+╚═══════════════════════════════════════════════════════════════════════╝

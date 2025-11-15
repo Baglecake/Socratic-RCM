@@ -1,0 +1,603 @@
+B42 CHATSTORM T.A. - CHANGELOG v4.1 → v4.2
+════════════════════════════════════════════
+Date: 2025-11-15
+Type: MAJOR RESTRUCTURE - Chatstorm UI Complete Mapping
+Status: ✅ COMPLETE
+
+OVERVIEW
+════════
+This changelog documents the major restructuring in v4.2 to add complete Chatstorm UI mapping for per-round platform configurations. This update moves platform settings from Section 1 (global) to Section 3 (per-round) and provides detailed guidance for every Chatstorm UI setting.
+
+Files Updated:
+• B42 Chatstorm T.A. Guide v4.1.txt → v4.2.txt
+• Appendix A v3.1.txt → v3.2.txt
+• System Prompt v7.1-FINAL.txt → v7.2-FINAL.txt
+
+Type of Change: Major restructure
+Impact: High - Changes where and how platform configurations are collected
+
+CHARACTER COUNT
+═══════════════
+System Prompt v7.1: 7,575 characters
+System Prompt v7.2: 6,197 characters (-1,378 chars from better organization)
+✓ Well under 8,000 character limit (1,803 chars headroom)
+
+THE KEY INSIGHT
+═══════════════
+
+❌ **INCORRECT (v4.1):**
+Platform configurations (Flow, Style, etc.) collected ONCE in Section 1 and applied to all rounds globally.
+
+✅ **CORRECT (v4.2):**
+Platform configurations are PER-ROUND in the Chatstorm UI. Different rounds can (and often should) have different settings.
+
+**Example:**
+- Baseline Round: Default participant order, end after 15 total messages
+- Experimental Round: Let moderator decide order, end when moderator signals completion
+- Summary Round: All participants, end after each analyst speaks once
+
+**Rationale:**
+Students need flexibility to configure each round differently based on:
+- Whether using moderator in that specific round
+- Different flow needs for baseline vs. experiment
+- Different conversation dynamics per round
+- Ability to enable/disable Self-Reflection per round
+
+CHATSTORM UI STRUCTURE
+═══════════════════════
+
+Each round in Chatstorm has a "Round" panel with 4 main sections:
+
+**1. PARTICIPANTS**
+- Add/remove agents for this specific round
+- View which agents are included
+
+**2. FLOW**
+- Who can send messages: All participants / Moderator decides
+- Participant Order: Default / Random / Let active agent decide / Let moderator decide
+- End the round (3 options):
+  * After total # of messages → specify number
+  * After # per participant → specify number
+  * After moderator decides → specify: moderator name, max messages, END ROUND INSTRUCTIONS (2-3 sentences)
+- Transition: Pause / Automatically start next / Let moderator decide
+
+**3. STYLE**
+- Response Detail: Minimal / Brief / Medium / Thorough / Exhaustive / Dynamic
+- Creativity: Use agent defaults OR Custom (Precise / Standard / Creative / Dynamic / Experimental)
+
+**4. OPTIONS**
+- Custom Instructions: Paste Section 3 round instructions here
+- Agent Settings:
+  * Ask Questions (checkbox)
+  * Self-Reflection (checkbox) ← THIS IS WHERE ADVANCED FEATURE IS ENABLED
+  * Isolated Messages (checkbox)
+- Round Settings: Leave as default
+- Model Selection: Use agent defaults (recommended) OR DeepSeek42
+
+CHANGES BY FILE
+═══════════════
+
+## GUIDE v4.1 → v4.2
+
+### SECTION 1 CHANGES (Planning):
+
+**REMOVED: Detailed Platform Functions (Lines ~235-290 in v4.1)**
+No longer collecting:
+- [Participants] list
+- Detailed [Flow] settings (who sends, order, end conditions, transitions)
+- [Style] settings (response detail, creativity)
+- [END CONDITION] specifications
+
+**ADDED: High-Level Platform Planning**
+New streamlined section asking:
+- Which rounds will use Moderator?
+- Which rounds will enable Self-Reflections?
+- Which rounds will include Non-anthropomorphic agent?
+
+**UPDATED: Advanced Functions Note**
+Clarified that:
+- Self-Reflections are enabled PER-ROUND in Options → Agent Settings
+- Flow settings are configured PER-ROUND in Section 3
+- Planning happens in Section 1, configuration happens in Section 3
+
+### SECTION 3 MAJOR EXPANSION:
+
+**ADDED: Complete [S3-CHATSTORM] Chatstorm Platform Configuration Section**
+
+New comprehensive UI mapping guide organized by Chatstorm's 4 sections:
+
+**1. PARTICIPANTS Section:**
+```
+PARTICIPANTS:
+- Add agents for this round from your [Agents Involved] list
+- Agents in this round: [list Agent Identifiers]
+```
+
+**2. FLOW Section:**
+```
+FLOW:
+Who can send messages:
+- [ ] All participants
+- [ ] Moderator decides
+
+Participant Order:
+- [ ] Default (cycles through all participants)
+- [ ] Random
+- [ ] Let the active agent decide
+- [ ] Let a moderator decide → Select moderator: [agent name]
+
+End the round (choose ONE):
+- [ ] After total number of messages: [specify number]
+- [ ] After number per participant: [specify number]
+- [ ] After a moderator decides:
+      → Select moderator: [agent name]
+      → Max messages: [specify number]
+      → END ROUND INSTRUCTIONS (2-3 sentences): [conditions for ending]
+
+Transition:
+- [ ] Pause for the user to start the next round
+- [ ] Automatically start the next round
+- [ ] Let a moderator decide the next round
+```
+
+**3. STYLE Section:**
+```
+STYLE:
+Response Detail:
+- [ ] Minimal / [ ] Brief / [ ] Medium / [ ] Thorough / [ ] Exhaustive / [ ] Dynamic
+
+Creativity:
+- [ ] Use agent defaults
+- [ ] Custom: [ ] Precise / [ ] Standard / [ ] Creative / [ ] Dynamic / [ ] Experimental
+```
+
+**4. OPTIONS Section:**
+```
+OPTIONS:
+Custom Instructions:
+→ Paste your Section 3 Round Custom Instructions (from ||...|| template above) here
+
+Agent Settings:
+- [ ] Ask Questions
+- [ ] Self-Reflection (check this if using Self-Reflections advanced function)
+- [ ] Isolated Messages
+
+Round Settings: (Leave as default)
+- Show prompts after the round ends
+- Private round
+
+Model Selection:
+- [X] Use agent defaults (RECOMMENDED)
+- [ ] Specific model: DeepSeek42
+```
+
+**Impact:** Students now have complete, step-by-step guidance for configuring every Chatstorm UI setting for each round.
+
+### SECTION 4 CHANGES:
+
+**REVISED: [S4-SELFREFLECT] Self-Reflections**
+
+OLD (v4.1):
+```
+Self-Reflections Template Required Values:
+* [reflection frequency]
+* [reflection prompt]
+```
+
+NEW (v4.2):
+```
+[S4-SELFREFLECT] 4. Self-Reflections Configuration
+
+Self-Reflections are enabled in Chatstorm by checking the "Self-Reflection" box in:
+Round Panel → Options → Agent Settings
+
+When enabled, agents will include <SELF> tags in their responses.
+
+No separate template is needed. To use Self-Reflections:
+1. In Section 3, check "Self-Reflection" in Agent Settings for the round
+2. Agents will automatically format responses with <SELF> tags
+3. Use to capture internal experience vs. public action
+
+When to enable:
+- Modeling alienation (internal suffering vs. external compliance)
+- Preference falsification
+- Cognitive dissonance
+- Any theory distinguishing internal states from external behavior
+```
+
+**Impact:** Clarifies Self-Reflection is a platform feature (checkbox), not a separate template students must create.
+
+**UPDATED: [S4-MODERATOR] Moderator Template**
+
+OLD (v4.1):
+```
+[Moderator End Criteria] (Moderator-specific) - 1-2 sentences
+```
+
+NEW (v4.2):
+```
+END ROUND INSTRUCTIONS (2-3 sentences):
+[Describe the specific conditions that must be met for you to end the round. This should align with what you specified in Section 3's "End the round → After a moderator decides" setting.]
+
+Example: "End the round when all four aspects of alienation have been expressed by at least one worker, OR when 20 messages have been exchanged, whichever comes first."
+```
+
+**Impact:**
+- Clearer terminology (END ROUND INSTRUCTIONS vs. Moderator End Criteria)
+- Explicit connection to Section 3 Flow settings
+- Example provided for clarity
+- Specifies 2-3 sentences (was 1-2)
+
+## APPENDIX A v3.1 → v3.2
+
+### SECTION 1 CHANGES:
+
+**REMOVED: Platform Functions and Flow Values**
+Eliminated from Section 1:
+- [Participants]
+- [Flow] - [List]
+- [Who can send messages?]
+- [Participant Order] options
+- [End the round] options
+- [Transition] options
+- [message count]
+- [Style] and [Creativity] options
+- [End Round Setting]
+
+**Impact:** Section 1 now focuses purely on planning, not configuration.
+
+### SECTION 3 MASSIVE EXPANSION:
+
+**ADDED: Chatstorm Platform Configuration (per round)**
+
+New comprehensive section documenting all per-round configuration values:
+
+**PARTICIPANTS:**
+- [Agents in this round] - List of Agent Identifiers
+
+**FLOW:**
+- [Who can send messages] - All participants OR Moderator decides
+- [Participant Order] - Default / Random / Let active agent / Let moderator decide
+  * If moderator: [moderator agent name]
+- [End the round] - THREE explicit options:
+  * Option 1: After total # of messages → [number]
+  * Option 2: After # per participant → [number]
+  * Option 3: After moderator decides → [moderator name], [max messages], [END ROUND INSTRUCTIONS; 2-3 sentences]
+- [Transition] - Pause / Automatically start / Let moderator decide
+
+**STYLE:**
+- [Response Detail] - Minimal / Brief / Medium / Thorough / Exhaustive / Dynamic
+- [Creativity] - Use agent defaults OR Custom (Precise / Standard / Creative / Dynamic / Experimental)
+
+**OPTIONS:**
+- [Custom Instructions] - Paste Section 3 round instructions
+- [Agent Settings] checkboxes:
+  * Ask Questions
+  * Self-Reflection (if using this advanced function for this round)
+  * Isolated Messages
+- [Model Selection] - Use agent defaults OR DeepSeek42
+
+**Impact:** Complete documentation of every Chatstorm UI setting students will encounter.
+
+### SECTION 4 CHANGES:
+
+**REVISED: Self-Reflections Entry**
+
+OLD (v3.1):
+```
+3. Self-Reflections Template Required Values
+* [reflection frequency]
+* [reflection prompt]
+```
+
+NEW (v3.2):
+```
+3. Self-Reflections Configuration (NOT A TEMPLATE)
+* Self-Reflections enabled by checking "Self-Reflection" in Options → Agent Settings
+* No required values - it's a platform feature
+* When enabled, agents automatically use <SELF> tags
+```
+
+**UPDATED: Moderator Entry**
+
+OLD (v3.1):
+```
+* [Moderator End Criteria] (Moderator-specific) - 1-2 sentences
+```
+
+NEW (v3.2):
+```
+* [END ROUND INSTRUCTIONS] - 2-3 sentences describing specific conditions for ending the round (aligns with Section 3 Flow settings)
+```
+
+**ADDED: Cross-Section Field Notes Update**
+```
+† [END ROUND INSTRUCTIONS] - Defined in Section 3 Flow settings, used in Section 4 Moderator template
+```
+
+## SYSTEM PROMPT v7.1 → v7.2
+
+### KNOWLEDGE BASE UPDATES:
+
+```
+KB[1]: "B42 Chatstorm T.A. Guide v4.2.txt" (was v4.1)
+KB[4]: "Appendix A - Required Values Index v3.2.txt" (was v3.1)
+```
+
+### PHASE 1 CHANGES:
+
+**Step 1.7 - Advanced Functions & Platform Planning**
+
+OLD (v7.1):
+```
+"KB[2] requires at least 2 for entire project:
+- Moderator (controls flow/probes)
+- Self-Reflections (SELF tags)
+- Non-anthropomorphic agent
+
+NOTE: Analyst/Tabulator is OPTIONAL helper, NOT counted toward ≥2."
+
+CHECK: "Selected at least 2 per KB[2]?"
+```
+
+NEW (v7.2):
+```
+**1.7 Advanced Functions & Platform Planning**
+"KB[2] requires at least 2 for entire project:
+- Moderator (controls flow/probes)
+- Self-Reflections (enabled per-round in Options → Agent Settings)
+- Non-anthropomorphic agent (institution/object)
+
+NOTE: Analyst/Tabulator is OPTIONAL helper (Section 4), NOT counted toward ≥2."
+
+Then ask: "For each round, which features will you use?"
+Record which rounds use Moderator, Self-Reflections, Non-anthropomorphic.
+
+CHECK: "Selected at least 2 features total across all rounds?"
+```
+
+**Impact:**
+- Clarifies Self-Reflections are enabled per-round
+- Collects which rounds use which features (planning)
+- Sets up for per-round configuration in Step 2.2
+
+**Step 1.8 - Platform Configuration**
+
+OLD (v7.1):
+```
+**1.8 Platform Configuration**
+Collect Flow settings (KB[1] [S1-VALUES], KB[4]):
+- Participant order
+- End Round Setting
+- Transitions
+- Style/Creativity
+```
+
+NEW (v7.2):
+```
+**1.8 Compile Section 1**
+Format using KB[1] [S1-TEMPLATE]. Output in ||...||.
+
+STATUS: "Phase 1 Complete! Review Section 1 vs. KB[2] before Phase 2. Ready?"
+```
+
+**Impact:** Platform configuration removed from Phase 1, now handled per-round in Phase 2 Step 2.2.
+
+### PHASE 2 MAJOR CHANGES:
+
+**Step 2.2 - Complete Chatstorm Configuration Added**
+
+OLD (v7.1):
+```
+**2.2 Round Instructions (Section 3)**
+For EACH round:
+1. Use KB[1] [S3-TEMPLATE]
+2. Collect: scenario, concepts, behaviors, rules, tasks, sequence, ending
+3. If Agent Behaviors defined, add them
+4. Output in ||...||
+
+CHECK: "Tests hypothesis? Review."
+```
+
+NEW (v7.2):
+```
+**2.2 Round Instructions & Platform Configuration (Section 3)**
+For EACH round:
+1. Use KB[1] [S3-TEMPLATE] and [S3-CHATSTORM]
+2. Collect round instructions: scenario, concepts, behaviors, rules, tasks, sequence
+3. If Agent Behaviors defined, add them
+4. Collect Chatstorm Platform Configuration:
+
+   PARTICIPANTS: "Which agents in this round?"
+
+   FLOW:
+   - "Who sends messages? (All / Moderator)"
+   - "Participant Order? (Default / Random / Active agent / Moderator)"
+   - "End the round - choose ONE:
+     1) After total messages → how many?
+     2) After per-participant messages → how many?
+     3) After moderator decides → moderator? max? instructions (2-3 sent.)?"
+   - "Transition? (Pause / Auto / Moderator)"
+
+   STYLE:
+   - "Response Detail? (Min / Brief / Med / Thor / Exh / Dyn)"
+   - "Creativity? (Agent defaults / Custom: which?)"
+
+   OPTIONS:
+   - "Agent Settings - Enable: Ask Questions? Self-Reflection? Isolated?"
+   - "Model: Agent defaults or DeepSeek42?"
+
+5. Output round instructions in ||...||
+6. Output Chatstorm configuration checklist
+
+CHECK: "Tests hypothesis? Configuration appropriate for round goals?"
+```
+
+**Impact:**
+- Complete per-round platform configuration workflow
+- Structured questions for all 4 Chatstorm UI sections
+- End round condition now has 3 explicit options
+- Configuration checklist output for students to follow
+- Validation includes configuration appropriateness
+
+**Step 2.3 - Helper Templates Updated**
+
+OLD (v7.1):
+```
+**2.3 Helper Templates (Section 4)**
+Per Step 1.7 selections:
+- Moderator: KB[1] [S4-MODERATOR]
+- Analyst: KB[1] [S4-ANALYST]
+- Self-Reflections: KB[1] [S4-SELFREFLECT]
+- Non-anthropomorphic: KB[1] [S4-NONANTHRO]
+```
+
+NEW (v7.2):
+```
+**2.3 Helper Templates (Section 4)**
+Per Step 1.7 selections:
+- Moderator: KB[1] [S4-MODERATOR] (needs [END ROUND INSTRUCTIONS] - 2-3 sent.)
+- Analyst: KB[1] [S4-ANALYST]
+- Non-anthropomorphic: KB[1] [S4-NONANTHRO]
+- Self-Reflections: No template - enable in Options → Agent Settings per round
+```
+
+**Impact:**
+- Clarifies Moderator needs END ROUND INSTRUCTIONS (2-3 sentences)
+- Explicitly states Self-Reflections has no template (it's a checkbox)
+- Removes misleading [S4-SELFREFLECT] reference
+
+### PHASE 3 CHANGES:
+
+**Final Checklist Updated**
+
+ADDED:
+```
+✓ Platform configurations set per round
+```
+
+### KEY TERMINOLOGY UPDATES:
+
+**REMOVED:**
+```
+- **[End Round Setting]**: Platform function (Section 1)
+- **[Round Ending Instructions]**: Prompt-based (Section 3)
+- **[Moderator End Criteria]**: Moderator-specific (Section 4)
+```
+
+**ADDED:**
+```
+**Chatstorm Platform (per round):**
+- Participants, Flow, Style, Options configured in Round Panel
+- Self-Reflection enabled in Options → Agent Settings (checkbox)
+- END ROUND INSTRUCTIONS: 2-3 sent. in moderator prompt (if using "After moderator decides")
+```
+
+**Impact:**
+- Simplified from 3 different "end condition" concepts to 1 clear concept
+- Platform configuration clearly identified as per-round
+- Self-Reflection explicitly identified as checkbox
+
+IMPACT ASSESSMENT
+═════════════════
+
+### Structural Clarity:
+❌ v4.1: Platform settings collected globally in Section 1
+✅ v4.2: Platform settings collected per-round in Section 3
+
+### Flexibility:
+❌ v4.1: All rounds use same Flow/Style settings
+✅ v4.2: Each round can have different configuration
+
+### Student Experience:
+❌ v4.1: Confusion about why settings only collected once
+✅ v4.2: Clear per-round workflow matching Chatstorm UI
+
+### Pedagogical Alignment:
+❌ v4.1: Doesn't reflect how Chatstorm actually works
+✅ v4.2: Perfect 1:1 mapping to Chatstorm UI structure
+
+### Self-Reflections Understanding:
+❌ v4.1: Students might think they need to create a template
+✅ v4.2: Clear that it's a checkbox, enabled per-round
+
+### Moderator Instructions:
+❌ v4.1: Generic "end criteria" terminology
+✅ v4.2: Specific "END ROUND INSTRUCTIONS" (2-3 sentences) that align with Flow settings
+
+TESTING & VALIDATION
+═════════════════════
+
+✓ All 3 files updated consistently
+✓ Chatstorm UI mapping complete and accurate
+✓ Per-round configuration workflow clear
+✓ Self-Reflection properly described as checkbox
+✓ END ROUND INSTRUCTIONS terminology consistent
+✓ Cross-references all updated
+✓ System Prompt under 8,000 chars (6,197)
+✓ Navigation tags preserved
+✓ Template blocks intact
+
+BACKWARD COMPATIBILITY
+═══════════════════════
+
+**Students who started with v4.1:**
+- Platform configuration collected in Section 1 won't be used
+- Need to reconfigure per-round in Section 3
+- If using moderator, update "end criteria" to "END ROUND INSTRUCTIONS" (2-3 sentences)
+- If using Self-Reflections, enable checkbox in Options for each round
+
+**Breaking Changes:**
+- Platform Functions removed from Section 1
+- Chatstorm configuration added to Section 3 (per round)
+- Self-Reflections template removed (now a checkbox)
+- [Moderator End Criteria] → [END ROUND INSTRUCTIONS]
+
+**Migration Steps:**
+1. Review Section 1: Remove platform configuration values
+2. For each round in Section 3, add Chatstorm Platform Configuration section
+3. Update Moderator template: change "criteria" to "instructions" (2-3 sentences)
+4. If using Self-Reflections, remove template, enable checkbox per round
+
+DEPLOYMENT CHECKLIST
+════════════════════
+
+□ Guide v4.2.txt created and validated ✅
+□ Appendix A v3.2.txt created and validated ✅
+□ System Prompt v7.2-FINAL.txt created and validated ✅
+□ Character count under 8,000 (6,197) ✅
+□ Chatstorm UI mapping complete ✅
+□ Per-round configuration workflow clear ✅
+□ Self-Reflection as checkbox clarified ✅
+□ END ROUND INSTRUCTIONS terminology consistent ✅
+□ Changelog created ✅
+□ Ready for git commit ✅
+□ Ready for OpenAI GPT Builder upload ✅
+
+SUMMARY
+═══════
+
+v4.2 represents a major restructuring to align the guide with how Chatstorm actually works:
+
+**The Core Change:** Platform configurations moved from Section 1 (global) to Section 3 (per-round)
+
+**The Additions:**
+- Complete Chatstorm UI mapping (Participants, Flow, Style, Options)
+- Per-round configuration workflow
+- 4-section structure matching Chatstorm's Round Panel
+- Self-Reflection as checkbox (not template)
+- END ROUND INSTRUCTIONS (2-3 sentences) for moderator
+
+**The Result:**
+- Students configure each round independently
+- Perfect 1:1 mapping to Chatstorm UI
+- Flexibility to use different settings for baseline vs. experiment
+- Clear, step-by-step guidance for every Chatstorm setting
+- No confusion about Self-Reflection (it's a checkbox)
+- Proper integration of moderator end instructions with Flow settings
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+v4.2 MAJOR RESTRUCTURE COMPLETE
+Complete Chatstorm UI mapping implemented
+Ready for deployment to OpenAI GPT Builder
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
