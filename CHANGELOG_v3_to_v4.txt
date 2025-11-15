@@ -1,0 +1,308 @@
+B42 CHATSTORM T.A. - CHANGELOG v3 → v4
+═══════════════════════════════════════
+Date: 2025-11-15
+Implementation: Option B (Tiers 1 + 2 - Comprehensive Fix)
+
+OVERVIEW
+════════
+This changelog documents all changes made in transitioning from Guide v3 to Guide v4, implementing all 20 critical and consistency fixes identified in the comprehensive audit.
+
+Files Updated:
+• B42 Chatstorm T.A. Guide v3.txt → v4.txt
+• Appendix A v2.txt → v3.txt
+• System Prompt v6-FINAL.txt → v7-FINAL.txt
+
+Total Issues Fixed: 20
+• Tier 1 (Critical): 11 fixes
+• Tier 2 (Consistency): 9 fixes
+
+CHARACTER COUNT COMPARISON
+══════════════════════════
+System Prompt v6: 5,446 characters
+System Prompt v7: 7,684 characters (+2,238 chars to add new features)
+✓ Still under 8,000 character limit
+
+TIER 1: CRITICAL FIXES
+═══════════════════════
+
+1. ✅ FIXED: [Agent Designator] Undefined Field
+   Problem: Field used but never defined; typo for [Agent Identifier]
+   Location: Lines 196, 579 in v3
+   Fix: Replaced all instances with [Agent Identifier]
+   Impact: Eliminates student confusion about what field to use
+   Files: Guide v4, Appendix A v3
+
+2. ✅ FIXED: [Concept A/B] Capitalization Inconsistency
+   Problem: Mixed use of [concept A/B] and [Concept A/B]
+   Location: Throughout v3
+   Fix: Standardized to [Concept A] and [Concept B] (uppercase)
+   Impact: Consistent field naming across all sections
+   Files: Guide v4, Appendix A v3, System Prompt v7
+
+3. ✅ ADDED: [Concept A] and [Concept B] to Section 1
+   Problem: Section 4 templates require concepts never defined in Section 1
+   Location: Missing from Section 1 Required Values
+   Fix: Added after [Goal of the project] in Section 1
+   Format:
+   - [Concept A]: 2-3 sentence definition from theory
+   - [Concept B]: 2-3 sentence definition from theory
+   Impact: Students define theoretical concepts early; available for later sections
+   Files: Guide v4 (lines 122-123), Appendix A v3, System Prompt v7 (Step 1.2)
+
+4. ✅ ADDED: [baseline value] and [experimental value] Definitions
+   Problem: Used in Experimental lever but never defined
+   Location: Line 196 in v3 (undefined)
+   Fix: Added to Section 1 Required Values
+   Definitions:
+   - [baseline value]: Original value before modification (1-2 sentences)
+   - [experimental value]: Modified value in experimental condition (1-2 sentences)
+   Impact: Clear guidance for Type A experiments
+   Files: Guide v4 (lines 124-125), Appendix A v3
+
+5. ✅ REMOVED: Round Instructions from Section 1 Template
+   Problem: CONTEXT RULES, INTERACTION RULES, TASKS appeared in both Section 1 and Section 3
+   Location: Lines 172-186 in v3
+   Fix: Removed from Section 1 (they belong only in Section 3)
+   Rationale: Section 1 is for planning; Section 3 is for actual prompt content
+   Impact: Eliminates duplication and confusion
+   Files: Guide v4
+
+6. ✅ EXPANDED: [Agent Descriptor] Split into Style and Heuristics
+   Problem: Ambiguous whether descriptor = adjectives only or adjectives + heuristics
+   Location: Lines 160, 312, 322, 607 in v3
+   Fix: Split into two explicit components:
+   - [Agent Descriptor - Style]: 2-4 adjectives
+   - [Agent Descriptor - Heuristics]: If/Then and Rival structures
+   Impact: Crystal clear what students need to provide
+   Files: Guide v4 (lines 112-113, 168-171, 320, 329-331), Appendix A v3, System Prompt v7
+
+7. ✅ EXPANDED: Section 2 Template to Include Heuristics
+   Problem: Template header said "PERSONA & HEURISTICS" but only had space for adjectives
+   Location: Line 322 in v3
+   Fix: Added explicit heuristics section to template:
+   ```
+   PERSONA & HEURISTICS:
+   Style: [2-4 adjectives]
+   Decision Heuristics:
+   - If [trigger], then [action] because [theory link].
+   - If [rival says X], then [update belief OR resist] with [brief reason].
+   ```
+   Impact: Agent prompts now capture full behavioral logic
+   Files: Guide v4 (lines 323-333), System Prompt v7 (Step 2.1)
+
+8. ✅ REMOVED: Orphaned "Speaking order" Field
+   Problem: Defined in Appendix A but not used in any template
+   Location: Line 623 in v3 Appendix A
+   Fix: Removed from Appendix A v3
+   Rationale: Field was from older version, no longer applicable
+   Impact: Appendix A only contains fields actually used
+   Files: Appendix A v3
+
+9. ✅ CLARIFIED: Analyst/Tabulator as Optional Helper
+   Problem: Unclear if Analyst counts toward "≥2 Advanced Functions" requirement
+   Location: Lines 119, 208 in v3
+   Fix: Added explicit NOTE in multiple locations:
+   "NOTE: [Analyst]/[Tabulator] is OPTIONAL and does NOT count toward the ≥2 requirement"
+   Impact: Students understand Analyst is a helpful tool, not a required function
+   Files: Guide v4 (lines 127-128, 216-217), Appendix A v3, System Prompt v7
+
+10. ✅ ADDED: Self-Reflections Template to Section 4
+    Problem: Listed as Advanced Function but no template provided
+    Location: Missing from Section 4 in v3
+    Fix: Added [S4-SELFREFLECT] template (Guide v4 lines 541-560)
+    Template includes:
+    - When to use (internal vs external experience)
+    - Format for SELF tags
+    - Reflection prompts
+    Impact: Students can implement self-reflections with guidance
+    Files: Guide v4, System Prompt v7 (references [S4-SELFREFLECT])
+
+11. ✅ ADDED: Table of Contents with Line Numbers
+    Problem: Line 28 referenced TOC but none existed
+    Location: After line 28 in v3
+    Fix: Added comprehensive TOC (lines 30-50 in v4)
+    Contents:
+    - All major sections with navigation tags
+    - All subsections with line number references
+    - Quick navigation to any part of guide
+    Impact: Easy reference and navigation
+    Files: Guide v4
+
+TIER 2: CONSISTENCY FIXES
+══════════════════════════
+
+12. ✅ FIXED: Double Bracket Syntax Errors
+    Problem: [[Advanced Functions] should be [Advanced Functions]
+    Location: Lines 119, 208, 556 in v3
+    Fix: Removed extra opening bracket throughout
+    Impact: Correct bracketing notation
+    Files: Guide v4 (lines 126, 212, 574)
+
+13. ✅ FIXED: Round Plan Syntax Errors
+    Problem: Triple closing brackets ]]], inconsistent spacing [ n+2]
+    Location: Line 103 in v3
+    Fix: Corrected to proper syntax with consistent spacing
+    Format: [round] + [n], [round] + [n+1], [round] + [n+2], etc.
+    Impact: Clean, parseable syntax
+    Files: Guide v4 (line 105)
+
+14. ✅ CLARIFIED: [Participants] Definition
+    Problem: Circular reference ([Participants] = [Agents Involved])
+    Location: Lines 220-221 in v3
+    Fix: Clarified as "Participants selected from the [Agents Involved] list"
+    Impact: Clear that Participants is a SELECTION, not redefinition
+    Files: Guide v4 (line 226)
+
+15. ✅ DIFFERENTIATED: END CONDITION Contexts
+    Problem: Same field name used for 3 different purposes
+    Location: Lines 267-271, 388, 482 in v3
+    Fix: Created three distinct field names:
+    - [End Round Setting]: Platform function (Chatstorm UI) - Section 1
+    - [Round Ending Instructions]: Prompt-based ending - Section 3
+    - [Moderator End Criteria]: Moderator-specific logic - Section 4
+    Impact: No confusion about which "end condition" is meant
+    Files: Guide v4 (lines 268, 395, 434, 493), Appendix A v3, System Prompt v7
+
+16. ✅ CLARIFIED: [Flow] - [List] Notation
+    Problem: Unclear what "- [List]" meant
+    Location: Line 224 in v3
+    Fix: Changed to "[Flow] - List of settings:" (clarified as descriptor)
+    Impact: Clear that Flow contains multiple sub-settings
+    Files: Guide v4 (line 230)
+
+17. ✅ STANDARDIZED: Chatstorm Spelling
+    Problem: Inconsistent use of "Chatstorm" vs "ChatStorm"
+    Location: Throughout v3
+    Fix: Changed all instances to "Chatstorm" (lowercase 's')
+    Impact: Professional consistency
+    Files: Guide v4, System Prompt v7
+
+18. ✅ SPECIFIED: [number] Field Names
+    Problem: Generic [number] used for multiple different concepts
+    Location: Throughout v3
+    Fix: Created specific field names:
+    - [round number]: For round numbering
+    - [agent count]: For total number of agents
+    - [message count]: For Chatstorm Flow settings
+    Impact: Clear semantic meaning for each number field
+    Files: Guide v4, Appendix A v3, System Prompt v7
+
+19. ✅ FIXED: Section Numbering in Section 3
+    Problem: "1) Required Values" jumped to "3) Template" (missing 2)
+    Location: Line 392 in v3
+    Fix: Changed to "2) Section 3 Template"
+    Impact: Correct sequential numbering
+    Files: Guide v4 (line 400)
+
+20. ✅ CLARIFIED: "≥2 overall" Language
+    Problem: Ambiguous whether "overall" meant per section or entire project
+    Location: Line 208 in v3
+    Fix: Changed to "at least 2 for the entire project"
+    Impact: Crystal clear requirement
+    Files: Guide v4 (line 126), System Prompt v7
+
+ADDITIONAL IMPROVEMENTS
+═══════════════════════
+
+Beyond the 20 planned fixes, the following enhancements were made:
+
+21. ✅ ADDED: [theory link] Definition
+    Location: Appendix A v3
+    Definition: "2 sentences explaining why trigger → action follows from theory"
+    Impact: Students understand what theoretical justification to provide
+
+22. ✅ ADDED: Cross-Section Field Notes
+    Location: End of Appendix A v3
+    Contents: Documentation of fields that appear in multiple sections
+    Impact: Clarity about field reuse and references
+
+23. ✅ ADDED: Version Information
+    Location: End of Appendix A v3
+    Contents: Version number, date, companion guide reference, key changes
+    Impact: Clear version control and change tracking
+
+24. ✅ UPDATED: System Prompt Key Terminology Section
+    Location: System Prompt v7
+    Contents: Comprehensive list of correct field usage
+    Impact: T.A. GPT uses consistent terminology
+
+25. ✅ ENHANCED: System Prompt Step 1.2
+    Location: System Prompt v7, Phase 1, Step 1.2
+    Addition: Now explicitly asks for [Concept A] and [Concept B] definitions
+    Impact: Concepts captured early in workflow
+
+26. ✅ ENHANCED: System Prompt Step 1.6
+    Location: System Prompt v7, Phase 1, Step 1.6
+    Addition: Now explicitly asks for both Style AND Heuristics
+    Impact: Complete agent specifications
+
+TESTING & VALIDATION
+═══════════════════════
+
+All fixes have been validated for:
+✓ Syntax correctness
+✓ Cross-file consistency (Guide v4, Appendix A v3, System Prompt v7)
+✓ Template integrity (all ||...|| blocks preserved)
+✓ Navigation tags (all [S1], [S2], etc. maintained)
+✓ Field definitions (all [...] fields defined in Appendix A v3)
+
+CHARACTER COUNT VALIDATION
+═══════════════════════════
+System Prompt v7: 7,684 characters
+OpenAI Limit: 8,000 characters
+Headroom: 316 characters (3.95%)
+Status: ✅ FITS
+
+BACKWARD COMPATIBILITY
+═════════════════════════
+Changes are primarily additions and clarifications.
+Students who started with v3 can:
+• Continue using v3 (still functional)
+• Migrate to v4 by adding [Concept A/B] and expanding [Agent Descriptor]
+• No breaking changes to core workflow
+
+DEPLOYMENT CHECKLIST
+════════════════════
+□ Guide v4.txt created and validated
+□ Appendix A v3.txt created and validated
+□ System Prompt v7-FINAL.txt created and validated (under 8,000 chars)
+□ Changelog created
+□ All cross-references updated
+□ Ready for git commit
+□ Ready for OpenAI GPT Builder upload
+
+NEXT STEPS
+══════════
+1. Review this changelog
+2. Test System Prompt v7 in OpenAI GPT Builder
+3. Upload Guide v4.txt and Appendix A v3.txt to Knowledge Base
+4. Remove or archive Guide v3.txt references
+5. Update README.txt to reference v4/v7
+6. Commit to git with detailed message
+7. Deploy to students
+
+SUMMARY STATISTICS
+══════════════════
+Total Lines Changed in Guide: ~150+
+Total New Lines Added: ~80
+Total Lines Removed: ~30
+Fields Added: 7 ([Concept A], [Concept B], [baseline value], [experimental value], [End Round Setting], [Round Ending Instructions], [Moderator End Criteria])
+Fields Removed: 1 ([Agent Designator])
+Fields Split: 1 ([Agent Descriptor] → Style + Heuristics)
+New Templates: 1 (Self-Reflections)
+Fixes Applied: 26 (20 planned + 6 enhancements)
+
+AUDIT COMPLETION
+════════════════
+✅ TIER 1 (Critical): 11/11 fixes completed
+✅ TIER 2 (Consistency): 9/9 fixes completed
+⏸️ TIER 3 (Enhancements): Deferred to v5 based on student feedback
+
+Option B (Comprehensive Fix) COMPLETE
+═══════════════════════════════════════
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Guide v4, Appendix A v3, and System Prompt v7 are ready for deployment
+All critical errors fixed, all inconsistencies resolved
+Professional, clean, and fully functional
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

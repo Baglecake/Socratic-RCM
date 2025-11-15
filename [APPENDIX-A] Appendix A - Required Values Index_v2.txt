@@ -1,0 +1,117 @@
+﻿[APPENDIX-A] Appendix A - Required Values Index
+The required values, indicated by bracketed placeholders ([...]) which must be authentically conceived and specified by the student, are listed below, organized by the section in which they appear:
+Section 1: Planning the Design
+The following values are required for Section 1, encompassing the Experimental Design Template, Required Values, and Platform Functions:
+Design Structure and Variables:
+* [Structure choice]
+* [Theoretical Problem]
+* [Option]: [[A],[B],[C],[D],[E]]
+* [Goal of the project]
+* [Fictional setting] (This often involves choices like [workplace], [public sphere], [democratic community of small property owners], [feudal→modernity], or [approved other;]).
+* [Agents Involved]
+* [Round plan]
+* [Analyst]
+* [Tabulator]
+* [Outcomes]
+* [Outcome1]
+* [Outcome2]
+* [short hypothesis]
+* [Baseline]
+* [Experimental lever]
+* [Experiment]
+* [[Advanced Functions] (Choices include [Moderator agent], [Self-Reflections], [Non-anthropomorphic agent]]).
+Agent-Specific Values (within Section 1):
+* [Agent Identifier]
+* [[purpose]+[name]] (for Agent Identifier)
+* [Agent Goal]
+* [Agent Descriptor]
+* [Style]: [2–4 adjectives]
+* [trigger] (for If/Then heuristic)
+* [action] (for If/Then heuristic)
+* [theory link] (for If/Then heuristic)
+* [rival says X]
+* [update belief OR resist]
+* [brief reason]
+* [List] (of Agents)
+* [number] (of Agents)
+* [human]
+* [non-human if applicable]
+Round-Specific Values (within Section 1):
+* [round]
+* [n]
+* [name] (attached to round)
+* [purpose] (attached to round or other values)
+Experiment Type Modifiers:
+* [Experimental lever] Variables (which can include [[round] + [purpose], [Agent Designator and Agent Descriptor], [baseline value], [experimental value], [other modifier as specified by the student]]).
+* [student justifies their decision for “A” in 3-sentences]
+* [two sentence justification for choice of variable]
+* [3-sentence description of [Experiment]]
+Platform Functions and Flow:
+* [Participants]
+* [Flow] - [List]
+* [Who can send messages?]: (requires [yes/no])
+* [Participant Order]: (requires [yes/no] for options like Default, Random, Let the active agent decide, Let a moderator decide).
+* [End the round]: (requires [number] or [yes/no]).
+* [number] (for total messages or messages per participant)
+* [Transition]: (requires [yes/no] for options like Pause for the user, Automatically start, Let a moderator decide).
+* [Style]: (Choice of [Minimal], [Brief], [Medium], [Thorough], [Exhaustive], [Dynamic]).
+* [Creativity]: (Choice of [Precise], [Standard], [Creative], [Dynamic], [Experimental]).
+* [END CONDITION].
+* [student conceived and specified condition; 1-2 sentences].
+________________
+
+
+Section 2: Agent Prompt Design
+These values are required to populate the Agent Prompt Template:
+* [Agent Identifier]
+* [[purpose]+[name]]
+* [human] / [non-human if applicable]
+* [Agent Goal]
+* [Agent Descriptor]
+* [2–4 adjectives]
+* [forbidden behaviours]
+Note: The bracketed placeholders for the "If [trigger], then [action] because [theory link]" and "If [rival says X], then [update belief OR resist] with [brief reason]" are also required, as they are part of the [Agent Descriptor] specified in Section 1 and referenced in the Section 2 Template.
+________________
+
+
+Section 3: Round Custom Instructions Design
+These values are required to populate the Round Custom Instructions Template:
+* [number] — [title]
+* [Detailed setting description [theory link]: 4-5 sentences] (SCENARIO)
+* [concept A; 2-3 sentences]
+* [concept B; 2-3 sentences]
+* [concept A vs concept B tension]
+* [outline of roles; 1-2 sentences per role]
+* [trigger], [action], [theory link] (If/Then heuristic)
+* [rival says X], [update belief OR resist], [brief reason] (Rival heuristic)
+* [specific actions]
+* [INTERACTION RULES]
+* [student specifies: Moderator sets / fixed list / free-for-all] (Speaking order)
+* [student specifies: e.g., agent drift / changing identity / changing rules] (Forbidden behaviors)
+* [SEQUENCE – How the round is to play out - student inputs their ideas as a sequence of dynamics...]
+* [student specifies frame + rules; 2-3 sentences]
+* [student specifies: outline of roles and interactions]
+* [Student describes: SCENARIO; 2-3+ sentences]
+* [student indicates yes/no and defines the trigger in 1-2 sentences]
+* [student conceived condition that will end the round; 1-2 sentences] (END CONDITION).
+________________
+
+
+Section 4: Helper Templates
+These values are required for the specific helper templates if the student chooses to use them:
+1. Analyst/Tabulator Template Required Values
+* [Concept A]
+* [Concept B]
+* [Outcome1]
+* [Outcome2]
+2. Moderator Template Required Values
+* [target concept] (specified as one of either [Concept A] or [Concept B]).
+* [END CONDITION]
+* [student conceived and specified condition; 1-2 sentences]
+3. Non-Anthropomorphic Agent Required Values
+* [student input (a); 2-3 sentences] (Role)
+* [student input (b); 1-2 sentences] (Trigger)
+* [name] (Label/name)
+* [brief text]
+* [[A],[B],...] (The list of affected agents)
+* ["A"], ["B"],[...] (Unique Agent Identifier for affected agents)

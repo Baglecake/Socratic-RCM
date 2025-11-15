@@ -1,0 +1,378 @@
+B42 CHATSTORM T.A. - COMPREHENSIVE AUDIT REPORT
+================================================
+Date: 2025-11-15
+Files Audited: Guide v3.txt, Final Project.txt, Step-by-Step Guide.txt
+
+EXECUTIVE SUMMARY
+━━━━━━━━━━━━━━━━
+Total Issues Identified: 49
+- ❌ CRITICAL (10): Will cause errors or major confusion
+- ⚠️  INCONSISTENCIES (18): Conflicts within or between files
+- 💡 IMPROVEMENTS (21): Opportunities for enhancement
+
+CRITICAL ISSUES REQUIRING IMMEDIATE FIX
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. ❌ UNDEFINED FIELD: [Agent Designator]
+   Location: Lines 196, 579
+   Problem: Field used but never defined; appears to be typo for [Agent Identifier]
+   Impact: Students won't know what this means
+   Fix: Replace with [Agent Identifier]
+
+2. ❌ CAPITALIZATION CHAOS: [concept A/B] vs [Concept A/B]
+   Location: Throughout document
+   Problem: Used interchangeably - unclear if same field or different
+   Impact: Confusion about when to define concepts
+   Fix: Standardize capitalization + add [Concept A/B] to Section 1
+
+3. ❌ MISSING DEFINITIONS: [baseline value] & [experimental value]
+   Location: Lines 196, 579
+   Problem: Listed as experimental lever variables but never defined
+   Impact: Students won't know what constitutes a "value"
+   Fix: Add definitions to Appendix A
+
+4. ❌ ORPHANED FIELD: Speaking Order
+   Location: Line 623 (Appendix A)
+   Problem: Defined in Appendix but not used in any template
+   Impact: Students expect field that doesn't exist
+   Fix: Remove from Appendix OR add to Section 3 template
+
+5. ❌ STRUCTURAL ERROR: Round Instructions in Section 1
+   Location: Lines 172-186
+   Problem: CONTEXT RULES, INTERACTION RULES, TASKS appear in both Section 1 and Section 3
+   Impact: Duplication, confusion about what goes where
+   Fix: Remove from Section 1 (belongs only in Section 3)
+
+6. ❌ SENTENCE LENGTH INCONSISTENCY
+   Location: Throughout document
+   Problem: Same types of fields have different requirements (2-3 vs 2-4 vs 4-5 sentences)
+   Impact: Confusion about expectations
+   Fix: Standardize to 2-3 sentences for similar fields
+
+7. ❌ MISSING FIELD: [Concept A/B] Not in Section 1
+   Location: Section 1, Section 4
+   Problem: Section 4 templates require [Concept A/B] but Section 1 never asks students to define them
+   Impact: No student input available when needed
+   Fix: Add [Concept A] and [Concept B] fields to Section 1
+
+8. ❌ AMBIGUOUS: "Student must pick ≥2 overall"
+   Location: Line 208
+   Problem: "overall" could mean per section or total project
+   Impact: Students may over-select advanced functions
+   Fix: Clarify "at least 2 for the entire project"
+
+9. ❌ [Agent Descriptor] SCOPE CONFUSION
+   Location: Lines 160, 312, 322, 607
+   Problem: Sometimes means "2-4 adjectives" sometimes means "adjectives + If/Then heuristics"
+   Impact: Critical - students won't know what to provide
+   Fix: Split into [Agent Descriptor - Style] and [Agent Descriptor - Heuristics]
+
+10. ❌ SECTION 2 TEMPLATE MISSING HEURISTICS
+    Location: Line 322
+    Problem: Template has PERSONA & HEURISTICS header but only asks for adjectives
+    Impact: If/Then and Rival heuristics have no place in agent prompts
+    Fix: Expand Section 2 template to include heuristic fields
+
+INCONSISTENCIES TO RESOLVE
+━━━━━━━━━━━━━━━━━━━━━━━━━
+
+11. ⚠️  ANALYST CLASSIFICATION CONFUSION
+    Problem: Analyst presented as optional helper BUT also listed alongside agents
+    Location: Lines 25, 113-114, 119, 167, 439
+    Fix: Explicit note that Analyst is optional, NOT counted toward "≥2 Advanced Functions"
+
+12. ⚠️  BRACKET SYNTAX ERRORS
+    Location: Lines 103, 119, 208, 556
+    Problem: Double opening brackets [[Advanced Functions] should be single [Advanced Functions]
+    Fix: Remove extra opening bracket
+
+13. ⚠️  ROUND PLAN SYNTAX ERRORS
+    Location: Line 103
+    Problem: Triple closing brackets ]]], inconsistent spacing [ n+2]
+    Fix: Correct to single bracket, remove spaces
+
+14. ⚠️  CIRCULAR REFERENCE: [Participants]
+    Location: Lines 220-221
+    Problem: [Participants] defined as [Agents Involved] which references [Participants]
+    Fix: Clarify [Participants] = selection from [Agents Involved] list
+
+15. ⚠️  END CONDITION APPEARS 3X WITH DIFFERENT MEANINGS
+    Location: Lines 267-271, 388, 482
+    Problem: Same field name for Platform setting, Round instruction, Moderator instruction
+    Fix: Use different names for each context
+
+16. ⚠️  [Flow] - [List] UNCLEAR NOTATION
+    Location: Line 224
+    Problem: Not clear what "- [List]" means
+    Fix: Remove or clarify
+
+17. ⚠️  CHATSTORM SPELLING INCONSISTENCY
+    Location: Throughout document
+    Problem: "Chatstorm" vs "ChatStorm" (capital S)
+    Fix: Standardize to "Chatstorm"
+
+18. ⚠️  [number] OVERLOADING
+    Location: Throughout document
+    Problem: Used for round number, agent count, message count, numeric values
+    Fix: Use specific field names [round number], [agent count], [message count]
+
+19. ⚠️  MISSING: Self-Reflections Template
+    Location: Section 4
+    Problem: Listed as Advanced Function but no Section 4 template provided
+    Fix: Add [S4-SELFREFLECT] template
+
+20. ⚠️  SECTION NUMBERING ERROR
+    Location: Line 392
+    Problem: "1) Required Values" then jumps to "3) Template" - missing 2
+    Fix: Change to "2) Template"
+
+21. ⚠️  MULTIPLE "REQUIRED VALUES" DEFINITIONS
+    Location: Lines 70, 90, 303
+    Problem: Term used as both section header and component reference
+    Fix: Clarify usage
+
+22. ⚠️  FICTIONAL SETTING FORMAT INCONSISTENCY
+    Location: Lines 100, 152
+    Problem: Different separators (commas vs slashes), different sentence counts
+    Fix: Standardize format
+
+23. ⚠️  "SEE SECTION 1" REFERENCES INACCURATE
+    Location: Lines 457, 480, 502
+    Problem: Claims fields are in Section 1 when they're not
+    Fix: Update references or add missing fields to Section 1
+
+24. ⚠️  PHRASING VARIATIONS
+    Location: Throughout document
+    Problem: "authentically conceived and specified by student" vs "student authentically conceives and specifies"
+    Fix: Standardize to active voice (student as subject)
+
+25. ⚠️  TEMPLATE OUTPUT INSTRUCTIONS VARY
+    Location: Lines 127, 316, 401, 465
+    Problem: "block" vs "fences"
+    Fix: Standardize to "block"
+
+26. ⚠️  [EXPERIMENTAL LEVER] CAPITALIZATION
+    Location: Throughout document
+    Problem: Sometimes capitalized, sometimes not
+    Fix: Standardize
+
+27. ⚠️  [forbidden behaviors] CONTEXT CONFUSION
+    Location: Lines 185, 363, 412, 417
+    Problem: Appears in both INTERACTION RULES and TASKS THIS ROUND
+    Fix: Clarify distinction
+
+28. ⚠️  TYPE A/B EXPERIMENT NAMING
+    Location: Lines 84-206
+    Problem: Called "A" and "B" but never "Type A" or "Type B" explicitly
+    Fix: Either name them explicitly or remove A/B designation
+
+IMPROVEMENT OPPORTUNITIES
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+29. 💡 BIG PICTURE FIRST NOT ENFORCED
+    Problem: Guide jumps to details without emphasis on conceptualization
+    Recommendation: Add Section 0: Storyboard Reflection
+
+30. 💡 SOCRATIC METHOD NOT INTEGRATED
+    Problem: RCM described but not invoked in Sections 2-4
+    Recommendation: Add RCM reminders to each section checklist
+
+31. 💡 [Agent Identifier] FORMAT UNCLEAR
+    Problem: [[purpose]+[name]] looks like formula/concatenation
+    Recommendation: Add examples, clarify if + is literal or conceptual
+
+32. 💡 "PLATFORM FUNCTIONS" NOT DEFINED
+    Problem: Term used but never explained
+    Recommendation: Add definition + explain UI vs prompt distinction
+
+33. 💡 ROUND/DESIGN/SIMULATION TERMINOLOGY CONFUSION
+    Problem: Terms used inconsistently for different concepts
+    Recommendation: Add glossary, standardize usage
+
+34. 💡 [SEQUENCE] MEANING UNCLEAR
+    Problem: Not clear how it differs from INTERACTION RULES or SCENARIO
+    Recommendation: Rename to [ROUND FLOW], make steps conditional
+
+35. 💡 [theory link] NEVER DEFINED
+    Problem: Used in If/Then heuristics but students may interpret differently
+    Recommendation: Add to Appendix A with clear definition
+
+36. 💡 MISSING: Multi-Round Flow Guidance
+    Problem: No guidance on transitions, state persistence
+    Recommendation: Add [Round Transitions] subsection to Section 1
+
+37. 💡 MISSING: Error Handling Guidance
+    Problem: No instructions for contradictory or incomplete student input
+    Recommendation: Add [ERROR HANDLING] to Preamble
+
+38. 💡 MISSING: Examples Appendix
+    Problem: Says "avoid examples" but doesn't provide approved ones
+    Recommendation: Add Appendix B with redacted examples from past assignments
+
+39. 💡 MISSING: Workflow Diagram
+    Problem: Relationship between sections not visually clear
+    Recommendation: Add ASCII flowchart after Table of Contents
+
+40. 💡 MISSING: Table of Contents
+    Problem: Line 28 references TOC but none exists
+    Recommendation: Add comprehensive TOC with line numbers
+
+41. 💡 "AUTHENTICALLY CONCEIVED" OVERUSE
+    Problem: Phrase appears 67 times, creates verbosity
+    Recommendation: State principle in Preamble, use shorthand elsewhere
+
+42. 💡 BOLD FORMATTING NOT APPLICABLE
+    Problem: .txt files can't display bold, asterisks appear literally
+    Recommendation: Remove *BOLD* references, rely on brackets
+
+43. 💡 DUPLICATE APPENDIX A ENTRIES
+    Problem: Same fields listed multiple times
+    Recommendation: Consolidate or add note about cross-section fields
+
+44. 💡 INCONSISTENT BRACKET SPACING
+    Problem: `[ n+2]` vs `[n+1]`, `[[purpose]+[name]]` vs `[[name] + [purpose]]`
+    Recommendation: Standardize to no internal spaces, spaces around operators
+
+45. 💡 NO SUBMISSION TEMPLATE INTEGRATION
+    Problem: Doesn't explain how Guide v3 outputs become submission deliverables
+    Recommendation: Add "Preparing Your Submission" section
+
+46. 💡 NO ALIGNMENT WITH GRADING
+    Problem: 90% focus on design, minimal on analysis/reflection (which are 45% of grade)
+    Recommendation: Add Section 5: Analytical Framework, Section 6: Methodological Reflection
+
+47. 💡 NO OPTION-SPECIFIC GUIDANCE
+    Problem: Generic guidance doesn't help with specific assignment options (A-E)
+    Recommendation: Add Appendix C with option-specific tips
+
+48. 💡 NAVIGATION TAGS INCOMPLETE
+    Problem: Not all subsections tagged for easy reference
+    Recommendation: Add systematic navigation tags
+
+49. 💡 NO VERSION CONTROL
+    Problem: File name has "v3" but document title doesn't
+    Recommendation: Add version number and date to title
+
+PRIORITIZED IMPLEMENTATION PLAN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔥 TIER 1: CRITICAL FIXES (Must Do Before Next Use)
+───────────────────────────────────────────────────
+These will cause errors or major student confusion:
+
+1. Fix [Agent Designator] → [Agent Identifier] (Issues #1)
+2. Standardize [Concept A/B] and add to Section 1 (Issues #2, #7)
+3. Define [baseline value], [experimental value] (Issue #3)
+4. Remove Round instructions from Section 1 OR mark as planning notes (Issue #5)
+5. Expand [Agent Descriptor] definition + Section 2 template (Issues #9, #10)
+6. Remove orphaned Speaking Order OR add to template (Issue #4)
+7. Add Self-Reflections template to Section 4 (Issue #19)
+8. Fix bracket syntax errors (Issue #12, #13)
+9. Clarify Analyst as optional helper (Issue #11)
+10. Add Table of Contents (Issue #40)
+
+Estimated Time: 3-4 hours
+Impact: Prevents critical errors
+
+⚡ TIER 2: CONSISTENCY FIXES (Should Do Soon)
+──────────────────────────────────────────────
+These reduce confusion and improve professionalism:
+
+11. Standardize terminology (Design/Round/Simulation/Experiment) (Issue #33)
+12. Fix END CONDITION multi-location issue (Issue #15)
+13. Standardize sentence length requirements (Issue #6)
+14. Fix ChatStorm spelling (Issue #17)
+15. Clarify "≥2 overall" language (Issue #8)
+16. Fix circular [Participants] reference (Issue #14)
+17. Resolve [number] overloading (Issue #18)
+18. Update "see Section 1" references (Issue #23)
+19. Standardize phrasing (Issue #24, #25)
+20. Fix bracket spacing (Issue #44)
+
+Estimated Time: 2-3 hours
+Impact: Significantly improves clarity
+
+🌟 TIER 3: PEDAGOGICAL ENHANCEMENTS (Nice to Have)
+──────────────────────────────────────────────────
+These align with assignment goals and improve student outcomes:
+
+21. Add Section 0: Storyboard Reflection (Issue #29)
+22. Integrate RCM throughout Sections 2-4 (Issue #30)
+23. Add glossary of key terms (Issue #33)
+24. Define [theory link], [SEQUENCE], [Platform Functions] (Issues #32, #34, #35)
+25. Add workflow diagram (Issue #39)
+26. Add multi-round flow guidance (Issue #36)
+27. Add error handling guidance (Issue #37)
+28. Add Appendix B: Approved Examples (Issue #38)
+29. Add Section 5: Analytical Framework (Issue #46)
+30. Add Section 6: Methodological Reflection (Issue #46)
+31. Add Appendix C: Option-Specific Guidance (Issue #47)
+32. Add "Preparing Your Submission" section (Issue #45)
+33. Clarify [Agent Identifier] format with examples (Issue #31)
+34. Add version control (Issue #49)
+35. Optimize "authentically conceived" usage (Issue #41)
+
+Estimated Time: 5-6 hours
+Impact: Transforms from template guide to comprehensive pedagogical tool
+
+RECOMMENDATIONS FOR IMMEDIATE ACTION
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Option A: MINIMUM VIABLE FIX
+────────────────────────────
+Implement Tier 1 only (Critical Fixes)
+Time: 3-4 hours
+Result: Guide v3 works without errors
+
+Option B: COMPREHENSIVE FIX
+───────────────────────────
+Implement Tiers 1 + 2
+Time: 5-7 hours
+Result: Guide v3 is clean, consistent, professional
+
+Option C: FULL ENHANCEMENT
+──────────────────────────
+Implement all 3 Tiers
+Time: 10-13 hours
+Result: Guide v3 becomes comprehensive pedagogical tool aligned with assignment goals
+
+RECOMMENDED: Option B (Comprehensive Fix)
+─────────────────────────────────────────
+Rationale:
+- Fixes all errors that cause confusion
+- Achieves professional consistency
+- Manageable time investment
+- Can add Tier 3 enhancements later based on student feedback
+
+NEXT STEPS
+━━━━━━━━━━
+
+1. Review this audit report
+2. Decide on implementation tier (A, B, or C)
+3. Create Guide v4.txt with approved fixes
+4. Update system prompt v7 to reference corrected Guide v4
+5. Test with sample student interaction
+6. Commit and push to GitHub
+7. Deploy to OpenAI GPT Builder
+
+AUDIT METHODOLOGY
+━━━━━━━━━━━━━━━━
+
+Tools Used:
+- Line-by-line manual review of Guide v3.txt
+- Cross-referencing with Final Project.txt and Step-by-Step Guide.txt
+- Field definition tracking across all sections
+- Bracket notation validation
+- Terminology consistency checking
+- Pedagogical alignment analysis
+
+Quality Assurance Level: COMPREHENSIVE
+All 651 lines of Guide v3.txt reviewed
+All cross-file references validated
+All field definitions traced
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+End of Audit Report
+This report identifies 49 issues across 3 severity levels
+Ready for implementation decision
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
