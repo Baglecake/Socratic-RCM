@@ -1,28 +1,86 @@
-# B42 Chatstorm T.A. - v4.2
+# The Reflect and Connect Model (RCM)
+## A Socratic RAG Framework for Pedagogical Applications
 
-> **A Socratic teaching assistant for SOCB42 students designing multi-agent social simulations**
+> **B42 Chatstorm T.A. - Implementation of RCM for SOCB42 multi-agent simulation design**
 
 [![Status](https://img.shields.io/badge/status-ready-brightgreen)]()
-[![Version](https://img.shields.io/badge/version-4.2-blue)]()
+[![Version](https://img.shields.io/badge/version-4.3-blue)]()
+[![Framework](https://img.shields.io/badge/framework-RCM-purple)]()
 [![GPT Builder](https://img.shields.io/badge/OpenAI-GPT%20Builder-412991)]()
 
 ---
 
-## 📋 Current Version: v4.2
+## 📋 Current Version: v4.3 (RCM Framework)
 
 **Last Updated:** 2025-11-15
 **Status:** ✅ Production Ready
+**Framework:** Reflect and Connect Model (RCM)
 
-### What's New in v4.2
+---
 
-**Major Update: Complete Chatstorm UI Mapping**
+## 🧠 The Reflect and Connect Model (RCM)
 
-v4.2 represents a fundamental restructuring to provide **per-round platform configuration** that perfectly maps to Chatstorm's actual Round Panel interface:
+**RCM** is a Socratic RAG (Retrieval-Augmented Generation) framework designed for pedagogical applications where the goal is to guide learners through complex creative tasks without doing the work for them.
 
-- ✅ Platform configurations moved from Section 1 (global) to Section 3 (per-round)
-- ✅ Complete 4-section UI mapping: Participants, Flow, Style, Options
-- ✅ Self-Reflections clarified as checkbox feature (not a template)
-- ✅ System Prompt optimized to **6,197 characters** (1,803 under limit)
+### RCM Framework Principles
+
+**Core Method: Reflect → Connect → Ask**
+
+For every interaction with the learner:
+1. **REFLECT** the requirement from the knowledge base (assignment, rubric, theory)
+2. **CONNECT** to the learner's specific context (their project, concepts, goals)
+3. **ASK** with theoretical prompts that encourage deep thinking
+
+**Example:**
+- ❌ Traditional: "What's your project goal?"
+- ✅ RCM: "Think about [Concept A] vs [Concept B] from your chosen theory—what specific tension do you want to model? What observable dynamic would show this?"
+
+### RCM in RAG Architecture
+
+**Knowledge Base (Read-Only):**
+- Assignment requirements
+- Theoretical frameworks
+- Templates and formatting rules
+- Field definitions
+
+**System Prompt (Behavioral Rules):**
+- NEVER create content for learner
+- ALWAYS use exact learner wording
+- ONE question at a time
+- RCM method applied to every question
+- Frequent alignment checks with knowledge base
+
+**Interaction Pattern:**
+1. Retrieve requirement from KB
+2. Reflect requirement to learner
+3. Connect to their specific project context
+4. Ask with Socratic prompt
+5. Wait for response
+6. Acknowledge and connect to next question
+
+### Why RCM for Pedagogy?
+
+Traditional AI assistants often:
+- Provide examples that become templates
+- Fill in creative gaps
+- Optimize for task completion
+
+RCM-based systems:
+- Guide without prescribing
+- Challenge learners to think theoretically
+- Maintain strict boundaries against doing creative work
+- Support through structure, not content generation
+
+### What's New in v4.3
+
+**RCM Framework Fully Implemented:**
+
+- ✅ **One-question-at-a-time workflow** - No overwhelming batch questions
+- ✅ **RCM applied to every step** - Reflect, Connect, Ask embedded throughout
+- ✅ **Encouraging tone** - Supportive and challenging, never prescriptive
+- ✅ **Theoretical depth** - Every question probes theoretical thinking
+- ✅ **Defer to knowledge base** - System prompt references KB, doesn't hardcode content
+- ✅ **Character optimized** - 7,976 chars (fits 8,000 GPT Builder limit)
 
 ---
 
@@ -37,13 +95,14 @@ v4.2 represents a fundamental restructuring to provide **per-round platform conf
    - `B42 Step-by-Step Guide to Your Final Project.txt`
 
 2. **Copy System Prompt**:
-   - Open `B42 Chatstorm TA System Prompt v7.2-FINAL.txt`
-   - Copy entire contents (6,197 characters)
+   - Open `B42 Chatstorm TA System Prompt v7.3-FINAL.txt`
+   - Copy entire contents (7,976 characters)
    - Paste into GPT Builder "Instructions" field
 
 3. **Save & Test**:
    - No character limit errors (well under 8,000 limit)
    - Test with sample student interaction
+   - Verify RCM method in action (one question at a time, Socratic prompts)
    - Deploy to students
 
 ---
@@ -53,10 +112,10 @@ v4.2 represents a fundamental restructuring to provide **per-round platform conf
 ```
 B42_gpt/
 │
-├── README.md                                          # This file
+├── README.md                                          # This file (RCM framework overview)
 │
-├── CURRENT VERSION (v4.2) - Ready for Deployment
-│   ├── B42 Chatstorm TA System Prompt v7.2-FINAL.txt # System prompt (6,197 chars)
+├── CURRENT VERSION (v4.3 - RCM) - Ready for Deployment
+│   ├── B42 Chatstorm TA System Prompt v7.3-FINAL.txt # System prompt (7,976 chars)
 │   ├── B42 Chatstorm T.A. Guide v4.2.txt            # Complete guide & templates
 │   ├── Appendix A - Required Values Index v3.2.txt  # Field definitions
 │   └── V4.2_DEPLOYMENT_READY.txt                    # Deployment guide
@@ -69,6 +128,7 @@ B42_gpt/
     ├── v3_era/                                       # Original version
     ├── v4_era/                                       # First major update
     ├── v4.1_era/                                     # Agent Persona fix
+    ├── v4.2_era/                                     # Chatstorm UI mapping
     └── documentation/                                # Changelogs & audits
 ```
 
@@ -202,7 +262,8 @@ Students can now:
 
 | Version | Date | Key Change |
 |---------|------|------------|
-| **v4.2** | 2025-11-15 | Per-round platform configuration with complete Chatstorm UI mapping |
+| **v4.3** | 2025-11-15 | **RCM Framework Implementation** - One-question-at-a-time, Socratic prompts, defer to KB |
+| v4.2 | 2025-11-15 | Per-round platform configuration with complete Chatstorm UI mapping |
 | v4.1 | 2025-11-15 | Agent Persona vs. Behaviors separation (Section 2 vs. Section 3) |
 | v4 | 2025-11-15 | Comprehensive fix (26 issues resolved, Table of Contents added) |
 | v3 | Earlier | Original guide with identified inconsistencies |
