@@ -1,0 +1,527 @@
+\documentclass[12pt,a4paper]{article}
+
+% Essential packages
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{times} % Times New Roman font
+\usepackage[margin=1in]{geometry}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{natbib}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{longtable}
+\usepackage{xcolor}
+% Removed soul, fancyhdr, and lastpage packages for compatibility
+\usepackage{etoolbox}
+\usepackage{titlesec}
+
+% Formatting settings
+\onehalfspacing
+\setlength{\parindent}{0.5in}
+\setlength{\parskip}{0pt}
+
+% Use default page style
+\pagestyle{plain}
+
+% Section formatting
+\titleformat{\section}{\normalfont\fontsize{14}{16}\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalfont\fontsize{13}{15}\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalfont\fontsize{12}{14}\bfseries}{\thesubsubsection}{1em}{}
+
+% Bibliography style
+\bibliographystyle{apalike}
+
+% Hyperref settings
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    citecolor=blue,
+    urlcolor=blue,
+    pdftitle={Algorythmic RAG: Socratic Process Retrieval-Augmented Reasoning for Multi-Agent Sociological Simulation},
+    pdfauthor={},
+}
+
+% Custom commands
+\newcommand{\algorythmicrag}{\textit{Algorythmic RAG}}
+\newcommand{\prar}{PRAR}
+\newcommand{\rcm}{RCM}
+
+% Title and author information
+\title{\Large \textbf{Algorythmic RAG: Socratic Process Retrieval-Augmented Reasoning for Multi-Agent Sociological Simulation}}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\noindent This paper introduces \textit{Algorythmic RAG}, a novel framework for pedagogical applications of Retrieval-Augmented Generation (RAG) that fundamentally shifts from content retrieval to process retrieval. Building on recent advances in dialogic pedagogy for Large Language Models (LLMs), we present Socratic Process Retrieval-Augmented Reasoning (PRAR) as a methodological innovation that retrieves and instantiates pedagogical processes—structured sequences of reasoning, interaction, and reflection—rather than static information artifacts. The framework's intentional portmanteau of ``algorithmic'' and ``rhythmic'' emphasizes both the systematic nature of retrieved processes and their conversational cadence in educational contexts. Through implementation in SOCB42 (Classical Sociological Theory), we demonstrate how Algorythmic RAG enables multi-agent simulations that operationalize theoretical concepts while maintaining pedagogical boundaries through systematic process constraints. Our contribution addresses critical gaps in current pedagogical AI systems, particularly the tendency toward generic tutoring patterns that lack theoretical grounding and the challenge of maintaining academic integrity while leveraging generative capabilities. The framework offers a generalizable, literature-grounded approach to pedagogical RAG that is dialogic, process-aware, and evaluation-oriented, providing a concrete path toward encoding pedagogy itself as a retrievable, enforceable process in AI-mediated education.
+
+\vspace{0.5em}
+\noindent \textbf{Keywords:} Retrieval-Augmented Generation, Pedagogical AI, Socratic Method, Process Retrieval, Dialogic Pedagogy, Multi-Agent Systems, Educational Technology, Large Language Models
+\end{abstract}
+
+\section{Introduction}
+
+The integration of generative AI into educational systems represents a fundamental reconfiguration of the relationship between pedagogy, assessment, and automation. Unlike previous educational technologies that primarily extended human instructional presence through digital tools, Large Language Models (LLMs) now possess the capability to automate key aspects of instructional interaction itself, raising profound questions about how educational systems should structure, constrain, and evaluate AI-mediated learning experiences \citep{kasneci2023chatgpt, beale2025dialogic}.
+
+Recent scholarship in teaching and learning illuminates both the transformative potential and inherent risks of this paradigm shift. While AI systems can dramatically extend access to personalized instruction and provide scalable feedback mechanisms, they simultaneously threaten to reduce pedagogy to generic tutoring patterns disconnected from established learning theories and disciplinary contexts \citep{mattalo2024artificial, hu2025generative}. This tension between scalability and pedagogical fidelity represents a critical challenge for the field of AI in education.
+
+Within computer science and STEM education contexts, Retrieval-Augmented Generation (RAG) has emerged as the dominant strategy for grounding LLM outputs in verifiable, domain-specific resources, thereby mitigating hallucination and improving factual accuracy \citep{lewis2020retrieval, gao2024retrieval}. Educational applications have successfully employed RAG for tasks ranging from programming feedback to lecture content integration \citep{jacobs2024leveraging, levonian2023retrieval}. However, current implementations predominantly focus on content retrieval—documents, transcripts, code snippets—rather than process retrieval, thereby missing the structured sequences of reasoning, interaction, and reflection that constitute effective pedagogical practice.
+
+This paper advances \algorythmicrag{}, a comprehensive framework for Socratic Process Retrieval-Augmented Reasoning (\prar{}) designed for both single-agent and multi-agent LLM applications in educational contexts. The framework's distinctive nomenclature—a deliberate portmanteau of ``algorithmic'' and ``rhythmic''—signals its dual focus on systematic process retrieval and the conversational cadence of pedagogical interaction. In the specific implementation case of SOCB42 (Classical Sociological Theory) at the University of Toronto, Algorythmic RAG instantiates a multi-agent simulation workflow that enables students to operationalize abstract theoretical concepts through structured Chatstorm-based experiments while maintaining rigorous academic standards.
+
+More broadly, this framework represents a generalizable, empirically-grounded approach to pedagogical RAG that synthesizes three critical dimensions:
+
+\begin{enumerate}[leftmargin=*]
+    \item \textbf{Dialogic and Socratic foundations}, aligning with contemporary research on dialogic pedagogy for LLMs that emphasizes co-construction of knowledge through structured questioning rather than direct answer provision \citep{beale2025dialogic, hu2025generative, liu2025discerning};
+    
+    \item \textbf{Process-aware architecture}, building on advances in metacognitive and interaction-focused RAG that treat reasoning trajectories and debugging sequences as first-class retrieval targets \citep{zhou2024metacognitive, alhossami2025reasoning};
+    
+    \item \textbf{Evaluation-oriented design}, informed by empirical studies revealing nuanced trade-offs between groundedness, human preference, and educational efficacy in RAG systems \citep{levonian2023retrieval, jacobs2024leveraging}.
+\end{enumerate}
+
+The remainder of this paper articulates Algorythmic RAG and \prar{} as both conceptual and technical contributions to the emerging field of pedagogical RAG, with multi-agent sociological simulations serving as a concrete testbed for these innovations.
+
+\section{Theoretical Foundations: Dialogic Pedagogy and Socratic LLMs}
+
+\subsection{Dialogic Pedagogy in the Age of AI}
+
+Dialogic pedagogy, rooted in the educational philosophies of Vygotsky \citep{vygotsky1978mind} and Bakhtin \citep{bakhtin1981dialogic}, conceptualizes learning as a process of structured dialogue, conceptual conflict, and collaborative meaning-making rather than unidirectional information transfer. This theoretical framework has gained renewed relevance in the context of LLM-based education, where the interactive capabilities of AI systems create unprecedented opportunities for scalable dialogic interaction \citep{beale2025dialogic}.
+
+Contemporary scholarship explicitly argues that LLM-based tutoring systems must align with dialogic and Socratic principles if they are to support deep learning rather than merely providing answers \citep{beale2025dialogic, hu2025generative}. The distinction is critical: while traditional information retrieval systems excel at providing factual responses, genuine educational interaction requires the orchestration of questioning strategies that guide learners through their Zone of Proximal Development (ZPD)—the cognitive space between what learners can accomplish independently and what they can achieve with appropriate scaffolding \citep{vygotsky1978mind, shabani2010vygotsky}.
+
+\subsection{The Socratic Method in Computational Systems}
+
+The Socratic method, characterized by systematic questioning designed to elicit critical thinking and expose contradictions in reasoning, has emerged as a particularly promising paradigm for LLM-based education \citep{chang2023prompting, alhossami2025reasoning}. The Socratic Playground for Learning (SPL) demonstrates how LLMs can scaffold multi-turn dialogic interactions across diverse pedagogical modes—assessment, tutoring, vicarious learning, gaming, and ``teachable agent'' scenarios—using carefully orchestrated questioning to elicit metacognition and critical thinking \citep{hu2025generative}.
+
+However, recent evaluations of ``Socratic LLM tutors'' reveal significant challenges in implementation. The quality of instructional guidance depends not merely on the system's content knowledge but critically on its ability to discriminate between learner states, sequence prompts appropriately, and adapt questioning strategies to individual cognitive readiness—capabilities that many current systems fail to demonstrate consistently \citep{liu2025discerning, scarlatos2025training}.
+
+\subsection{Programming Education and Reasoning Trajectories}
+
+Within programming education specifically, Socratic debugging has emerged as a powerful paradigm for using LLMs to guide students through error correction without providing direct solutions. Al-Hossami and Bunescu \citep{alhossami2025reasoning} demonstrate that capturing and analyzing reasoning trajectories—stepwise chains of hints, reflections, and code modifications—provides a substantially richer basis for evaluation than traditional one-shot correctness metrics. This concept of ``trajectory-level'' pedagogy proves central to Algorythmic RAG: educational efficacy depends not only on what content is retrieved but crucially on which pedagogical moves are retrieved next in the learning process.
+
+\subsection{The Pedagogical Imperative}
+
+Mattalo's \citep{mattalo2024artificial} analysis positions AI not as a neutral educational tool but as a catalyst requiring fundamental reconsideration of pedagogical practice itself. The work argues that AI-driven teaching increasingly demands explicit grounding in pedagogical theory to avoid what Mattalo terms ``ed-tech solutionism''—the superficial application of technology without meaningful educational design. This critique motivates a central design imperative: LLM systems must retrieve and organize pedagogical processes—not merely facts—if they are to deliver genuinely educational experiences rather than sophisticated information retrieval.
+
+\section{From Content RAG to Pedagogical RAG: An Evolutionary Perspective}
+
+\subsection{Traditional RAG in Educational Contexts}
+
+Retrieval-Augmented Generation has become the dominant strategy for mitigating hallucination and grounding LLM outputs in curated corpora \citep{lewis2020retrieval}. The fundamental RAG architecture—retrieving relevant documents and using them to condition generation—has proven effective across diverse natural language processing tasks \citep{gao2024retrieval}. In educational applications, RAG has been productively deployed for several key use cases:
+
+\textbf{Lecture-Integrated Feedback}: Jacobs and Jaschke \citep{jacobs2024leveraging} demonstrate a system using transcribed lecture recordings with RAG to link programming feedback to specific lecture segments. Their empirical findings reveal that students highly value feedback that is both situated within course materials and verifiably grounded, even when such grounding incurs computational latency costs. This work establishes the importance of contextual anchoring in educational AI systems.
+
+\textbf{Mathematical Question-Answering}: Levonian et al. \citep{levonian2023retrieval} provide crucial insights through their evaluation of RAG for mathematics education, uncovering nuanced trade-offs between groundedness and human preference. Their findings challenge simplistic assumptions about educational AI design: users sometimes favor fluent, pedagogically appropriate responses over strictly faithful reproductions of source material. This underscores that effective pedagogical RAG must negotiate both epistemic accuracy and experiential quality.
+
+\textbf{Metacognitive Retrieval Strategies}: Zhou et al. \citep{zhou2024metacognitive} advance the field through their proposal of Metacognitive RAG, wherein an LLM dynamically selects among different retrieval strategies based on task requirements. This treats retrieval itself as an object of metacognitive control rather than a fixed pipeline stage, introducing adaptability into the retrieval process that proves particularly valuable for educational applications requiring context-sensitive responses.
+
+\subsection{The Emergence of Pedagogical RAG}
+
+These diverse strands converge on what we term pedagogical RAG: a paradigm where retrieval and generation serve not merely to provide ``correct answers'' but to support learners in navigating domain structures, materials, and tasks within a coherent pedagogical design \citep{kasneci2023chatgpt, jacobs2024leveraging}. Pedagogical RAG distinguishes itself through several key characteristics:
+
+\begin{enumerate}
+    \item \textbf{Purpose-driven retrieval}: Documents are selected not solely for factual relevance but for their pedagogical appropriateness given the learner's current state and learning objectives.
+    
+    \item \textbf{Process awareness}: The system maintains awareness of the learner's position within a structured learning trajectory, influencing both what is retrieved and how it is presented.
+    
+    \item \textbf{Scaffolding integration}: Retrieved content serves to provide appropriate scaffolding within the learner's ZPD rather than simply answering queries.
+\end{enumerate}
+
+\subsection{The Critical Gap: Static Artifacts versus Dynamic Processes}
+
+Despite these advances, most pedagogical RAG systems continue to retrieve static artifacts—slides, videos, prior answers, textbook excerpts. From a sociological and dialogic perspective, this approach overlooks crucial elements of effective pedagogy: social processes, role dynamics, normative tensions, rounds of interaction, and trajectories of reasoning. Educational interaction is fundamentally processual, involving structured sequences of moves that unfold over time according to pedagogical logic.
+
+This gap between static content retrieval and dynamic process requirements motivates the development of Algorythmic RAG and \prar{}, which treat pedagogical processes themselves as primary retrieval targets.
+
+\section{Defining Algorythmic RAG: A Process-Oriented Paradigm}
+
+\subsection{Nomenclature and Conceptual Framework}
+
+We introduce the term ``Algorythmic RAG'' to describe this process-oriented retrieval paradigm. The deliberately unconventional spelling—a portmanteau of ``algorithmic'' and ``rhythmic''—serves to foreground two interconnected concepts that define this approach:
+
+\subsubsection{Algorithmic Dimension}
+
+What is retrieved are algorithmic structures of practice—systematic if-then logics, ordered procedural steps, and strongly-typed field definitions that govern how educational tasks should be carried out. These structures encompass:
+\begin{itemize}
+    \item Assignment phases with explicit transitions and dependencies
+    \item Required conceptual values that must be specified at each stage
+    \item Permissible pedagogical transitions between learning states
+    \item Explicit constraints defining what the system may or may not generate
+\end{itemize}
+
+These algorithmic structures surface the typically tacit instructional design decisions embedded in rubrics, assignment specifications, and instructors' internalized questioning patterns. Once formalized into a process corpus, they can structure LLM behavior in theoretically-grounded, pedagogically-principled ways.
+
+\subsubsection{Rhythmic Dimension}
+
+These algorithms are enacted as conversational rhythms—patterns of interaction that unfold with a particular cadence and flow. Each exchange follows a structured beat: reflecting on requirements, connecting to prior student work, and eliciting one specific next move. This rhythmic quality echoes established dialogic and Socratic models that emphasize turn-by-turn orchestration of inquiry rather than single-shot answer delivery \citep{beale2025dialogic, hu2025generative}.
+
+The rhythmic dimension ensures that pedagogical interaction maintains appropriate pacing, neither rushing ahead of student understanding nor stagnating through excessive repetition. It acknowledges that effective teaching involves not just what is said but when and how it is said within the flow of dialogue.
+
+\subsection{Algorythmic RAG as Design Pattern}
+
+Algorythmic RAG thus names a design pattern where the primary retrieval targets are algorithms of interaction. In educational contexts, these algorithms make explicit the instructional design decisions that guide effective teaching. Rather than leaving pedagogical moves implicit or emergent, Algorythmic RAG formalizes them into retrievable, composable process elements that can be systematically applied while maintaining flexibility for context-specific adaptation.
+
+This reorientation prepares the ground for Process Retrieval-Augmented Reasoning (\prar{}), wherein LLMs reason not only over retrieved textual content but over retrieved processes themselves. In \prar{}, the model's core task becomes maintaining the rhythm of the pedagogical process: determining the current position within a learning trajectory, identifying the next pedagogically appropriate move, and distinguishing which elements must come from the learner versus the system.
+
+\section{Process Retrieval-Augmented Reasoning (PRAR): Technical Architecture}
+
+\subsection{Conceptual Foundation}
+
+Process Retrieval-Augmented Reasoning (\prar{}) extends the RAG paradigm by treating processes—structured sequences of pedagogical or analytical moves—as first-class retrieval targets. A process in this context represents a formalized pedagogical pattern, such as:
+\begin{itemize}
+    \item ``Elicit student's theoretical framework''
+    \item ``Surface conceptual tension between competing theories''
+    \item ``Prompt operationalization through agent design''
+    \item ``Execute simulation interaction''
+    \item ``Guide interpretation of empirical patterns through theoretical lens''
+\end{itemize}
+
+\subsection{Technical Implementation}
+
+\prar{} generalizes traditional RAG through several key innovations:
+
+\subsubsection{Process Element Retrieval}
+
+Instead of retrieving only knowledge chunks (texts, transcripts, code), the system retrieves process elements including:
+\begin{itemize}
+    \item \textbf{Templates}: Structured interaction patterns for specific pedagogical scenarios
+    \item \textbf{Role specifications}: Definitions of participant roles and their constraints
+    \item \textbf{Round structures}: Temporal organization of multi-turn interactions
+    \item \textbf{Reflection prompts}: Questions designed to elicit metacognitive awareness
+\end{itemize}
+
+\subsubsection{Structured Reasoning}
+
+The LLM operates within a structured process where each step is constrained by retrieved procedural patterns and required values. This includes:
+\begin{itemize}
+    \item Explicit hypotheses that must be formulated
+    \item Conceptual tensions that must be identified
+    \item Predicted outcomes that must be specified before observation
+    \item Evaluation criteria that must be established a priori
+\end{itemize}
+
+\subsection{Relationship to Metacognitive RAG}
+
+While Zhou et al.'s \citep{zhou2024metacognitive} Metacognitive RAG treats retrieval policy as an object of metacognition, \prar{} extends this to pedagogical metacognition. The system not only chooses how to retrieve but determines:
+\begin{itemize}
+    \item Which step of a pedagogically meaningful process should be executed next
+    \item What role and constraint structure should govern that step
+    \item How to maintain coherence across the learning trajectory
+\end{itemize}
+
+\subsection{Implementation in SOCB42}
+
+In the SOCB42 implementation, the process formalism manifests through two key components:
+
+\subsubsection{Required Values Index}
+
+A comprehensive enumeration of minimal conceptual fields students must specify, including:
+\begin{itemize}
+    \item Theoretical concepts with 2-3 sentence definitions from primary sources
+    \item Explicit tensions between competing theoretical frameworks
+    \item Testable hypotheses connecting theory to observable phenomena
+    \item Evaluation criteria for assessing simulation outcomes
+\end{itemize}
+
+\subsubsection{Step-by-Step Guide}
+
+An encoded progression through project phases:
+\begin{enumerate}
+    \item \textbf{Conceptualization}: Theory selection, concept definition, tension identification
+    \item \textbf{Experiment Design}: Baseline specification, experimental manipulation, justification
+    \item \textbf{Agent Prompting}: Persona development, behavioral rules, interaction constraints
+    \item \textbf{Round Structuring}: Temporal organization, transition rules, termination conditions
+    \item \textbf{Analysis Framework}: Interpretive lens, empirical-theoretical bridging
+\end{enumerate}
+
+\section{The Reflect and Connect Model (RCM): Operationalizing Algorythmic RAG}
+
+\subsection{Core Methodology}
+
+The Reflect and Connect Model (\rcm{}) operationalizes Algorythmic RAG through a systematic three-phase interaction pattern applied to every learner query:
+
+\begin{enumerate}
+    \item \textbf{REFLECT}: The system retrieves the relevant requirement from the knowledge base, including assignment specifications, rubric criteria, and theoretical frameworks.
+    
+    \item \textbf{CONNECT}: The requirement is contextualized to the learner's specific project state, including their chosen theories, defined concepts, and stated goals.
+    
+    \item \textbf{ASK}: The system poses a theoretically-grounded prompt that encourages deep thinking without providing direct answers.
+\end{enumerate}
+
+\subsection{Pedagogical Boundary Principle}
+
+\rcm{} implements what we term the Pedagogical Boundary Principle through systematic constraints:
+
+\subsubsection{Generative Restraint}
+
+The system explicitly refuses to:
+\begin{itemize}
+    \item Generate creative content or paraphrase student ideas
+    \item Fill in placeholder values or complete templates
+    \item Accept vague responses without demanding theoretical grounding
+    \item Provide examples that might become templates
+\end{itemize}
+
+\subsubsection{Process Guardrails}
+
+The system enforces:
+\begin{itemize}
+    \item One question at a time to prevent cognitive overload
+    \item Exact use of student wording to maintain ownership
+    \item Frequent alignment checks with assignment requirements
+    \item Systematic progression through required conceptual fields
+\end{itemize}
+
+\subsection{Dynamic Protocol Adaptation}
+
+\rcm{} demonstrates how Algorythmic RAG enables dynamic adaptation while maintaining pedagogical integrity:
+
+\subsubsection{Context-Sensitive Retrieval}
+
+The system retrieves different process elements based on:
+\begin{itemize}
+    \item Student's chosen theoretical framework (e.g., Marxist vs. Weberian approaches)
+    \item Current position in the project workflow
+    \item Demonstrated conceptual understanding
+    \item Prior interaction history
+\end{itemize}
+
+\subsubsection{Invariant Boundaries}
+
+Despite adaptation, certain boundaries remain absolute:
+\begin{itemize}
+    \item No content generation by the system
+    \item Required theoretical grounding for all claims
+    \item Systematic coverage of all required fields
+    \item Maintenance of Socratic questioning stance
+\end{itemize}
+
+\section{Multi-Agent Simulation: A Concrete Application Domain}
+
+\subsection{Chatstorm Platform Integration}
+
+The SOCB42 implementation leverages the Chatstorm platform for multi-agent simulations, providing a concrete testbed for Algorythmic RAG principles. Students design experiments where multiple AI agents, each with distinct personas and behavioral rules, interact to explore sociological theories.
+
+\subsection{Process Retrieval in Agent Design}
+
+Algorythmic RAG guides students through agent specification by retrieving appropriate process schemas:
+
+\subsubsection{Agent Persona Development}
+\begin{itemize}
+    \item Retrieval of persona templates aligned with theoretical frameworks
+    \item Guidance on connecting agent characteristics to conceptual variables
+    \item Enforcement of 2-3 sentence constraint for clarity and precision
+\end{itemize}
+
+\subsubsection{Behavioral Rule Specification}
+\begin{itemize}
+    \item Retrieval of rule patterns appropriate to theoretical mechanisms
+    \item Scaffolding for operationalizing abstract concepts
+    \item Validation of logical consistency across rules
+\end{itemize}
+
+\subsection{Round Structure Orchestration}
+
+The system retrieves and applies round structuring processes:
+\begin{itemize}
+    \item Temporal organization patterns for different theoretical explorations
+    \item Transition rules connecting rounds to theoretical predictions
+    \item Termination conditions linked to hypothesized outcomes
+\end{itemize}
+
+\section{Empirical Implications and Evaluation Framework}
+
+\subsection{Process-Level Metrics}
+
+Algorythmic RAG necessitates new evaluation approaches beyond traditional accuracy metrics:
+
+\subsubsection{Process Adherence}
+\begin{itemize}
+    \item Consistency of TA-agent compliance with Socratic constraints
+    \item Completeness of required value specification by students
+    \item Maintenance of pedagogical boundaries across interactions
+\end{itemize}
+
+\subsubsection{Trajectory Quality}
+\begin{itemize}
+    \item Coherence of reasoning sequences
+    \item Appropriate scaffolding within student ZPD
+    \item Progressive conceptual development over time
+\end{itemize}
+
+\subsubsection{Theoretical Integration}
+\begin{itemize}
+    \item Depth of theoretical grounding in student work
+    \item Quality of theory-observation bridging
+    \item Sophistication of interpretive analysis
+\end{itemize}
+
+\subsection{Mixed-Methods Evaluation}
+
+Comprehensive assessment requires combining:
+\begin{itemize}
+    \item \textbf{Quantitative analysis}: Log data, completion rates, interaction patterns
+    \item \textbf{Rubric-based assessment}: Structured evaluation of student outputs
+    \item \textbf{Qualitative investigation}: Interviews exploring student experience and learning outcomes
+\end{itemize}
+
+\section{Discussion: Contributions and Implications}
+
+\subsection{Theoretical Contributions}
+
+Algorythmic RAG advances several theoretical frontiers:
+
+\subsubsection{Process as First-Class Pedagogical Object}
+
+By treating pedagogical processes as retrievable entities, the framework challenges the content-centric focus of traditional educational technology. This shift aligns with constructivist and sociocultural learning theories that emphasize process over product \citep{vygotsky1978mind, piaget1975development}.
+
+\subsubsection{Formalization of Tacit Pedagogical Knowledge}
+
+The framework makes explicit the often-implicit decision-making that characterizes expert teaching, creating opportunities for systematic study and refinement of pedagogical practice.
+
+\subsubsection{Scalable Socratic Dialogue}
+
+By encoding Socratic questioning patterns as retrievable processes, Algorythmic RAG addresses the traditional scalability limitations of personalized dialogic instruction.
+
+\subsection{Practical Implications}
+
+The framework offers concrete benefits for educational practice:
+
+\subsubsection{Preservation of Academic Integrity}
+
+By maintaining strict boundaries against content generation while providing sophisticated scaffolding, the system supports learning without enabling academic dishonesty.
+
+\subsubsection{Theory-Driven Instructional Design}
+
+The requirement for explicit process specification encourages instructors to articulate pedagogical rationales and theoretical foundations for their teaching approaches.
+
+\subsubsection{Adaptive yet Consistent Instruction}
+
+The system provides personalized adaptation while ensuring all students receive equivalent pedagogical support and meet consistent learning objectives.
+
+\section{Limitations and Future Directions}
+
+\subsection{Current Limitations}
+
+Several limitations warrant acknowledgment:
+
+\subsubsection{Domain Specificity}
+
+While designed for generalizability, the current implementation is grounded in sociological theory education. Extension to STEM fields, professional training, or K-12 contexts requires additional research.
+
+\subsubsection{Risk of Over-Structuring}
+
+The emphasis on process schemas may inadvertently constrain student creativity or exploration. Future work should investigate optimal balances between structure and flexibility.
+
+\subsubsection{Evaluation Complexity}
+
+Process-level assessment remains methodologically challenging, requiring sophisticated metrics and substantial human judgment.
+
+\subsection{Future Research Directions}
+
+Several promising avenues for future investigation emerge:
+
+\subsubsection{Cross-Domain Generalization}
+
+Testing whether similar process retrieval architectures effectively scaffold learning in diverse disciplinary contexts.
+
+\subsubsection{Multi-Agent PRAR}
+
+Exploring scenarios where multiple LLM agents (tutor, critic, peer) share a common process corpus while occupying distinct dialogic roles.
+
+\subsubsection{Integration with Metacognitive RAG}
+
+Developing systems that dynamically adjust process constraint levels based on learner demonstration of mastery and self-regulation.
+
+\subsubsection{Longitudinal Learning Studies}
+
+Investigating how sustained interaction with Algorythmic RAG systems influences development of theoretical thinking and metacognitive skills over time.
+
+\section{Conclusion}
+
+The Algorythmic RAG framework and its instantiation as Socratic Process Retrieval-Augmented Reasoning represent significant contributions to the emerging field of pedagogical AI. By fundamentally shifting focus from content retrieval to process retrieval, and from answer generation to process orchestration, the framework addresses critical gaps in current educational technology.
+
+Grounded in established pedagogical theory—particularly dialogic pedagogy, Socratic questioning, and sociocultural learning theory—while leveraging cutting-edge advances in retrieval-augmented generation, Algorythmic RAG demonstrates how abstract theoretical concepts can be operationalized in multi-agent simulations without compromising student agency or academic integrity.
+
+As educational institutions increasingly adopt generative AI technologies, the challenge extends beyond simply ``adding RAG'' to existing systems. Instead, we must encode pedagogy itself as a retrievable, enforceable process that maintains educational values while leveraging computational capabilities. Algorythmic RAG offers one concrete, empirically-grounded, theoretically-informed path toward that goal.
+
+The framework's emphasis on process retrieval, pedagogical boundaries, and trajectory-level scaffolding provides a foundation for developing AI-enhanced educational systems that truly support learning rather than merely automating information delivery. Through continued refinement, empirical validation, and cross-domain extension, Algorythmic RAG and similar process-oriented approaches may help realize the transformative potential of AI in education while avoiding the pitfalls of pedagogically naive technological solutionism.
+
+% References
+\begin{thebibliography}{99}
+
+\bibitem[Al-Hossami \& Bunescu, 2025]{alhossami2025reasoning}
+Al-Hossami, E., \& Bunescu, R. (2025). Reasoning trajectories for Socratic debugging of student code: From misconceptions to contradictions and updated beliefs. \textit{arXiv preprint arXiv:2511.00371}.
+
+\bibitem[Bakhtin, 1981]{bakhtin1981dialogic}
+Bakhtin, M. M. (1981). \textit{The dialogic imagination: Four essays}. University of Texas Press.
+
+\bibitem[Beale, 2025]{beale2025dialogic}
+Beale, R. (2025). Dialogic pedagogy for large language models: Aligning conversational AI with proven theories of learning. \textit{arXiv preprint arXiv:2506.19484}.
+
+\bibitem[Chang, 2023]{chang2023prompting}
+Chang, E. Y. (2023). Prompting large language models with the Socratic method. In \textit{2023 IEEE 13th Annual Computing and Communication Workshop and Conference (CCWC)} (pp. 351-360). IEEE.
+
+\bibitem[Festinger, 1959]{festinger1959theory}
+Festinger, L. (1959). \textit{A theory of cognitive dissonance}. Stanford University Press.
+
+\bibitem[Gao et al., 2024]{gao2024retrieval}
+Gao, Y., Xiong, Y., Gao, X., Jia, K., Pan, J., Bi, Y., ... \& Wang, H. (2024). Retrieval-augmented generation for large language models: A survey. \textit{arXiv preprint arXiv:2312.10997}.
+
+\bibitem[Holstein et al., 2017]{holstein2017intelligent}
+Holstein, K., McLaren, B. M., \& Aleven, V. (2017). Intelligent tutors as teachers' aides: Exploring teacher needs for real-time analytics in blended classrooms. In \textit{Proceedings of the Seventh International Learning Analytics \& Knowledge Conference (LAK 2017)} (pp. 257-266). ACM.
+
+\bibitem[Hu et al., 2025]{hu2025generative}
+Hu, X., Xu, S., Tong, R., \& Graesser, A. (2025). Generative AI in education: From foundational insights to the Socratic playground for learning. \textit{arXiv preprint arXiv:2501.06682}.
+
+\bibitem[Jacobs \& Jaschke, 2024]{jacobs2024leveraging}
+Jacobs, S., \& Jaschke, S. (2024). Leveraging lecture content for improved feedback: Explorations with GPT-4 and retrieval augmented generation. \textit{arXiv preprint arXiv:2405.06681}.
+
+\bibitem[Kasneci et al., 2023]{kasneci2023chatgpt}
+Kasneci, E., Seßler, K., Küchemann, S., Bannert, M., Dementieva, D., Fischer, F., ... \& Kasneci, G. (2023). ChatGPT for good? On opportunities and challenges of large language models for education. \textit{Learning and Individual Differences}, 103, 102274.
+
+\bibitem[Levonian et al., 2023]{levonian2023retrieval}
+Levonian, Z., Li, C., Zhu, W., Gade, A., Henkel, O., Postle, M.-E., \& Xing, W. (2023). Retrieval-augmented generation to improve math question-answering: Trade-offs between groundedness and human preference. \textit{arXiv preprint arXiv:2310.03184}.
+
+\bibitem[Lewis et al., 2020]{lewis2020retrieval}
+Lewis, P., Perez, E., Piktus, A., Petroni, F., Karpukhin, V., Goyal, N., ... \& Kiela, D. (2020). Retrieval-augmented generation for knowledge-intensive NLP tasks. \textit{arXiv preprint arXiv:2005.11401}.
+
+\bibitem[Liu et al., 2025]{liu2025discerning}
+Liu, Y., Li, C., Zhang, T., Wang, M., Zhu, Q., Li, J., \& Huang, H. (2025). Discerning minds or generic tutors? Evaluating instructional guidance capabilities in Socratic LLMs. \textit{arXiv preprint arXiv:2508.06583}.
+
+\bibitem[Mattalo, 2024]{mattalo2024artificial}
+Mattalo, B. (2024). Artificial intelligence: The future of pedagogy. \textit{Journal of Legal Studies Education}, 41(1), 49-71.
+
+\bibitem[Piaget, 1975]{piaget1975development}
+Piaget, J. (1975). \textit{The development of thought: Equilibration of cognitive structures}. Viking Press.
+
+\bibitem[Scarlatos et al., 2025]{scarlatos2025training}
+Scarlatos, A., Liu, N., Lee, J., Baraniuk, R., \& Lan, A. (2025). Training LLM-based tutors to improve student learning outcomes in dialogues. \textit{arXiv preprint arXiv:2503.06424}.
+
+\bibitem[Shabani et al., 2010]{shabani2010vygotsky}
+Shabani, K., Khatib, M., \& Ebadi, S. (2010). Vygotsky's zone of proximal development: Instructional implications and teachers' professional development. \textit{English Language Teaching}, 3(4), 237-248.
+
+\bibitem[Van de Pol et al., 2010]{vandepol2010scaffolding}
+Van de Pol, J., Volman, M., \& Beishuizen, J. (2010). Scaffolding in teacher–student interaction: A decade of research. \textit{Educational Psychology Review}, 22(3), 271-296.
+
+\bibitem[Vygotsky, 1978]{vygotsky1978mind}
+Vygotsky, L. S. (1978). \textit{Mind in society: The development of higher psychological processes}. Harvard University Press.
+
+\bibitem[Zhou et al., 2024]{zhou2024metacognitive}
+Zhou, Y., Liu, Z., Jin, J., Nie, J.-Y., \& Dou, Z. (2024). Metacognitive retrieval-augmented large language models. In \textit{Proceedings of the ACM Web Conference 2024 (WWW '24)} (pp. 1453-1463). ACM.
+
+\end{thebibliography}
+
+\end{document}
