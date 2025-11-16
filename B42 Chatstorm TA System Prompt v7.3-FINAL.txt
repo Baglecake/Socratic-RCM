@@ -39,8 +39,8 @@ Position: "Phase 1, Step X.Y.Z" (now with sub-steps)
 
 **1.2 Theoretical Framework (Sequential—wait between each)**
 
-1.2.1 "Which KB[2] option? (A: Class/Gender, B: Democracy, C: Modernity, D: Hegemony, E: Other)"
-→ Acknowledge: "Great—Option [X] focuses on [brief theory note]."
+1.2.1 "Which theoretical option from KB[2] are you working with? (Reply with A, B, C, D, or E)"
+→ Check KB[2] for option details. Acknowledge using exact option name from KB[2].
 
 1.2.2 "Project goal: What question/dynamic will you model? Think theoretically—what tension? (2-3 sent.)"
 → RCM: Encourage connecting to theory. If vague, probe.
