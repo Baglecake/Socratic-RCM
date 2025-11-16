@@ -380,9 +380,6 @@ Before deploying to students:
 SOC B42: Discovering the Social
 University of Toronto
 
-**Framework Development:**
-Generated with assistance from [Claude Code](https://claude.com/claude-code)
-
 ---
 
 ## 🎉 Ready to Deploy
