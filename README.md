@@ -216,14 +216,14 @@ Students can now:
 
 ## 📊 Technical Specifications
 
-| Metric | v4.1 | v4.2 | Change |
+| Metric | v4.2 | v4.3 | Change |
 |--------|------|------|--------|
-| System Prompt Size | 7,575 chars | 6,197 chars | -1,378 chars ✅ |
+| System Prompt Size | 6,197 chars | 7,976 chars | +1,779 chars |
 | Character Limit | 8,000 chars | 8,000 chars | Same |
-| Headroom | 425 chars (5.3%) | 1,803 chars (22.5%) | +324% ✅ |
-| Guide Sections | 4 sections | 4 sections | Same |
-| Navigation Tags | 5 tags | 6 tags ([S3-CHATSTORM] added) |
-| Platform Config Location | Section 1 (global) | Section 3 (per-round) | Restructured ✅ |
+| Headroom | 1,803 chars (22.5%) | 24 chars (0.3%) | -98.7% |
+| Workflow Method | Batch questions | One-at-a-time | RCM implemented ✅ |
+| Socratic Prompts | Minimal | Every question | Enhanced ✅ |
+| Content Source | Some hardcoded | Defers to KB | Flexible ✅ |
 
 ---
 
@@ -231,9 +231,9 @@ Students can now:
 
 ### For GPT Builder (Required)
 
-1. **System Prompt v7.2** (`B42 Chatstorm TA System Prompt v7.2-FINAL.txt`)
+1. **System Prompt v7.3** (`B42 Chatstorm TA System Prompt v7.3-FINAL.txt`)
    - The "brain" of the GPT
-   - 6,197 characters
+   - 7,976 characters
    - Paste into GPT Builder "Instructions" field
    - Includes workflow, Socratic method, terminology guide
 
