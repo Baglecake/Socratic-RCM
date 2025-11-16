@@ -1,7 +1,7 @@
 # The Reflect and Connect Model (RCM)
 ## A Socratic RAG Framework for Pedagogical Applications
 
-> **B42 Chatstorm T.A. - Implementation of RCM for SOCB42 multi-agent simulation design**
+> **B42 Chatstorm T.A. - Implementation of RCM for SOC B42: Discovering the Social**
 
 [![Status](https://img.shields.io/badge/status-ready-brightgreen)]()
 [![Version](https://img.shields.io/badge/version-4.3-blue)]()
@@ -136,7 +136,7 @@ B42_gpt/
 
 ## 🎯 What This System Does
 
-The B42 Chatstorm T.A. is a **Socratic teaching assistant** that guides SOCB42 students through designing multi-agent simulations on the Chatstorm platform.
+The B42 Chatstorm T.A. is a **Socratic teaching assistant** that guides SOC B42 students through designing multi-agent simulations on the Chatstorm platform.
 
 ### Core Principles
 
@@ -370,11 +370,17 @@ Before deploying to students:
 
 ---
 
-## 📝 License & Attribution
+## 📝 Authors & Attribution
 
-Developed for SOCB42 - Sociological Theories of Communication
+**Authors:**
+- Del Coburn
+- Daniel Silver
+
+**Course:**
+SOC B42: Discovering the Social
 University of Toronto
 
+**Framework Development:**
 Generated with assistance from [Claude Code](https://claude.com/claude-code)
 
 ---
