@@ -22,6 +22,93 @@
 
 **RCM** is a Socratic RAG (Retrieval-Augmented Generation) framework designed for pedagogical applications where the goal is to guide learners through complex creative tasks without doing the work for them. Pedagogical RAG generates the framework for ideas and critical thinking in a dynamic feedback loop between learner and system. The RCM is adaptive to user input while maintaining the integrity of its core protocol against creative generation. Instead of retrieving a static piece of information to augment generative solutions-based output, Pedagogical RAG retrieves procedural logic for algorythmic generation informed by context; the system does not give one answer, it acts Socratically to inspire critical thinking and genuine creativity. Beyond use in Pedagogy, the RCM is an early use case of process retrieval, where the system adapts the variables of its logic according to a process that is needed, be it technical code-based output, socratic guidance system, or query-based response.
 
+**The Process-Retrieval Architecture for Pedagogical RAG**
+
+RCM represents a fundamental reconceptualization of Retrieval-Augmented Generation (RAG) for pedagogical contexts. While traditional RAG systems retrieve static content to augment generation (information retrieval → content generation), RCM implements **Process-Retrieval Augmented Reasoning (PRAR)** - retrieving procedural schemas to motivate interaction dynamics between information artifacts and generative AI.
+
+### Core Innovation: From Information to Process Retrieval
+
+Traditional RAG: `Query → Retrieve Information → Generate Answer`  
+Pedagogical RAG (RCM): `Query → Retrieve Process Schema → Generate Socratic Scaffold`
+
+This architectural shift enables several capabilities:
+
+1. **Dynamic Protocol Adaptation**: The system retrieves and instantiates context-appropriate questioning strategies while maintaining invariant pedagogical boundaries. Unlike static prompt engineering, RCM adapts its procedural logic based on:
+   - Learner's theoretical framework
+   - Project specificity 
+   - Conceptual development stage
+   - Disciplinary conventions
+
+2. **Generative Restraint Through Process Guardrails**: While traditional RAG augments generation with information, RCM augments reasoning with constraints. The retrieved processes include:
+   - Boundary conditions (what NOT to generate)
+   - Scaffolding patterns (HOW to guide without solving)
+   - Theoretical anchoring requirements (WHEN to demand specificity)
+
+3. **Recursive Reflection Architecture**: RCM implements a multi-layered feedback loop:
+   - **Layer 1**: Surface reflection on project mechanics
+   - **Layer 2**: Conceptual connection to theoretical frameworks
+   - **Layer 3**: Meta-cognitive assessment of thinking patterns
+   
+   Each layer retrieves distinct process schemas that maintain pedagogical integrity while advancing understanding.
+
+### Theoretical Grounding: Beyond Socratic Method
+
+RCM operationalizes what Mattalo (2024) calls "Pedagogical Enhancement" while creating a "Pedagogical Breakthrough" - not merely scaling Socratic dialogue but fundamentally reimagining it for AI-mediated contexts. The framework addresses three critical gaps in current pedagogical AI:
+
+1. **The Generation Paradox**: How to use generative AI without generating solutions
+2. **The Scalability-Personalization Tension**: How to maintain deep engagement across contexts
+3. **The Assessment-Assistance Boundary**: How to evaluate thinking without providing answers
+
+### Process Retrieval Taxonomy
+
+RCM's process retrieval operates across multiple dimensions:
+
+- **Interrogative Processes**: Question generation patterns calibrated to theoretical depth
+- **Connective Processes**: Bridging schemas that link abstract theory to concrete application
+- **Refractive Processes**: Reframing techniques that shift perspective without providing content
+- **Resistive Processes**: Active refusal patterns that maintain pedagogical boundaries
+
+### Implementation Architecture
+
+```
+Input Analysis → Process Selection → Schema Retrieval → 
+Constraint Application → Socratic Generation → Boundary Enforcement
+```
+
+Each stage involves retrieving procedural logic rather than information:
+- Process Selection retrieves applicable pedagogical strategies
+- Schema Retrieval instantiates questioning frameworks
+- Constraint Application retrieves boundary conditions
+- Socratic Generation operates within retrieved guardrails
+
+### Beyond Pedagogy: Process-Retrieval as Paradigm
+
+While developed for pedagogical applications (specifically theoretical sociology), RCM demonstrates broader implications for AI systems:
+
+1. **Technical Documentation**: Retrieving debugging processes rather than solutions
+2. **Creative Collaboration**: Retrieving creative constraints rather than examples  
+3. **Ethical Reasoning**: Retrieving decision frameworks rather than judgments
+4. **Research Assistance**: Retrieving methodological processes rather than findings
+
+### Relationship to Multi-Agent Pedagogical Systems
+
+RCM's process-retrieval architecture complements complex pedagogical frameworks like Chatstorm's multi-agent simulations. Where Chatstorm structures [Agent Behaviors] and [INTERACTION RULES] for theoretical exploration, RCM provides the meta-cognitive scaffolding that helps learners develop these structures independently. The systems operate at different pedagogical layers:
+
+- **Chatstorm**: Experiential learning through structured simulation
+- **RCM**: Reflective learning through structured questioning
+
+Together, they demonstrate a comprehensive approach to AI-enhanced theoretical pedagogy that maintains academic integrity while scaling personalized instruction.
+
+### Empirical Directions
+
+RCM enables several research trajectories:
+- **Process Efficacy Studies**: Comparing retrieved vs. static questioning strategies
+- **Boundary Preservation Metrics**: Measuring learning outcomes under generative restraint
+- **Cross-Domain Transfer**: Testing process retrieval across disciplines
+- **Cognitive Load Analysis**: Evaluating optimal process complexity for learning stages
+
+---.
+
 ### RCM Framework Principles
 
 **Core Method: Reflect → Connect → Ask**
