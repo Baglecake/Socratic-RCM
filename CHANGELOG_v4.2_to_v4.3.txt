@@ -1,0 +1,397 @@
+B42 CHATSTORM T.A. - CHANGELOG v4.2 → v4.3
+══════════════════════════════════════════
+Date: 2025-11-15
+Type: WORKFLOW REFINEMENT (One-Question-At-A-Time)
+Status: ✅ COMPLETE
+
+OVERVIEW
+════════
+This changelog documents the critical workflow refinement in v4.3 to address user feedback that the T.A. was "giving far too many things at once" and needed to be "more Socratic...encouraging and supportive without doing the creative work for the student."
+
+Files Updated:
+• System Prompt v7.2 → v7.3-FINAL.txt
+
+Total Changes: 1 file updated with fundamental workflow changes
+
+CHARACTER COUNT
+═══════════════
+System Prompt v7.2: 6,197 characters
+System Prompt v7.3: 7,932 characters (+1,735 chars from added workflow detail)
+✓ Still under 8,000 character limit (68 chars headroom)
+
+THE CRITICAL ISSUE DISCOVERED
+══════════════════════════════
+
+USER FEEDBACK:
+"The order of operations is giving far too many things at once. For instance:
+[example showing 5 questions asked simultaneously]
+
+It should be asking for only one at a time, as this is a large amount of tasks for the student all at once. Ideally, this would be a bit more socratic in each one, reminding them to think theoretically and challenge them to be creative, rather than just a compilation tool. But also maintaining the guard rails so as not to generate creative content for the student."
+
+❌ **PROBLEM (v4.2):**
+Step 1.2 said: "Collect: theoretical problem (A/B/C/D/E), goal (2-3 sent.), [Concept A] (2-3 sent.), [Concept B] (2-3 sent.), structure choice, experiment type."
+
+This resulted in the GPT asking for 6 values at once:
+1. Theoretical problem
+2. Project goal
+3. Concept A definition
+4. Concept B definition
+5. Structure choice
+6. Experiment type
+
+**User experience:** Overwhelming, felt like a form to fill out rather than a dialogue.
+
+✅ **SOLUTION (v4.3):**
+Step 1.2 now split into 1.2.1 through 1.2.6:
+- 1.2.1: Ask theoretical problem ONLY
+- 1.2.2: Ask project goal ONLY
+- 1.2.3: Ask Concept A ONLY
+- 1.2.4: Ask Concept B ONLY
+- 1.2.5: Ask structure choice ONLY
+- 1.2.6: Ask experiment type ONLY
+
+**New experience:** Sequential, manageable, Socratic dialogue.
+
+THE FIX
+═══════
+
+### NEW ABSOLUTE PROHIBITION
+
+**ADDED:**
+```
+- NEVER ask multiple questions at once—ONE at a time only
+```
+
+This is now in ABSOLUTE PROHIBITIONS section alongside the other NEVERs, making it a core behavioral constraint.
+
+### NEW SECTION: "ONE QUESTION AT A TIME RULE"
+
+**ADDED (lines 28-30):**
+```
+## ONE QUESTION AT A TIME RULE
+🚫 NEVER batch questions. Ask ONE, wait for answer, acknowledge, then ask next.
+✅ Use RCM for each question. Connect to their previous answers and theory.
+```
+
+This provides explicit guidance to the GPT on the sequential workflow.
+
+### ENHANCED SOCRATIC METHOD SECTION
+
+**BEFORE (v4.2):**
+```
+## SOCRATIC METHOD (RCM)
+When vague: REFLECT requirement, CONNECT to theory, ASK specifics.
+Ex: "Agent wants to win" → "Goal must be measurable (2-3 sent.). Given [setting]/KB[2] Option [X] testing [A] vs [B], what = 'winning'?"
+```
+
+**AFTER (v4.3):**
+```
+## SOCRATIC METHOD (RCM - Always Active)
+For EVERY question: **Reflect** requirement, **Connect** to theory, **Ask** with encouragement
+
+❌ "What's your goal?"
+✅ "Think about [A] vs [B] from KB[2]—what tension will you model? What observable dynamic shows this? (2-3 sent.)"
+
+When vague: "Let's sharpen this—KB[2] needs measurable goals. What specific outcome would show [theoretical question]?"
+
+Tone: Supportive, challenging, never prescriptive.
+```
+
+**Changes:**
+- Emphasized "Always Active" - RCM applies to EVERY question
+- Added ❌/✅ examples showing bad vs good question format
+- Added tone guidance: "Supportive, challenging, never prescriptive"
+- Moved from reactive (when vague) to proactive (for every question)
+
+### WORKFLOW RESTRUCTURED: SEQUENTIAL SUB-STEPS
+
+**BEFORE (v4.2 - Step 1.2):**
+```
+**1.2 Theoretical Framework**
+Collect: theoretical problem (A/B/C/D/E), goal (2-3 sent.), [Concept A] (2-3 sent.), [Concept B] (2-3 sent.), structure choice, experiment type. CHECK: "Aligns with KB[2]?"
+```
+
+**AFTER (v4.3 - Step 1.2):**
+```
+**1.2 Theoretical Framework (Sequential—wait between each)**
+
+1.2.1 "Which KB[2] option? (A: Class/Gender, B: Democracy, C: Modernity, D: Hegemony, E: Other)"
+→ Acknowledge: "Great—Option [X] focuses on [brief theory note]."
+
+1.2.2 "Project goal: What question/dynamic will you model? Think theoretically—what tension? (2-3 sent.)"
+→ RCM: Encourage connecting to theory. If vague, probe.
+
+1.2.3 "[Concept A]: Define from [theory]. How does it manifest in interactions? (2-3 sent.)"
+→ RCM: "Think about [theory's] key features agents would experience."
+
+1.2.4 "[Concept B]: Define the alternative. What makes it different from [Concept A]? (2-3 sent.)"
+→ RCM: "If [A] suggests [X], what does [B] propose?"
+
+1.2.5 "Structure: 1) Single multi-round OR 2) Two separate designs? Which tests [A] vs [B] best?"
+
+1.2.6 "Experiment type: A) Modify one variable OR B) Entirely new design? Which serves '[goal]'?"
+
+**CHECKPOINT:** Display framework. "Aligns with KB[2] for testing [A] vs [B]?"
+```
+
+**Key improvements:**
+- Numbering system now goes to 1.2.1, 1.2.2, etc. (sub-steps)
+- Each sub-step is ONE question only
+- Acknowledgment after each answer ("Great—Option [X]...")
+- RCM prompts for theoretical thinking embedded in each
+- References to previous answers (e.g., "Which serves '[goal]'?" in 1.2.6)
+- Checkpoint only after ALL sub-steps complete
+
+### SAME PATTERN APPLIED TO ALL STEPS
+
+**Step 1.3 Baseline & Experiment:**
+- 1.3.1: Baseline description
+- 1.3.2A/B: Variable or new design (branching based on type choice)
+- 1.3.3: Justification
+
+**Step 1.4 Setting & Rounds:**
+- 1.4.1: Setting description
+- 1.4.2: Number of rounds
+- 1.4.3: Each round (one at a time, then display table)
+
+**Step 1.5 Agent Roster:**
+- 1.5.1: Total count
+- 1.5.2: Each agent role/name (sequential)
+- 1.5.3: Human/non-human (sequential)
+
+**Step 1.6 Agent Details:**
+- 1.6.1: Identifier
+- 1.6.2: Goal
+- 1.6.3: Persona
+- 1.6.4: Behaviors (optional)
+- "Complete one agent before next" emphasized
+
+**Step 2.2 Round Instructions & Config:**
+Explicitly states "ask ONE question at a time" before listing:
+- Scenario
+- [A] in round
+- [B] in round
+- Rules
+- Tasks
+- Sequence
+
+Then Platform Config sections marked "ask separately":
+- FLOW: 4 questions asked separately
+- STYLE: 2 questions asked separately
+- OPTIONS: 2 questions asked separately
+
+### ENHANCED ENCOURAGING LANGUAGE
+
+**Throughout workflow, added RCM prompts:**
+- "Think theoretically—what tension?"
+- "Be concrete—what will they accomplish?"
+- "Make vivid—what tension?"
+- "What setting makes [A] vs [B] visible?"
+- "What does [theory] predict?"
+
+**Added acknowledgment patterns:**
+- "Great—Option [X]..."
+- "Complete one agent before next"
+- "Excellent theoretical work on [A] vs [B]!"
+
+**Tone shift:**
+- From directive ("Collect X") to Socratic ("What X? Think about...")
+- From checklist to conversation
+- From compilation to co-creation
+
+### UPDATED CORE IDENTITY
+
+**BEFORE (v4.2):**
+```
+You are B42 Chatstorm T.A., a Socratic assistant guiding SOCB42 students through multi-agent experiment design. You structure and format—students create all content.
+```
+
+**AFTER (v4.3):**
+```
+You are B42 Chatstorm T.A., a Socratic assistant guiding SOCB42 students through multi-agent experiment design. You structure and format—students create all content. Be encouraging and supportive while never doing creative work for them.
+```
+
+Added: "Be encouraging and supportive while never doing creative work for them."
+
+### UPDATED SUCCESS METRICS
+
+**BEFORE (v4.2):**
+```
+✓ Student creates all ✓ Templates=KB[1] ✓ Clear steps ✓ No AI creativity ✓ Frequent checks ✓ Concepts early ✓ Persona→S2 ✓ Behaviors→S3 ✓ Platform/round
+```
+
+**AFTER (v4.3):**
+```
+✓ ONE question ✓ RCM every question ✓ Encouraging tone ✓ Student creates all ✓ Theory-focused ✓ No batching ✓ Frequent checks
+```
+
+Emphasized:
+- "ONE question" (first metric)
+- "RCM every question"
+- "Encouraging tone"
+- "No batching"
+
+CHANGES BY SECTION
+══════════════════
+
+### CORE IDENTITY
+- Added "Be encouraging and supportive while never doing creative work for them"
+
+### ABSOLUTE PROHIBITIONS
+- Added "NEVER ask multiple questions at once—ONE at a time only"
+
+### NEW SECTION: ONE QUESTION AT A TIME RULE
+- Explicit prohibition of batching
+- Instruction to acknowledge between questions
+- Instruction to connect to previous answers
+
+### SOCRATIC METHOD (RCM)
+- Changed from "When vague" to "For EVERY question"
+- Added ❌/✅ examples
+- Added tone guidance
+- Emphasized always active
+
+### PHASE 1 WORKFLOW
+All steps restructured:
+- Step 1.2: 1 question → 6 sequential sub-steps (1.2.1-1.2.6)
+- Step 1.3: 1 question → 3 sequential sub-steps (1.3.1-1.3.3)
+- Step 1.4: 1 question → 3 sequential sub-steps (1.4.1-1.4.3)
+- Step 1.5: 1 question → 3 sequential sub-steps (1.5.1-1.5.3)
+- Step 1.6: 1 question → 4 sequential sub-steps (1.6.1-1.6.4)
+
+Each sub-step includes:
+- Specific question text
+- RCM prompt or encouragement
+- Instruction to wait for answer
+- Acknowledgment pattern
+
+### PHASE 2 WORKFLOW
+- Step 2.2: Added "ask ONE question at a time" explicit reminder
+- Platform Config sections marked "ask separately"
+
+### SUCCESS METRICS
+- Reordered to prioritize "ONE question" first
+- Added "RCM every question"
+- Added "Encouraging tone"
+
+IMPACT ASSESSMENT
+═════════════════
+
+**Student Experience:**
+❌ v4.2: Overwhelming (6 questions at once), felt like form-filling
+✅ v4.3: Manageable (1 question at a time), feels like dialogue
+
+**Socratic Quality:**
+❌ v4.2: Minimal Socratic prompting, mostly "Collect X"
+✅ v4.3: RCM embedded in every question, "Think about...", "What if..."
+
+**Encouragement:**
+❌ v4.2: Neutral, procedural tone
+✅ v4.3: "Great!", "Excellent theoretical work!", "Think creatively..."
+
+**Theoretical Depth:**
+❌ v4.2: Could answer superficially in batch mode
+✅ v4.3: Each question probes theoretical thinking
+
+**Workflow Clarity:**
+✅ v4.2: Structure was clear
+✅ v4.3: Structure maintained AND more supportive
+
+CHARACTER COUNT IMPACT
+═══════════════════════
+
+v7.2: 6,197 characters
+v7.3: 7,932 characters (+1,735 characters)
+
+Headroom: 68 characters (still under 8,000 limit)
+
+**Why the increase?**
+- Added "ONE QUESTION AT A TIME RULE" section
+- Added sub-step numbering (1.2.1, 1.2.2, etc.)
+- Added RCM prompts for each sub-step
+- Added acknowledgment patterns
+- Added encouraging language
+- Expanded Socratic Method section with examples
+
+**Trade-off justified:** The additional 1,735 characters fundamentally improve pedagogical quality while staying under the critical 8,000 limit.
+
+TESTING RECOMMENDATIONS
+════════════════════════
+
+Before deploying v4.3, test these scenarios:
+
+□ Step 1.2 Workflow:
+  Expected: Asks "Which KB[2] option?" ONLY
+  Expected: Waits for answer
+  Expected: Acknowledges with "Great—Option [X]..."
+  Expected: THEN asks "Project goal?" with RCM prompt
+  Expected: Continues sequentially through 1.2.1-1.2.6
+
+□ Socratic Prompting:
+  Expected: Each question includes theoretical framing
+  Expected: "Think about...", "What if...", "How does..."
+  Expected: Never provides examples of answers
+  Expected: Probes if answer is vague
+
+□ Encouraging Tone:
+  Expected: "Great!", "Excellent!", "Let's sharpen this..."
+  Expected: Supportive language when student struggles
+  Expected: Still refuses to do creative work
+
+□ Agent Details (Step 1.6):
+  Expected: Completes ALL 4 sub-steps for Agent 1
+  Expected: Says "Agent 1 complete. Ready for Agent 2?"
+  Expected: Waits for confirmation before starting Agent 2
+
+□ Platform Config (Step 2.2):
+  Expected: Asks "Who sends?" ONLY
+  Expected: Waits, then asks "Order?" ONLY
+  Expected: Continues through all 8 config questions separately
+
+BACKWARD COMPATIBILITY
+═══════════════════════
+
+**Students who started with v4.2:**
+- No breaking changes to file structure
+- Only system prompt behavior changes
+- If mid-Phase 1, GPT will switch to sequential mode
+- May ask some questions they already answered (acceptable)
+
+**Migration:**
+Simply replace System Prompt v7.2 with v7.3 in GPT Builder. No other files change.
+
+DEPLOYMENT CHECKLIST
+════════════════════
+
+□ System Prompt v7.3 created ✅
+□ Character count under 8,000 (7,932) ✅
+□ ONE QUESTION AT A TIME emphasized ✅
+□ RCM embedded in all questions ✅
+□ Encouraging tone throughout ✅
+□ All sub-steps numbered ✅
+□ Changelog created ✅
+□ Ready for git commit ✅
+□ Ready for GPT Builder upload ✅
+
+SUMMARY
+═══════
+
+v4.3 addresses critical user feedback about overwhelming batch questions:
+
+**The Issue:** Step 1.2 asked for 6 values at once (theoretical problem, goal, Concept A, Concept B, structure, experiment type)
+
+**The Fix:**
+1. Added "NEVER ask multiple questions at once" to ABSOLUTE PROHIBITIONS
+2. Created "ONE QUESTION AT A TIME RULE" section
+3. Split all workflow steps into numbered sub-steps (1.2.1, 1.2.2, etc.)
+4. Embedded RCM prompts in every question
+5. Added acknowledgment patterns between questions
+6. Enhanced encouraging, supportive language
+7. Emphasized "always active" Socratic method
+
+**The Result:** Manageable, Socratic dialogue that encourages theoretical thinking without doing creative work for students. Character count increased from 6,197 to 7,932 (still under 8,000 limit).
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+v4.3 WORKFLOW REFINEMENT COMPLETE
+Ready for deployment to OpenAI GPT Builder
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
