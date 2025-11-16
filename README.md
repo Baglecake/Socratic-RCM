@@ -370,6 +370,22 @@ Before deploying to students:
 
 ---
 
+## 📝 Citation
+
+If you use RCM or this implementation in your work, please cite:
+
+```bibtex
+@software{rcm_b42_2025,
+  title={The Reflect and Connect Model (RCM): A Socratic RAG Framework for Pedagogical Applications},
+  author={Coburn, Del and Silver, Daniel},
+  year={2025},
+  url={https://github.com/Baglecake/RCM},
+  note={Implementation for SOC B42: Discovering the Social, University of Toronto}
+}
+```
+
+---
+
 ## 📝 Authors & Attribution
 
 **Authors:**
@@ -384,7 +400,7 @@ University of Toronto
 
 ## 🎉 Ready to Deploy
 
-The v4.2 system is **production-ready** for immediate deployment to OpenAI GPT Builder.
+The v4.3 system is **production-ready** for immediate deployment to OpenAI GPT Builder.
 
 All files validated, cross-referenced, and tested. Character count compliant. Complete Chatstorm UI mapping ensures students can configure each round with full flexibility.
 
