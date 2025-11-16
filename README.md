@@ -20,7 +20,7 @@
 
 ## The Reflect and Connect Model (RCM)
 
-**RCM** is a Socratic RAG (Retrieval-Augmented Generation) framework designed for pedagogical applications where the goal is to guide learners through complex creative tasks without doing the work for them.
+**RCM** is a Socratic RAG (Retrieval-Augmented Generation) framework designed for pedagogical applications where the goal is to guide learners through complex creative tasks without doing the work for them. Pedagogical RAG generates the framework for ideas and critical thinking in a dynamic feedback loop between learner and system. The RCM is adaptive to user input while maintaining the integrity of its core protocol against creative generation. Instead of retrieving a static piece of information to augment generative solutions-based output, Pedagogical RAG retrieves procedural logic for algorythmic generation informed by context; the system does not give one answer, it acts Socratically to inspire critical thinking and genuine creativity. Beyond use in Pedagogy, the RCM is an early use case of process retrieval, where the system adapts the variables of its logic according to a process that is needed, be it technical code-based output, socratic guidance system, or query-based response.
 
 ### RCM Framework Principles
 
