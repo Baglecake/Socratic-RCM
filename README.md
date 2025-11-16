@@ -60,16 +60,34 @@ For every interaction with the learner:
 
 ### Why RCM for Pedagogy?
 
-Traditional AI assistants often:
+Traditional AI assistants risk what Mattalo (2024) identifies as the "existential threat" to academic integrity:
 - Provide examples that become templates
 - Fill in creative gaps
-- Optimize for task completion
+- Optimize for task completion over learning
 
-RCM-based systems:
-- Guide without prescribing
-- Challenge learners to think theoretically
-- Maintain strict boundaries against doing creative work
-- Support through structure, not content generation
+RCM-based systems implement Mattalo's vision of pedagogical AI that enhances rather than replaces learning:
+- **Enhancement without replacement**: Guides through established Socratic methods at scale
+- **Breakthrough in boundaries**: Creates a new paradigm where AI actively maintains pedagogical integrity
+- **Higher-order thinking**: Challenges learners to think theoretically (Mattalo's "intelligent tutee" concept)
+- **Support through structure**: Provides scaffolding without content generation
+
+### Theoretical Grounding: RCM within the Modern Learning AIEd Framework
+
+The Reflect and Connect Model operationalizes key principles from Mattalo's (2024) Modern Learning AIEd Framework, which advocates shifting from viewing AI as an "existential threat" to academic integrity toward harnessing its potential for pedagogical enhancement.
+
+**RCM as Pedagogical Enhancement Research (Mattalo's Prong 1):**
+- **Scaling the Socratic Method**: RCM maps the established Socratic pedagogical practice to AI capabilities, solving the traditional scalability problem of one-on-one guided inquiry
+- **AI as Intelligent Study Group**: Rather than replacing human interaction, RCM implements Mattalo's concept of AI as an interactive study partner that promotes higher-order thinking through structured questioning
+- **Personalized Learning Without Content Generation**: RCM connects concepts to students' specific project contexts while maintaining pedagogical boundaries
+
+**RCM as Pedagogical Breakthrough Research (Mattalo's Prong 2):**
+- **Novel Assessment Paradigm**: While Mattalo describes "AI critique assessment" where students improve AI-generated content, RCM inverts this—the AI critiques and questions student thinking without ever generating the content itself
+- **Prompt Engineering as Pedagogy**: Students learn to articulate theoretical concepts precisely through structured interaction with the RCM system
+- **Augmented Thinking (not Reading)**: RCM creates a new form of interactive engagement where AI augments the thinking process rather than the content
+
+**Key Innovation: The Pedagogical Boundary Principle**
+
+Where traditional AI assistants optimize for task completion (potentially threatening academic integrity), RCM establishes a new paradigm: **AI that refuses to cross pedagogical boundaries**. This addresses Mattalo's call to move beyond fear-based responses to AI while maintaining rigorous academic standards.
 
 ### What's New in v4.3
 
@@ -370,6 +388,35 @@ Before deploying to students:
 
 ---
 
+## 🔬 Research Implications
+
+### Empirical Testing Opportunities (per Mattalo 2024)
+
+The RCM implementation enables several research directions:
+
+1. **Effectiveness Studies**: Compare RCM-guided vs. traditional Socratic dialogue outcomes
+2. **Scalability Analysis**: Measure quality maintenance across class sizes
+3. **Boundary Preservation**: Study how pedagogical boundaries affect learning outcomes
+4. **Prompt Engineering Skills**: Assess development of student articulation abilities
+
+### Future Development Paths
+
+Following Mattalo's framework, potential enhancements include:
+- **Administrative Support** (Prong 3): Instructor dashboards for monitoring student progress
+- **Assessment Innovation**: New metrics for evaluating theoretical thinking depth
+- **Cross-disciplinary Application**: Adapting RCM for other creative/theoretical courses
+
+### Key Positioning
+
+The RCM framework is particularly powerful because it:
+1. **Addresses the core tension** Mattalo identifies - moving from fearing AI to using it pedagogically
+2. **Implements specific enhancement strategies** while creating a breakthrough approach
+3. **Maintains academic integrity** through its refusal to generate content
+4. **Scales personalized Socratic pedagogy** - solving the traditional bottleneck
+5. **Creates measurable outcomes** aligned with Mattalo's call for empirical research
+
+---
+
 ## 📝 Citation
 
 If you use RCM or this implementation in your work, please cite:
@@ -383,6 +430,14 @@ If you use RCM or this implementation in your work, please cite:
   note={Implementation for SOC B42: Discovering the Social, University of Toronto}
 }
 ```
+
+### Theoretical Foundation
+
+This implementation draws on:
+
+Mattalo, L. (2024). *Artificial Intelligence: The Future of Pedagogy*.
+
+The RCM framework specifically operationalizes Mattalo's Modern Learning AIEd Framework, demonstrating how AI can enhance pedagogical practices (Prong 1) while creating breakthrough assessment paradigms (Prong 2) that maintain academic integrity.
 
 ---
 
