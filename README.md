@@ -10,15 +10,15 @@
 
 ---
 
-## 📋 Current Version: v4.3 (RCM Framework)
+## Current Version: v4.3 (RCM Framework)
 
 **Last Updated:** 2025-11-15
-**Status:** ✅ Production Ready
+**Status:** Production Ready
 **Framework:** Reflect and Connect Model (RCM)
 
 ---
 
-## 🧠 The Reflect and Connect Model (RCM)
+## The Reflect and Connect Model (RCM)
 
 **RCM** is a Socratic RAG (Retrieval-Augmented Generation) framework designed for pedagogical applications where the goal is to guide learners through complex creative tasks without doing the work for them.
 
@@ -32,8 +32,8 @@ For every interaction with the learner:
 3. **ASK** with theoretical prompts that encourage deep thinking
 
 **Example:**
-- ❌ Traditional: "What's your project goal?"
-- ✅ RCM: "Think about [Concept A] vs [Concept B] from your chosen theory—what specific tension do you want to model? What observable dynamic would show this?"
+- Traditional: "What's your project goal?"
+- RCM: "Think about [Concept A] vs [Concept B] from your chosen theory—what specific tension do you want to model? What observable dynamic would show this?"
 
 ### RCM in RAG Architecture
 
@@ -93,16 +93,16 @@ Where traditional AI assistants optimize for task completion (potentially threat
 
 **RCM Framework Fully Implemented:**
 
-- ✅ **One-question-at-a-time workflow** - No overwhelming batch questions
-- ✅ **RCM applied to every step** - Reflect, Connect, Ask embedded throughout
-- ✅ **Encouraging tone** - Supportive and challenging, never prescriptive
-- ✅ **Theoretical depth** - Every question probes theoretical thinking
-- ✅ **Defer to knowledge base** - System prompt references KB, doesn't hardcode content
-- ✅ **Character optimized** - 7,976 chars (fits 8,000 GPT Builder limit)
+- **One-question-at-a-time workflow** - No overwhelming batch questions
+- **RCM applied to every step** - Reflect, Connect, Ask embedded throughout
+- **Encouraging tone** - Supportive and challenging, never prescriptive
+- **Theoretical depth** - Every question probes theoretical thinking
+- **Defer to knowledge base** - System prompt references KB, doesn't hardcode content
+- **Character optimized** - 7,976 chars (fits 8,000 GPT Builder limit)
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### For OpenAI GPT Builder Deployment
 
@@ -152,7 +152,7 @@ B42_gpt/
 
 ---
 
-## 🎯 What This System Does
+## What This System Does
 
 The B42 Chatstorm T.A. is a **Socratic teaching assistant** that guides SOC B42 students through designing multi-agent simulations on the Chatstorm platform.
 
@@ -183,7 +183,7 @@ The B42 Chatstorm T.A. is a **Socratic teaching assistant** that guides SOC B42 
 
 ---
 
-## 🆕 v4.2 Key Features
+## v4.2 Key Features
 
 ### Complete Chatstorm UI Mapping
 
@@ -216,8 +216,8 @@ Each round independently configured with **four sections**:
 
 ### Self-Reflections Clarified
 
-❌ **v4.1:** Students expected to create Self-Reflection template
-✅ **v4.2:** Self-Reflection is a **checkbox** in OPTIONS → Agent Settings
+**v4.1:** Students expected to create Self-Reflection template
+**v4.2:** Self-Reflection is a **checkbox** in OPTIONS → Agent Settings
 
 When enabled, agents automatically use `<SELF>` tags to distinguish internal thoughts from external statements.
 
@@ -245,7 +245,7 @@ Students can now:
 
 ---
 
-## 📚 Key Files Explained
+## Key Files Explained
 
 ### For GPT Builder (Required)
 
@@ -276,7 +276,7 @@ Students can now:
 
 ---
 
-## 🔄 Version History
+## Version History
 
 | Version | Date | Key Change |
 |---------|------|------------|
@@ -290,7 +290,7 @@ See `archive/documentation/` for complete changelogs.
 
 ---
 
-## 🎓 Pedagogical Approach
+## Pedagogical Approach
 
 ### Socratic Boundaries
 
@@ -340,7 +340,7 @@ The T.A. **ALWAYS**:
 
 ---
 
-## ✅ Testing Checklist
+## Testing Checklist
 
 Before deploying to students:
 
@@ -363,7 +363,7 @@ Before deploying to students:
 
 ---
 
-## 🛠️ Support & Resources
+## Support & Resources
 
 ### Documentation
 - **Deployment Guide:** `V4.2_DEPLOYMENT_READY.txt`
@@ -388,7 +388,7 @@ Before deploying to students:
 
 ---
 
-## 🔬 Research Implications
+## Research Implications
 
 ### Empirical Testing Opportunities (per Mattalo 2024)
 
@@ -417,7 +417,7 @@ The RCM framework is particularly powerful because it:
 
 ---
 
-## 📝 Citation
+## Citation
 
 If you use RCM or this implementation in your work, please cite:
 
@@ -441,11 +441,11 @@ The RCM framework specifically operationalizes Mattalo's Modern Learning AIEd Fr
 
 ---
 
-## 📝 Authors & Attribution
+## Authors & Attribution
 
 **Authors:**
-- Del Coburn
-- Daniel Silver
+> Del Coburn
+> Daniel Silver
 
 **Course:**
 SOC B42: Discovering the Social
@@ -453,7 +453,7 @@ University of Toronto
 
 ---
 
-## 🎉 Ready to Deploy
+## Ready to Deploy
 
 The v4.3 system is **production-ready** for immediate deployment to OpenAI GPT Builder.
 
