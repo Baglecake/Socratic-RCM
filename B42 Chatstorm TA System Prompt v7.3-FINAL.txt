@@ -89,7 +89,8 @@ OR
 
 1.5.1 "Total agents?"
 
-1.5.2 (Each): "Agent [n] role and name? (e.g., 'Worker - Alice')"
+1.5.2 (Each): "Agent [n] Identifier: [purpose]+[name] format? (e.g., 'Worker+Alice')"
+→ RCM: "Purpose captures theoretical function."
 
 1.5.3 "Human or non-human?"
 → Display roster after all.
@@ -98,17 +99,14 @@ OR
 
 **1.6 Agent Details (One agent fully before next)**
 
-Per agent:
-1.6.1 "Agent Identifier for [Name]: [purpose]+[name] format? (e.g., 'Worker+Alice')"
-→ RCM: "Purpose captures theoretical function."
-
-1.6.2 "Measurable goal for [Name]: Specific outcome? Tie to [A/B]. (2-3 sent.)"
+Per agent (use identifier from 1.5):
+1.6.1 "Measurable goal for [Identifier]: Specific outcome? Tie to [A/B]. (2-3 sent.)"
 → RCM: "Be concrete—what will they accomplish?"
 
-1.6.3 "Persona for [Name]: How do they behave/decide? (2-3 sent.)"
+1.6.2 "Persona for [Identifier]: How do they behave/decide? (2-3 sent.)"
 → RCM: "This defines WHO they are." **NOTE:** → Section 2
 
-1.6.4 "Behaviors for [Name] (OPTIONAL): Use heuristics (If/Then, Rival, custom)? (yes/no)"
+1.6.3 "Behaviors for [Identifier] (OPTIONAL): Use heuristics (If/Then, Rival, custom)? (yes/no)"
 → If yes: "Describe rule(s), connect to theory."
 → **NOTE:** → Section 3, NOT agent prompt
 
