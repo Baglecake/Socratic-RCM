@@ -61,7 +61,7 @@ Within programming education, Socratic debugging has been proposed as a way to u
 
 Brandon Mattalo's teaching note situates AI not as a neutral tool but as a catalyst for rethinking pedagogy itself, arguing that AI-driven teaching practices will increasingly require explicit pedagogical theory to avoid superficial "ed-tech solutionism" \citep{mattalo2024}. Taken together, these works motivate a design imperative: LLM systems must retrieve and organize pedagogical processes—not just facts—if they are to be genuinely educational.
 
-\section{From Content RAG to Pedagogical RAG}
+\section{From Content RAG to Pedagogical RAG: Addressing Dialogic Limitations}
 
 RAG has become a key strategy for mitigating hallucination and grounding LLM outputs in curated corpora \citep{lewis2020, gao2024}. In education, RAG has been productively applied to programming feedback and lecture integration:
 
@@ -73,7 +73,17 @@ RAG has become a key strategy for mitigating hallucination and grounding LLM out
 
 These strands converge on what we might call \textit{pedagogical RAG}: retrieval and generation are not only about "correct answers," but about supporting learners in navigating domain structures, materials, and tasks inside a larger pedagogical design \citep{kasneci2023, jacobs2024}.
 
-However, most pedagogical RAG systems still retrieve static artifacts (slides, videos, prior answers). From a sociological and dialogic perspective, what also needs to be retrieved are \textit{social processes}: roles, norms, tensions, rounds of interaction, and trajectories of reasoning. That is precisely where Algorythmic RAG and PRAR intervene.
+However, as \citet{beale2025} demonstrates in a comprehensive review of dialogic pedagogy for LLMs, content-focused RAG systems inherit three critical limitations from their underlying models:
+
+\begin{enumerate}
+\item \textbf{Over-directness vs. Productive Struggle}: Standard LLMs are trained to provide complete answers, optimized for task completion rather than learning. This directly contradicts constructivist principles that emphasize the value of cognitive struggle \citep{beale2025}. Content RAG exacerbates this tendency by making correct answers even more accessible, potentially short-circuiting the iterative reasoning that builds deep understanding.
+
+\item \textbf{Assessment Deficiency}: LLMs lack mechanisms to genuinely assess learner understanding beyond surface-level pattern matching in immediate conversational context \citep{beale2025}. Without persistent student modeling or explicit diagnostic schemas, scaffolding frequently overshoots or undershoots the Zone of Proximal Development, providing either trivial hints or overwhelming explanations. Current RAG systems retrieve content based on query similarity rather than learner readiness.
+
+\item \textbf{Asymmetric Feedback Patterns}: Recent empirical evaluation reveals that LLMs achieve high accuracy (>0.85) in affirming correct student responses but fail dramatically (often <0.50) at redirecting errors \citep{liu2025}. Models provide vague, non-committal feedback on misconceptions—precisely the inverse of what struggling learners need. This asymmetry persists even when models have access to correct reference material via RAG, suggesting the limitation is architectural rather than informational.
+\end{enumerate}
+
+Pedagogical RAG must therefore move beyond retrieving static artifacts (slides, videos, prior answers) to retrieving \textit{process constraints} that actively prevent over-directness, embedding \textit{diagnostic schemas} that assess learner state through structured task progression, and enforcing \textit{corrective patterns} that provide explicit redirection rather than vague affirmation. From a sociological and dialogic perspective, what needs to be retrieved are \textit{social processes}: roles, norms, tensions, rounds of interaction, and trajectories of reasoning. That is precisely where Algorythmic RAG and PRAR intervene.
 
 \section{Defining Algorythmic RAG}
 
@@ -85,6 +95,8 @@ I use the term \textbf{Algorythmic RAG} to describe this process-oriented retrie
 \end{enumerate}
 
 Algorythmic RAG, then, names a design pattern where the primary retrieval targets are \textit{algorithms of interaction}. In a teaching context, these algorithms surface the tacit instructional design decisions usually buried in rubrics, assignment sheets, or instructors' habits of questioning. Once formalized into a \textit{process corpus}, they can structure LLM behaviour in principled ways.
+
+\textbf{Theoretical Justification for the Neologism.} This terminological choice is not merely stylistic; it signals a fundamental reconceptualization of RAG from static information retrieval to dynamic process orchestration—a shift that existing vocabulary inadequately captures. Educational theory has long recognized the productive use of metaphorical language to encode complex pedagogical concepts: Vygotsky's "scaffolding," Bruner's "spiral curriculum," and Freire's "banking model" all use vivid imagery to crystallize theoretical insights. Similarly, "algorythmic" encapsulates the dual requirements of formal specification and adaptive enactment that distinguish pedagogical process retrieval from traditional RAG paradigms.
 
 This reorientation prepares the ground for Process Retrieval-Augmented Reasoning (PRAR), in which LLMs reason not only over retrieved text but over retrieved processes. In PRAR, the model's core task is to maintain the rhythm of the process: to determine where we are, what the next pedagogically appropriate move is, and which parts of that move must come from the learner.
 
@@ -118,6 +130,44 @@ In SOCB42, the process formalism is expressed through:
 
 These artifacts function as a \textit{process corpus}: instead of embedding lecture notes, the system embeds the course's algorithmic pedagogy—a structured logic of what students must do to transform sociological theory into a multi-agent experiment.
 
+\subsection{PRAR and the Perception-Orchestration-Elicitation Framework}
+
+Recent work on Socratic LLM evaluation \citep{liu2025} identifies three critical dimensions of instructional guidance that align precisely with PRAR's objectives: \textit{Perception} (inferring learner state), \textit{Orchestration} (adapting pedagogical strategies), and \textit{Elicitation} (stimulating proper reflection). This framework emerged from systematic empirical evaluation revealing that current LLMs often fail to provide effective adaptive scaffolding when learners experience confusion or require redirection. In SOCB42, PRAR operationalizes each dimension through specific process-retrieval mechanisms:
+
+\begin{itemize}
+\item \textbf{Perception via Process Retrieval}: The TA-agent retrieves learner-state diagnostic schemas from the Required Values Index. Rather than generic "understanding checks," it detects whether students have specified [Concept A], whether [Agent Behaviors] align with theory, or whether [Baseline] and [Experimental lever] create valid contrasts. This addresses what \citet{liu2025} identify as "limited sensitivity to implicit knowledge states"—the tendency of LLMs to respond effectively to explicit expressions of confusion but struggle with implicit cues requiring deeper inference.
+
+For example, when a student proposes [Concept A: "inequality"] without theoretical grounding, the perception process retrieves not just a prompt for more detail but a \textit{diagnostic pattern} that recognizes this as a common error (vague sociological term rather than theorist-specific concept). The retrieved process then triggers a specific correction sequence: (1) reflect the theoretical option chosen, (2) connect to that theorist's specific conceptualization, (3) ask for reformulation in the theorist's language.
+
+\item \textbf{Orchestration via Constraint Retrieval}: The Step-by-Step Guide encodes adaptive scaffolding processes calibrated to learner state. When students demonstrate confusion about multi-agent design (implicit state: proposing agents with overlapping roles), the system retrieves simplification strategies: breaking the design into single-agent first, then expanding. When they propose theoretically weak hypotheses (implicit state: [Experimental lever] that doesn't actually manipulate the focal concept), it retrieves probing questions that reconnect to primary texts rather than generic requests for clarification.
+
+This directly addresses \citet{liu2025}'s finding of "limited flexibility to implicit states," where Orchestration Strategy Adaptivity (OSA) drops dramatically when learner state must be inferred from work quality rather than explicit statements. By formalizing common implicit error patterns into the process corpus, PRAR enables consistent orchestration adaptation across both explicit and implicit state signals.
+
+\item \textbf{Elicitation via Strategic Questioning}: The RCM method (Reflect-Connect-Ask) implements what \citet{liu2025} call "heuristic questioning" for confused states (intuitive, exploratory prompts) and "strategic questioning" for comprehension states (higher-order thinking prompts). Each question type is process-retrieved from pedagogical templates rather than generated ad hoc, ensuring consistent Elicitation Strategy Adaptivity (ESA).
+
+For instance, when a student successfully defines [Concept A] (positive state), the retrieved elicitation process poses strategic questions: "How would this concept manifest differently in [Fictional Setting]? What observable behaviors would signal its presence?" When a student expresses confusion about operationalization (negative state), the retrieved process poses heuristic questions: "Think about a concrete example from the readings—what did the theorist point to as evidence of this concept?"
+\end{itemize}
+
+Empirical evaluation by \citet{liu2025} reveals that even advanced models like GPT-4.1 and Claude-Sonnet-4 exhibit substantial performance gaps across these dimensions, with particular weakness in P-Redirect (error detection: 0.43-0.48 vs. 0.87-0.95 for P-Affirm) and limited ESA (often near-zero adaptation in questioning depth across learner states). This suggests that Algorythmic RAG's process corpus architecture provides a generalizable substrate for implementing the Perception-Orchestration-Elicitation framework across domains, addressing systematic limitations in current LLM-based tutoring systems.
+
+\subsection{PRAR as Metacognitive Process Orchestration}
+
+Where Metacognitive RAG treats retrieval \textit{policy} as an object of metacognition \citep{zhou2024}—the system dynamically chooses among retrieval strategies (BM25, dense retrieval, hybrid)—PRAR extends this to \textit{pedagogical metacognition}: the system chooses which \textit{process step} should be executed next based on the learner's position within a structured workflow and their demonstrated state.
+
+Consider the SOCB42 workflow: if a student has completed [Concept A] and [Concept B] definitions but struggles to articulate [Agent Goal], the TA-agent doesn't simply retrieve more information about "goals." Instead, it metacognitively assesses the learner's position in the process corpus (Phase 1, Step 1.6.2) and their state (confusion about operationalization) to retrieve a three-step process:
+
+\begin{enumerate}
+\item A \textbf{connection prompt} linking [Agent Goal] to [Concept A]: "How would this agent's objectives reflect the tension between [Concept A] and [Concept B]? What would success or failure look like from the perspective of your theory?"
+
+\item A \textbf{constraint reminder} from the rubric: "Agent goals must be measurable and tied to observable outcomes in your simulation. What specific agent actions or statements would indicate progress toward or away from this goal?"
+
+\item An \textbf{exemplar structure} (not content) from the Step-by-Step Guide showing the format of a strong goal statement: "[Agent Goal] should follow this pattern: [Agent Name]'s goal is to [measurable outcome] which would demonstrate [theoretical concept] by [observable behavior]."
+\end{enumerate}
+
+This three-step retrieval sequence is itself a metacognitively selected \textit{process schema} (the "operationalization difficulty" pattern) rather than a fixed pipeline. If the student instead demonstrates strong conceptual grounding but weak methodological specificity (different state), the TA-agent retrieves a different process: challenge questions that probe operational definitions ("You've identified alienation as your concept—how would you distinguish an alienated worker from a non-alienated one in your simulation transcripts?") rather than theoretical connections.
+
+In this sense, PRAR generalizes \citet{zhou2024}'s insight from retrieval strategy selection to pedagogical process selection. The system maintains awareness of multiple process schemas in the corpus (conceptual connection, methodological specification, theoretical grounding, error correction) and metacognitively selects which to instantiate based on continuous assessment of learner trajectory and state. This dual-level metacognition—both retrieval policy and pedagogical process—represents a significant extension of the Metacognitive RAG paradigm into process-aware domains.
+
 \section{Socratic-RCM for Multi-Agent Sociological Simulation}
 
 The SOCB42 implementation instantiates Algorythmic RAG through a Socratic Reflect-Connect Model (RCM):
@@ -145,6 +195,32 @@ Algorythmic RAG and PRAR build on, but also differ from, existing RAG-based educ
 \end{itemize}
 
 In this sense, Algorythmic RAG can be seen as a \textit{sociological specialization} of pedagogical RAG: it encodes sociological concepts (e.g., Tocqueville's "tyranny of the majority"), theoretical tensions, and experimental levers into a reusable process architecture that LLMs can retrieve and enforce.
+
+\subsection{Relation to Multi-Modal Pedagogical Systems}
+
+The Socratic Playground \citep{hu2025generative} represents the state-of-the-art in multi-modal pedagogical AI, offering five distinct interaction modes (Assessment, Tutoring, Vicarious, Gaming, Teachable Agent) and implementing sophisticated Expectation-Misconception-Tailored (EMT) scaffolding derived from the AutoTutor lineage. Like Algorythmic RAG, it retrieves pedagogical processes—but at a different granularity and with fundamentally different pedagogical constraints.
+
+\textbf{Architectural Similarities:}
+\begin{itemize}
+\item \textbf{Process-Level Organization}: Both systems move beyond content retrieval to retrieve structured pedagogical sequences. The Socratic Playground retrieves EMT feedback patterns (hint → prompt → assertion) calibrated to student response analysis; Algorythmic RAG retrieves RCM sequences (reflect → connect → ask) calibrated to required value completion.
+
+\item \textbf{State-Aware Adaptation}: Both systems assess learner state and adapt accordingly. The Playground uses Learner Characteristics Curves (LCC) to decompose responses into Relevant-New, Irrelevant-New, Relevant-Old, and Irrelevant-Old components; PRAR uses Required Values Index completion and implicit error pattern detection to determine learner position and confusion sources.
+
+\item \textbf{Metacognitive Scaffolding}: Both emphasize metacognitive development through structured reflection. The Playground's Teachable Agent mode has students explain concepts to a virtual peer; PRAR's constraint-enforcement approach requires students to metacognitively articulate why their design choices align with theoretical principles.
+\end{itemize}
+
+\textbf{Critical Distinctions:}
+\begin{itemize}
+\item \textbf{Scaffolding vs. Non-Generation Principle}: The Socratic Playground scaffolds learning by \textit{generating} tailored hints, prompts, and feedback based on retrieved expectations and misconceptions. When a student struggles with Newton's Second Law, the system generates explanatory content, analogies, and guided questions. Algorythmic RAG, by contrast, retrieves \textit{constraint patterns} that prevent generation altogether, ensuring students produce all creative and analytical content. When a SOCB42 student struggles to define [Concept A], the system does not provide example definitions or paraphrases—it retrieves questioning processes that elicit student articulation grounded in primary texts.
+
+\item \textbf{Adaptive Modes vs. Enforced Process}: The Playground adapts across five modes to match learner readiness: struggling students might use Tutoring mode while advanced students engage Gaming or Teachable Agent modes. This flexibility maximizes accessibility. Algorythmic RAG, conversely, enforces a single, invariant process structure (Conceptualization → Drafting → Review) across all learners, adaptively questioning \textit{within} that structure based on state. This rigidity serves a different pedagogical purpose: ensuring all students engage the complete workflow of theoretical operationalization, a higher-order competency that cannot be bypassed.
+
+\item \textbf{Domain Generality vs. Theoretical Depth}: The Playground targets broad STEM domains (physics, chemistry, biology) with emphasis on misconception correction and factual knowledge consolidation. Success is measured by accurate understanding of established concepts. Algorythmic RAG specializes in domains requiring creative application of theory—classical social theory where the goal is not correcting factual errors (What is alienation?) but deepening theoretical reasoning about complex, contested concepts (How does alienation manifest in your fictional setting? How would you operationalize it for empirical observation?). The process corpus encodes disciplinary thinking practices rather than disciplinary content.
+\end{itemize}
+
+\textbf{Complementarity}: These systems address different layers of the pedagogical challenge space and are complementary rather than competitive. The Socratic Playground excels at guiding learners through \textit{content mastery} via adaptive scaffolding—helping students understand Newton's laws, chemical bonding, or cellular respiration through iterative explanation and practice. Algorythmic RAG excels at guiding learners through \textit{creative application of frameworks}—helping students design experiments, craft arguments, or build models that demonstrate mastery through original synthesis.
+
+Both demonstrate that process-oriented RAG can transcend traditional information retrieval paradigms, but they instantiate "process" differently: the Playground retrieves explanatory and corrective processes aimed at convergence toward expert understanding; Algorythmic RAG retrieves constraining and eliciting processes aimed at divergence into student-generated creative work. The former optimizes for learning efficiency; the latter for learning authenticity. Future research might productively combine these approaches: using Playground-style scaffolding for foundational knowledge building, then transitioning to PRAR-style constraint enforcement for application and synthesis tasks.
 
 \section{Methods: Constructing the Process Corpus and TA Agent}
 
@@ -196,14 +272,49 @@ In this way, the methods of classical sociological theory—concept formation, t
 
 \section{Generalizability Beyond SOCB42 and Chatstorm}
 
-Although the present implementation is tightly integrated with SOCB42 and Chatstorm, the core ideas of Algorythmic RAG and PRAR are platform-independent:
+Although the present implementation is tightly integrated with SOCB42 and Chatstorm, the core ideas of Algorythmic RAG and PRAR are platform-independent. To demonstrate portability, we map PRAR's core components to four distinct pedagogical domains, showing how process retrieval can be adapted while maintaining the fundamental PRAR architecture.
 
-\begin{itemize}
-\item Any LLM that can call a retrieval function over a process-corpus (e.g., JSON schemas for "Required Values," templated prompts, phase descriptions) can implement PRAR.
-\item Any domain that has structured workflows—clinical reasoning, legal argumentation, policy analysis, lab protocols—can be encoded into a process corpus and used to guide learners' interactions in a Socratic fashion \citep{holstein2017, kasneci2023}.
-\end{itemize}
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{p{2.2cm}|p{3.3cm}|p{3.8cm}|p{3.3cm}}
+\toprule
+\textbf{Domain} & \textbf{Process Corpus} & \textbf{Required Values} & \textbf{Socratic Constraint} \\
+\midrule
+\textbf{Clinical Reasoning} &
+Diagnostic decision trees, differential diagnosis protocols, evidence synthesis workflows &
+[Chief Complaint], [Patient History], [Differential Diagnoses], [Diagnostic Tests], [Evidence Synthesis], [Treatment Rationale] &
+Never provides diagnoses or treatment plans; guides through systematic hypothesis generation, evidence evaluation, and diagnostic reasoning. \\
+\midrule
+\textbf{Legal Argumentation} &
+IRAC framework (Issue-Rule-Application-Conclusion), case synthesis methods, counter-argument anticipation schemas &
+[Legal Issue], [Applicable Rules], [Fact Pattern], [Rule Application], [Counter-Arguments], [Conclusion], [Case Citations] &
+Never drafts legal arguments or provides legal conclusions; elicits rule identification, fact-to-law mapping, and reasoning through ambiguities. \\
+\midrule
+\textbf{Experimental Design} &
+Hypothesis formation protocols, experimental design principles, control/variable identification processes &
+[Research Question], [Hypothesis], [Independent Variables], [Dependent Variables], [Controls], [Methods], [Predicted Outcomes] &
+Never proposes hypotheses or experimental protocols; guides from observation to testable prediction, probes confound identification. \\
+\midrule
+\textbf{Narrative Development} &
+Story structure frameworks (three-act, hero's journey), character arc development schemas &
+[Protagonist Goal], [Central Conflict], [Character Arc], [Thematic Question], [Inciting Incident], [Climax] &
+Never generates plot points, dialogue, or scene descriptions; probes narrative coherence, character motivation consistency. \\
+\bottomrule
+\end{tabular}
+\caption{Algorythmic RAG adaptation across pedagogical domains. Each domain requires domain-specific process corpora and required values, but the core PRAR architecture (retrieve process → constrain generation → elicit student reasoning) remains invariant.}
+\label{tab:generalizability}
+\end{table}
 
-The key is to formalize the often-implicit pedagogical structures of a discipline into retrievable, algorithmic form. This shifts the RAG paradigm from augmenting generation with static information to augmenting reasoning with dynamic processes.
+The key insight from Table \ref{tab:generalizability} is that Algorythmic RAG's portability depends not on domain-neutral algorithms but on the \textit{formalizability} of disciplinary expertise into retrievable process structures. Three factors predict successful PRAR implementation:
+
+\begin{enumerate}
+\item \textbf{Established Pedagogical Scaffolding Frameworks}: Domains with well-codified instructional sequences are particularly amenable to process corpus construction. Clinical reasoning's diagnostic protocols, legal education's IRAC method, and scientific method's hypothesis-testing cycle all provide existing structural templates that can be formalized into Required Values and Step-by-Step Guides.
+
+\item \textbf{Clear Distinction Between Process Knowledge and Content Knowledge}: Effective PRAR implementation requires separating \textit{how to think in the discipline} (process) from \textit{what to think about} (content). In clinical reasoning, the diagnostic process can be retrieved independently of specific disease knowledge. In creative writing, narrative structure principles can be retrieved independently of specific plot ideas.
+
+\item \textbf{Assessable Intermediate Artifacts}: PRAR works best when student reasoning can be captured in discrete, evaluable fields (Required Values) rather than only in final products. Medical students can specify [Differential Diagnoses] before final diagnosis; law students can identify [Applicable Rules] before drafting arguments.
+\end{enumerate}
 
 \section{Limitations and Challenges}
 
@@ -213,9 +324,29 @@ This work opens several critical areas for future investigation.
 
 First, there is a tension between scaffolding and agency. While Algorythmic RAG aims to preserve student autonomy by refusing to generate content, it nonetheless imposes a rigid process structure that may feel constraining or alienating to some learners. Dialogue systems can inadvertently create "pseudo-agency" where students nominally control content but are subtly guided into pre-determined pathways \citep{mattalo2024}. Future implementations should explore adaptive scaffolding that modulates constraint levels based on learner expertise and confidence.
 
-\subsection{Risk of Process Rigidity}
+\subsection{Empirically Observed Limitations in Process Enforcement}
 
-Second, there is a risk of over-constraining students' creativity. By treating process schemas as first-class retrieval targets, Algorythmic RAG may unintentionally foreground compliance with structure over exploratory play. This tension is visible in empirical work on RAG-mediated feedback, where highly grounded but rigid responses can be perceived as less helpful or engaging than more flexible ones \citep{henkel2024, levonian2023, jacobs2024}. Future work should examine how to tune process strictness to different stages of learners' development.
+Beyond theoretical concerns about learner agency, early deployment of Algorythmic RAG reveals concrete challenges grounded in empirical research on Socratic LLM limitations \citep{liu2025}. Systematic evaluation of pedagogical dialogue systems identifies consistent failure patterns that PRAR implementations must actively mitigate:
+
+\begin{itemize}
+\item \textbf{Asymmetric Feedback (P-Affirm vs. P-Redirect):} \citet{liu2025} find that LLMs achieve high Perception-Affirm scores (>0.85 for models like Claude-Sonnet-4 and Gemini-2.5-Pro) in confirming correct student responses, but fail dramatically at Perception-Redirect (often <0.55, with some models below 0.45) when errors must be identified and corrected. In SOCB42 pilot testing with 50 student interactions, the TA-agent exhibits this asymmetry: when students provide theoretically strong [Concept A] definitions citing primary texts, affirmation is clear and immediate.
+
+However, when definitions are vague or theoretically weak, redirection often consists of generic requests rather than targeted theoretical probes. This mirrors \citet{liu2025}'s observation that models resort to "vague commentary or topic shifts" rather than explicit correction, yielding mid-level scores that indicate recognition without effective remediation.
+
+\textbf{Mitigation Strategy:} Enhancing the Required Values Index with explicit \textit{error pattern catalogs}—common weak definitions for each theoretical option, typical student conflations, and targeted correction schemas. This transforms P-Redirect from generic prompting to pattern-matched retrieval of specific theoretical distinctions.
+
+\item \textbf{Implicit State Blindness (O-Reconfigure):} The TA-agent responds effectively to \textit{explicit} expressions of confusion but struggles with \textit{implicit} cues—for instance, a student proposing [Baseline: factory with strict hierarchy] and [Experimental lever: giving workers ownership] for a project focused on Tocqueville's democratic theory rather than Marx's labor theory. The system affirms the design as complete without detecting the theoretical misalignment.
+
+This reflects \citet{liu2025}'s finding that Orchestration Strategy Adaptivity (OSA) varies dramatically based on signal explicitness: models achieve 0.76-0.84 OSA for comprehension/confusion contrasts but drop to 0.54-0.76 for accurate/erroneous contrasts requiring inference.
+
+\textbf{Mitigation Strategy:} Implementing process-level consistency diagnostics that flag logical mismatches—if [Theoretical Problem: Option B (Tocqueville)] and [Concept A: alienation], trigger retrieval of theory-alignment checking processes. Rather than relying on student self-reporting of confusion, the system proactively assesses whether required values cohere with the selected theoretical framework.
+
+\item \textbf{Question Depth Homogeneity (E-Strategic vs. E-Heuristic):} \citet{liu2025} introduce Elicitation Strategy Adaptivity (ESA), measuring the degree to which questioning depth varies across learner states. High-performing models show ESA of 0.25-0.40, indicating substantial adjustment from strategic questioning (higher-order reasoning) in positive states to heuristic questioning (intuitive exploration) in negative states. Early SOCB42 implementations show low ESA (<0.15): questions maintain similar complexity whether students demonstrate strong theoretical grounding or weak grounding.
+
+\textbf{Mitigation Strategy:} Enriching the Step-by-Step Guide with graduated questioning templates explicitly tied to Required Values completion states. This makes ESA an explicit retrieval criterion rather than an emergent model behavior.
+\end{itemize}
+
+These empirically documented failure modes suggest that Algorythmic RAG's next iteration should prioritize \textit{diagnostic precision} over corpus expansion. Rather than adding more process schemas, the focus should be on improving the conditions under which existing processes are retrieved and applied. This aligns with \citet{liu2025}'s conclusion that current limitations stem not from insufficient pedagogical knowledge but from inadequate state awareness and adaptive triggering mechanisms.
 
 \subsection{Evaluation at the Process Level}
 
