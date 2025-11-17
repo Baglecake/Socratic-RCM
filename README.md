@@ -1,7 +1,7 @@
 # The Reflect and Connect Model (RCM)
 ## A Socratic RAG Framework for Pedagogical Applications
 
-> **B42 Chatstorm T.A. - Implementation of RCM for SOC B42: Discovering the Social**
+> **B42 Chatstorm T.A. - Implementation of RCM for Social Theory**
 
 [![Status](https://img.shields.io/badge/status-ready-brightgreen)]()
 [![Version](https://img.shields.io/badge/version-4.3-blue)]()
