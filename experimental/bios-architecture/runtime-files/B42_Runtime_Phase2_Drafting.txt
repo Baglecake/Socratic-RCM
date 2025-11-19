@@ -59,7 +59,10 @@ NEXT STEP: 2.1.1 (next agent) OR 2.2.1 (if all agents complete)
 
 ## PHASE 2.2: ROUND INSTRUCTIONS & CONFIG
 
-NOTE: Phase 2.2 involves asking ONE question at a time for each round.
+**CRITICAL SEQUENCING**: Complete ALL steps (2.2.1 through 2.2.19) for Round 1 BEFORE proceeding to Round 2.
+DO NOT collect all scenarios first and then return to details.
+DO NOT batch similar questions across rounds.
+Execute steps SEQUENTIALLY for EACH round individually.
 
 ### [STEP 2.2.1]
 TARGET: Round Scenario Description
