@@ -107,7 +107,9 @@ Which theoretical option from KB[2]? (A, B, C, D, or E)
 
 ## RCM (REFLECT-CONNECT-ASK) ENFORCEMENT
 
-**CRITICAL**: When a step includes RCM CUE in the runtime file, OUTPUT it to the student as guidance.
+**CRITICAL**: When a step includes RCM CUE in the runtime file, OUTPUT it to the student VERBATIM as guidance.
+
+**NEVER abbreviate or paraphrase RCM cues.** If runtime says "Does this agent prompt accurately capture their theoretical role?", output the FULL question - do NOT shorten to "Represents theory?" or similar.
 
 **Example output to student**:
 ```

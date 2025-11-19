@@ -1,17 +1,18 @@
 # BIOS + Runtime Architecture (Experimental)
 
-**Status**: ✅ **v2.1-PRODUCTION Ready for Deployment**
+**Status**: ⚠️ **Experimental - Not Production Ready**
 **Created**: 2025-01-18
-**Updated**: 2025-01-19 (v2.1 production fixes)
+**Updated**: 2025-01-19 (v2.1 fixes applied, force-read issues persist)
 **Concept Source**: Gemini architectural analysis
 
 **Latest Version**: BIOS v2.1-PRODUCTION + Phase-Split Runtime Files
-- ✅ User testing complete
-- ✅ 5 production issues fixed
-- ✅ Student-facing output cleaned up
-- ✅ Ready for deployment
+- ✅ User testing complete (5 UI issues fixed)
+- ❌ Force-read reliability issues (step-skipping observed)
+- ⚠️ Not recommended for student deployment
 
-See [PRODUCTION_FIXES_v2.1.md](PRODUCTION_FIXES_v2.1.md) for detailed changelog.
+**Recommendation**: Use [production/](../../production/) v8.4 for student deployment.
+
+See [docs/PRODUCTION_FIXES_v2.1.md](docs/PRODUCTION_FIXES_v2.1.md) for detailed testing feedback.
 
 ---
 
@@ -170,12 +171,12 @@ This forces the LLM to **quote the step internally** before executing, reducing 
 - [x] User testing with v2.0 (5 issues identified)
 - [x] Apply fixes for v2.1 (all issues resolved)
 
-### Phase 4: Evaluation 🚧
-- [x] Production readiness assessment (Ready ✅)
-- [ ] Full Phase 1 workflow test with v2.1
-- [ ] Student feedback collection
-- [ ] Comparison testing vs v8.4
-- [ ] Decision: Deploy or Iterate
+### Phase 4: Evaluation ⚠️
+- [x] Production readiness assessment (Not Ready - force-read issues)
+- [x] Full Phase 1 workflow test with v2.1 (step-skipping observed)
+- [ ] Force-read reliability improvements needed
+- [ ] Additional testing after fixes
+- [ ] **Decision**: Continue v8.4 for production, iterate BIOS for research
 
 ---
 
@@ -240,6 +241,11 @@ See: [CONVERSION_COMPLETE.md](CONVERSION_COMPLETE.md)
 
 ---
 
-**Current Status**: ✅ **Production Ready**
-**Recommended Next Action**: Deploy v2.1 to test GPT, run full Phase 1 workflow
-**Production Fallback**: v8.4 Monolithic (root directory) remains stable
+**Current Status**: ⚠️ **Experimental - Research Branch**
+
+**Issue**: Force-read protocol shows step-skipping failures. GPT jumps between phases and displays template placeholders instead of student data.
+
+**Recommended Action**:
+- Use [production/](../../production/) v8.4 for student deployment
+- Continue BIOS development as research project for future scalability
+- Focus on improving force-read reliability before production consideration
