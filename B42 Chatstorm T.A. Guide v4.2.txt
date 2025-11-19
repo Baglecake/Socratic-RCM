@@ -149,7 +149,7 @@ For each agent, provide:
    * [Self-Reflections] (enabled per-round in Chatstorm Options → Agent Settings)
    * [Non-anthropomorphic agent]
 
-NOTE: The Analyst/Tabulator is optional and NOT counted toward the "at least 2 for the entire project" Advanced Functions requirement.
+NOTE: The Analyst/Tabulator is REQUIRED for the final summary round and does NOT count toward the "at least 2 for the entire project" Advanced Functions requirement.
 
 
 ||
@@ -231,7 +231,7 @@ If [yes] then specify:
 [name] + [purpose]
 
 NOTE:
-* The Analyst/Tabulator is OPTIONAL and does NOT count toward the ≥2 requirement.
+* The Analyst/Tabulator is REQUIRED for the final summary round and does NOT count toward the ≥2 requirement.
 * Self-Reflection is not configured here; it is enabled per-round in Section 3 by checking "Self-Reflection" in Chatstorm Options → Agent Settings.
 * Flow settings (Participant Order, End the round, Transition) are configured per-round in Section 3, not in this planning section.
 
