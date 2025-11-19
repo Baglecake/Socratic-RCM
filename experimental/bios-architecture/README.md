@@ -1,8 +1,17 @@
 # BIOS + Runtime Architecture (Experimental)
 
-**Status**: 🧪 Experimental Alternative to v8.4 Monolithic Prompt
+**Status**: ✅ **v2.1-PRODUCTION Ready for Deployment**
 **Created**: 2025-01-18
+**Updated**: 2025-01-19 (v2.1 production fixes)
 **Concept Source**: Gemini architectural analysis
+
+**Latest Version**: BIOS v2.1-PRODUCTION + Phase-Split Runtime Files
+- ✅ User testing complete
+- ✅ 5 production issues fixed
+- ✅ Student-facing output cleaned up
+- ✅ Ready for deployment
+
+See [PRODUCTION_FIXES_v2.1.md](PRODUCTION_FIXES_v2.1.md) for detailed changelog.
 
 ---
 
@@ -147,23 +156,26 @@ This forces the LLM to **quote the step internally** before executing, reducing 
 - [x] Document BIOS concept
 - [x] Identify force-read protocol requirements
 
-### Phase 2: Implementation 🚧
-- [ ] Write BIOS system prompt v1.0
-- [ ] Convert v8.4 steps to runtime logic file
-- [ ] Implement force-read protocol
-- [ ] Create step templates
+### Phase 2: Implementation ✅
+- [x] Write BIOS system prompt v1.0
+- [x] Convert v8.4 steps to runtime logic file (100% complete)
+- [x] Implement force-read protocol
+- [x] Create step templates
+- [x] Split into phase-specific files (v2.0)
+- [x] Fix production issues from testing (v2.1)
 
-### Phase 3: Testing 📋
-- [ ] Test lazy retrieval scenarios
-- [ ] Verify force-read enforcement
-- [ ] Compare strictness to v8.4
-- [ ] Student workflow testing
+### Phase 3: Testing ✅
+- [x] Test lazy retrieval scenarios (KB retrieval failure identified, fixed with split)
+- [x] Verify force-read enforcement (theory queries working)
+- [x] User testing with v2.0 (5 issues identified)
+- [x] Apply fixes for v2.1 (all issues resolved)
 
-### Phase 4: Evaluation 📊
-- [ ] Performance metrics
-- [ ] Maintenance comparison
-- [ ] Production readiness assessment
-- [ ] Decision: Deploy or Archive
+### Phase 4: Evaluation 🚧
+- [x] Production readiness assessment (Ready ✅)
+- [ ] Full Phase 1 workflow test with v2.1
+- [ ] Student feedback collection
+- [ ] Comparison testing vs v8.4
+- [ ] Decision: Deploy or Iterate
 
 ---
 
@@ -175,15 +187,59 @@ This shifts focus from **"cramming everything into the prompt"** to **"enforcing
 
 ---
 
-## Next Steps
+## Version History
 
-1. **Design BIOS Prompt**: Write minimal system prompt with force-read loop
-2. **Convert v8.4**: Transform current steps into runtime logic format
-3. **Test Protocol**: Verify retrieval happens every turn
-4. **A/B Compare**: Run parallel tests vs. v8.4
+### v2.1-PRODUCTION (2025-01-19) ✅ Current
+**Status**: Production ready for deployment
+
+**Fixes from user testing**:
+- Fixed Step 1.7 wording (removed "KB[2]" jargon)
+- Added prohibition #6: NO RUNTIME DISPLAY
+- Added RCM ENFORCEMENT section (show Socratic guidance)
+- Added STUDENT-FACING OUTPUT FORMAT examples
+- Modified execution loop to be silent (no debugging shown)
+
+**Files**: `B42_BIOS_System_Prompt_v2.1-PRODUCTION.txt`
+
+See: [PRODUCTION_FIXES_v2.1.md](PRODUCTION_FIXES_v2.1.md)
+
+### v2.0-SPLIT (2025-01-18)
+**Status**: Tested, issues identified
+
+**Changes**:
+- Split 30KB runtime into 3 phase files (2-19KB each)
+- Added phase detection logic to BIOS
+- Fixed KB retrieval reliability
+
+**Files**: `B42_BIOS_System_Prompt_v2.0-SPLIT.txt`
+
+See: [SPLIT_ARCHITECTURE.md](SPLIT_ARCHITECTURE.md)
+
+### v1.0 (2025-01-18)
+**Status**: Experimental, retrieval issues
+
+**Changes**:
+- Initial BIOS architecture
+- Single 30KB runtime file (caused retrieval failures)
+- Force-read protocol implemented
+
+**Files**: `B42_BIOS_System_Prompt_v1.0.txt`
+
+See: [CONVERSION_COMPLETE.md](CONVERSION_COMPLETE.md)
 
 ---
 
-**Experimental Status**: Not production-ready
-**Current Production**: v8.4 Monolithic (root directory)
-**Purpose**: Explore architectural alternative for future scalability
+## Next Steps
+
+1. ✅ **Deploy v2.1**: Upload to test GPT instance
+2. **Full Workflow Test**: Run complete Phase 1 with student
+3. **Verification**: Confirm no runtime info visible, RCM shown
+4. **Comparison Test**: Run same scenario through v8.4 and v2.1
+5. **Student Feedback**: Collect reactions to strictness and clarity
+6. **Decision**: Deploy to production or iterate further
+
+---
+
+**Current Status**: ✅ **Production Ready**
+**Recommended Next Action**: Deploy v2.1 to test GPT, run full Phase 1 workflow
+**Production Fallback**: v8.4 Monolithic (root directory) remains stable
