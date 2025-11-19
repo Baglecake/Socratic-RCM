@@ -516,7 +516,7 @@ Within ||...|| markers
 - Replace [Identifier] with agent's identifier from 1.5.2
 - Replace [Goal] with measurable goal from 1.6.1
 - Replace [Persona] with persona from 1.6.2
-RCM CUE (after output): "Represents theory?"
+RCM CUE (after output): "Does this agent prompt accurately capture their theoretical role from your framework? Does it reflect how [theorist] would predict they'd behave?"
 CONSTRAINT:
 - Pull data from Section 1 (compiled in 1.8)
 - Use exact student wording for Goal and Persona
