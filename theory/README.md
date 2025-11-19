@@ -1,0 +1,1 @@
+This directory contains theory lecture notes created by Professor Daniel Silver (University of Toronto). This material is to serve as the robust knowledge base for the Socratic RCM as deployed in sociological pedagogy.
