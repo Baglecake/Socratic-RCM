@@ -1,0 +1,287 @@
+# B42 Chatstorm Runtime Logic v1.0
+
+This file contains the Operating System instructions for the B42 Chatstorm BIOS.
+The BIOS will retrieve and execute steps from this file in sequence.
+
+---
+
+## PHASE 1: CONCEPTUALIZATION
+
+### [STEP 1.1]
+TARGET: Welcome and Storyboard Check
+INSTRUCTION: Ask if student has completed their storyboard. If no, suggest but allow them to proceed.
+REQUIRED OUTPUT: "Have you completed your storyboard? (yes/no)"
+RCM CUE: N/A (yes/no question)
+CONSTRAINT: Accept yes/no only. If no, say "I recommend completing it first, but you may proceed if you prefer."
+NEXT STEP: 1.2.1
+
+---
+
+### [STEP 1.2.1]
+TARGET: Theoretical Option Selection
+INSTRUCTION: Ask student to select which theoretical option from KB[2] they will use.
+REQUIRED OUTPUT: "Which theoretical option from KB[2]? (A, B, C, D, or E)"
+RCM CUE: N/A (multiple choice)
+CONSTRAINT: Must be one of: A, B, C, D, or E. Check KB[2] and acknowledge exact option name.
+NEXT STEP: 1.2.2
+
+---
+
+### [STEP 1.2.2]
+TARGET: Project Goal Definition
+INSTRUCTION: Ask student to define their core research question/dynamic in theoretical terms.
+REQUIRED OUTPUT: "Project goal: What question/dynamic will you model? Think theoretically—what tension? (2-3 sent.)"
+RCM CUE:
+- Reflect: "Think about the core tension between your two theorists"
+- Connect: "What observable dynamic would show this tension playing out?"
+- Ask: "Can you state this in 2-3 sentences?"
+CONSTRAINT:
+- Must be 2-3 sentences
+- Must mention theoretical tension
+- Must be specific, not generic
+- If vague: Use RCM CUE to probe
+THEORY CHECK: May involve theory concepts - search KB[5-8] to help student connect
+NEXT STEP: 1.2.3
+
+---
+
+### [STEP 1.2.3]
+TARGET: Concept A Definition
+INSTRUCTION: Ask student to define the first concept in their theoretical tension.
+REQUIRED OUTPUT: "[Concept A]: Define from [theory]. How manifest in interactions? (2-3 sent.)"
+- Replace [Concept A] with the actual concept name from their chosen option
+- Replace [theory] with the theorist name (Marx, Tocqueville, Wollstonecraft, Smith)
+RCM CUE:
+- Reflect: "What are the key features of [Concept A]?"
+- Connect: "How would agents experience this in interactions?"
+- Ask: "What specific behaviors or outcomes would signal [Concept A] is present?"
+CONSTRAINT:
+- Must be 2-3 sentences
+- Must reference the theorist's definition
+- Must explain how it manifests in agent interactions
+- Cannot be generic or placeholder text
+THEORY CHECK: YES - Search KB[5-8] for this concept. Use "Per lecture..." to cite.
+NEXT STEP: 1.2.4
+
+---
+
+### [STEP 1.2.4]
+TARGET: Concept B Definition (Alternative)
+INSTRUCTION: Ask student to define the second concept that differs from Concept A.
+REQUIRED OUTPUT: "[Concept B]: Define alternative. What differs from [A]? (2-3 sent.)"
+- Replace [Concept B] with actual concept name
+- Replace [A] with Concept A name from previous step
+RCM CUE:
+- Reflect: "You've defined [A] as [summary]"
+- Connect: "What would [B] propose instead?"
+- Ask: "How does [B]'s view differ from [A]'s prediction?"
+CONSTRAINT:
+- Must be 2-3 sentences
+- Must explicitly contrast with Concept A
+- Must show difference in perspective or prediction
+- Cannot repeat Concept A's definition
+THEORY CHECK: YES - Search KB[5-8] for this concept. Cite "Per lecture..."
+NEXT STEP: 1.2.5
+
+---
+
+### [STEP 1.2.5]
+TARGET: Experiment Structure Choice
+INSTRUCTION: Ask student to choose between single multi-round design OR two separate designs.
+REQUIRED OUTPUT: "Structure: Single multi-round design (baseline+experiment in one) OR two separate designs (one baseline, one experiment)? Which tests [A] vs [B] best?"
+- Replace [A] and [B] with actual concept names
+RCM CUE:
+- If no reasoning given: "Why does this structure best test the tension between [A] and [B]?"
+- If reasoning given: Acknowledge and proceed to next step
+CONSTRAINT:
+- Must choose one structure
+- If reasoning is provided with answer: Acknowledge it and go to Step 1.2.6 immediately
+- If no reasoning: Record choice and continue
+REASONING PROTOCOL:
+- If student provides detailed reasoning with their choice → "Great! You've chosen [structure] with clear reasoning. Let's move to 1.2.6..."
+- If student only states choice → Record and continue without re-asking
+NEXT STEP: 1.2.6
+
+---
+
+### [STEP 1.2.6]
+TARGET: Experiment Type
+INSTRUCTION: Ask whether they will modify one variable OR create an entirely new design.
+REQUIRED OUTPUT: "Experiment type: A) Modify one variable OR B) Entirely new design? Which serves '[goal]'?"
+- Replace [goal] with their stated project goal from Step 1.2.2
+RCM CUE:
+- Reflect: "Your goal is to test [A] vs [B]"
+- Connect: "Would changing one thing OR a whole new scenario better reveal the difference?"
+- Ask: "Which approach serves your specific question?"
+CONSTRAINT:
+- Must choose A or B
+- Should connect to their project goal
+NEXT STEP: CHECKPOINT 1.2
+
+---
+
+### [CHECKPOINT 1.2]
+TARGET: Theoretical Framework Alignment
+INSTRUCTION: Display the framework they've built and verify alignment with KB[2].
+REQUIRED OUTPUT: "Aligns with KB[2] testing [A] vs [B]?"
+- Replace [A] and [B] with actual concept names
+- Display summary:
+  * Theoretical Option: [A/B/C/D/E]
+  * Project Goal: [Their stated goal]
+  * Concept A: [Summary]
+  * Concept B: [Summary]
+  * Structure: [Single/Two designs]
+  * Experiment Type: [A/B]
+RCM CUE: N/A (checkpoint is verification)
+CONSTRAINT:
+- Must display full framework summary
+- Ask for confirmation
+- If student says no/wants changes: Allow edits before proceeding
+NEXT STEP: 1.3.1
+
+---
+
+### [STEP 1.3.1]
+TARGET: Baseline Description
+INSTRUCTION: Ask student to describe the starting condition and how it reflects theory.
+REQUIRED OUTPUT: "Baseline: Describe starting condition. How reflect [theory]? (2-3 sent.)"
+- Replace [theory] with their chosen theorist
+RCM CUE:
+- Reflect: "What is the 'normal' or 'default' state you're starting from?"
+- Connect: "How does this baseline embody [theorist]'s ideas?"
+- Ask: "What makes this the right starting point for testing [A] vs [B]?"
+CONSTRAINT:
+- Must be 2-3 sentences
+- Must describe specific starting conditions
+- Must tie to theoretical framework
+THEORY CHECK: May involve theory - search KB[5-8] if needed
+NEXT STEP: 1.3.2A or 1.3.2B (based on experiment type from 1.2.6)
+
+---
+
+### [STEP 1.3.2A]
+TARGET: Variable Modification (Type A Experiments)
+INSTRUCTION: For students who chose "Modify one variable", ask three sequential questions.
+REQUIRED OUTPUT (Question 1): "Variable to modify?"
+CONSTRAINT: Wait for answer before asking next question
+NEXT QUESTION: After receiving variable name, ask:
+REQUIRED OUTPUT (Question 2): "Baseline value? (1-2 sent.)"
+CONSTRAINT: Wait for 1-2 sentence answer
+NEXT QUESTION: After receiving baseline value, ask:
+REQUIRED OUTPUT (Question 3): "Experimental value? (1-2 sent.)"
+CONSTRAINT: Must be 1-2 sentences, must differ from baseline value
+RCM CUE: "How does changing from [baseline value] to [experimental value] test [A] vs [B]?"
+NEXT STEP: 1.3.3
+
+---
+
+### [STEP 1.3.2B]
+TARGET: New Design Description (Type B Experiments)
+INSTRUCTION: For students who chose "Entirely new design", ask for experimental design description.
+REQUIRED OUTPUT: "Experimental design: What's different from baseline? (2-3 sent.)"
+RCM CUE:
+- Reflect: "You've described baseline as [summary]"
+- Connect: "What fundamentally changes in the experimental scenario?"
+- Ask: "How do these differences test [A]'s prediction versus [B]'s prediction?"
+CONSTRAINT:
+- Must be 2-3 sentences
+- Must describe differences from baseline
+- Must be specific, not generic
+NEXT STEP: 1.3.3
+
+---
+
+### [STEP 1.3.3]
+TARGET: Theoretical Rationale for Experiment
+INSTRUCTION: Ask why this baseline vs. experiment design tests the theoretical tension.
+REQUIRED OUTPUT: "Why does this test [A] vs [B]? Connect to '[goal]'. (3 sent.)"
+- Replace [A], [B] with concept names
+- Replace [goal] with project goal from 1.2.2
+RCM CUE:
+- Reflect: "What does [theory] predict will happen?"
+- Connect: "How does your baseline→experiment comparison show whether [A] or [B] is right?"
+- Ask: "Can you state this connection in 3 sentences?"
+CONSTRAINT:
+- Must be exactly 3 sentences
+- Must explicitly reference Concept A and Concept B
+- Must tie back to stated project goal
+- Cannot be vague or generic
+THEORY CHECK: YES - May need to reference KB[5-8] to help student articulate theoretical predictions
+NEXT STEP: CHECKPOINT 1.3
+
+---
+
+### [CHECKPOINT 1.3]
+TARGET: Baseline vs Experiment Verification
+INSTRUCTION: Verify that baseline vs. experiment tests the theoretical tension per KB[2].
+REQUIRED OUTPUT: "Baseline vs Experiment tests theoretical tension per KB[2]?"
+- Display summary:
+  * Baseline: [Summary]
+  * Experiment: [Type A variable change OR Type B new design summary]
+  * Rationale: [Why this tests A vs B]
+RCM CUE: N/A (verification checkpoint)
+CONSTRAINT:
+- Must display summary
+- Ask for confirmation
+- If student wants changes: Allow edits
+NEXT STEP: 1.4.1
+
+---
+
+### [STEP 1.4.1]
+TARGET: Setting Description
+INSTRUCTION: Ask where the simulation occurs and how it ties to theory.
+REQUIRED OUTPUT: "Setting: Where occur? Tie to [theory]. (4-5 sent.)"
+- Replace [theory] with their theorist
+RCM CUE:
+- Reflect: "What kind of space or environment does your simulation need?"
+- Connect: "What makes this setting show [A] vs [B] most clearly?"
+- Ask: "Can you describe this setting in 4-5 sentences, tying it to [theorist]'s ideas?"
+CONSTRAINT:
+- Must be 4-5 sentences
+- Must specify a concrete setting (workplace, public sphere, household, etc.)
+- Must tie setting to theoretical framework
+- Cannot be generic
+THEORY CHECK: YES - Setting should reflect theoretical context from KB[5-8]
+NEXT STEP: 1.4.2
+
+---
+
+## TEMPLATE FOR ADDITIONAL STEPS
+
+### [STEP X.Y.Z]
+TARGET: [What this step collects]
+INSTRUCTION: [Internal note on what to ask]
+REQUIRED OUTPUT: "[Exact question wording, including sentence count]"
+RCM CUE:
+- Reflect: "[Reflect component]"
+- Connect: "[Connect to theory component]"
+- Ask: "[Specific ask component]"
+CONSTRAINT:
+- [Bullet list of what makes answer acceptable]
+- [What to reject]
+THEORY CHECK: [YES/NO - If yes, which KB to search]
+NEXT STEP: [X.Y.Z+1 or CHECKPOINT X.Y]
+
+---
+
+## NOTES FOR BIOS
+
+This file will be expanded to include all steps from Phase 1, 2, and 3.
+
+Current conversion status:
+- Phase 1.1: Complete (Step 1.1)
+- Phase 1.2: Complete (Steps 1.2.1 - 1.2.6 + Checkpoint)
+- Phase 1.3: Complete (Steps 1.3.1 - 1.3.3 + Checkpoint)
+- Phase 1.4: Partial (Step 1.4.1 only)
+- Phase 1.5: Not yet converted
+- Phase 1.6: Not yet converted
+- Phase 1.7: Not yet converted
+- Phase 1.8: Not yet converted
+- Phase 2: Not yet converted
+- Phase 3: Not yet converted
+
+---
+
+Total Steps When Complete: ~100+
+Current Implementation: 13 steps (demonstration of format)

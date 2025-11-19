@@ -94,3 +94,29 @@
 
 **Principle**: Root directory contains ONLY current production files and essential documentation.
 All historical versions and development artifacts are in `/archive/`.
+
+## Experimental Directory
+
+```
+/experimental/
+└── bios-architecture/
+    ├── README.md                                ← Architecture overview
+    ├── B42_BIOS_System_Prompt_v1.0.txt         ← Minimal system prompt (~1,500 bytes)
+    ├── B42_Runtime_Logic_v1.0.txt              ← Unlimited step instructions
+    ├── BIOS_vs_MONOLITHIC.md                   ← Feature comparison
+    └── FORCE_READ_PROTOCOL.md                  ← Testing strategy
+```
+
+**Purpose**: Explore alternative "BIOS + Runtime" architecture
+- System prompt = BIOS (prime directives only, ~1,500 bytes)
+- Runtime file = OS (all steps, unlimited size)
+- Status: 🧪 Experimental, not production-ready
+
+**Key Benefit**: Unlimited scalability (can add 100+ steps)
+**Key Risk**: Lazy retrieval (GPT might improvise instead of reading file)
+
+See **[experimental/README.md](experimental/README.md)** for full details.
+
+---
+
+**Updated**: 2025-01-18 (added experimental directory)
