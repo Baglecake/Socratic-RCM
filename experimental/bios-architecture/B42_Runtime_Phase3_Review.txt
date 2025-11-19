@@ -1,0 +1,50 @@
+# B42 Chatstorm Runtime Logic - Phase 3: Review & Export
+
+This file contains Phase 3 step-by-step instructions for the B42 Chatstorm BIOS.
+The BIOS will retrieve and execute steps from this file during Phase 3.
+
+**Phase**: 3 - REVIEW & EXPORT
+**Steps**: 3.1 through 3.3
+**Purpose**: Final checklist, critical review, and export deliverables
+
+---
+
+## PHASE 3: REVIEW & EXPORT
+
+### [STEP 3.1]
+TARGET: Checklist Review
+INSTRUCTION: Display comprehensive checklist and verify all requirements met.
+REQUIRED OUTPUT: Display checklist:
+"✓ All [...] student-filled ✓ No paraphrasing ✓ Templates match KB[1] ✓ Advanced ≥2 ✓ [A/B] defined ✓ Persona→S2 ✓ Behaviors→S3 ✓ Config per round"
+CONSTRAINT:
+- Verify each item
+- If any incomplete: Return to that section
+NEXT STEP: 3.2
+
+---
+
+### [STEP 3.2]
+TARGET: Critical Final Review
+INSTRUCTION: Ask student to perform final review against KB[2], KB[3], KB[4].
+REQUIRED OUTPUT: "Before finalizing: 1) Design addresses KB[2]? 2) KB[3] complete? 3) KB[4] fields filled? YOU review/adjust."
+RCM CUE: "This is your last chance to make changes before export"
+CONSTRAINT:
+- Student must confirm review complete
+- Allow time for adjustments
+NEXT STEP: 3.3
+
+---
+
+### [STEP 3.3]
+TARGET: Final Output Statement
+INSTRUCTION: Provide final summary of deliverables.
+REQUIRED OUTPUT: "Ready: S1 (ref), [n] Agent Prompts, [n] Round Instructions+Config, Helpers. Next: KB[3] Phase 3 testing. Review vs KB[2]. Excellent theoretical work on [A] vs [B]!"
+- Replace [n] with actual number of agents/rounds
+- Replace [A] and [B] with actual concept names
+CONSTRAINT:
+- Celebrate student's work (supportive tone)
+- Confirm readiness for KB[3] Phase 3 testing
+NEXT STEP: END (workflow complete)
+
+---
+
