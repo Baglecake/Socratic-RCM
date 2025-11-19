@@ -37,6 +37,22 @@ CONSTRAINT:
 - Repeat for each agent
 - After student confirms alignment, move to next agent
 NOTE: After all agent prompts created, proceed to round instructions
+CANVAS_UPDATE: After each agent prompt displayed and confirmed:
+||CANVAS_UPDATE||
+{
+  "section": "agents",
+  "action": "update",
+  "index": "<current agent index>",
+  "data": {
+    "prompt": {
+      "role": "<identifier from 1.5.2>",
+      "primary_goal": "<goal from 1.6.1>",
+      "persona": "<persona from 1.6.2>",
+      "compiled_in_step": "2.1.1"
+    }
+  }
+}
+||END_CANVAS_UPDATE||
 NEXT STEP: 2.1.1 (next agent) OR 2.2.1 (if all agents complete)
 
 ---
@@ -155,6 +171,25 @@ REQUIRED OUTPUT: Reference KB[1] [S3-TEMPLATE] and output within ||...|| markers
 CONSTRAINT:
 - Use student's exact wording
 - Follow KB[1] template structure
+**CRITICAL STOP**: DO NOT proceed to Phase 2.3 yet! After compiling round instructions, you MUST ask platform configuration questions (Steps 2.2.9-2.2.19) for THIS round BEFORE moving to the next round or Phase 2.3.
+CANVAS_UPDATE: After round instructions compiled and displayed:
+||CANVAS_UPDATE||
+{
+  "section": "rounds",
+  "action": "append",
+  "data": {
+    "index": "<current round number>",
+    "scenario": "<from 2.2.1>",
+    "concept_a_in_round": "<from 2.2.2>",
+    "concept_b_in_round": "<from 2.2.3>",
+    "rules": "<from 2.2.4>",
+    "tasks": "<from 2.2.5>",
+    "sequence": "<from 2.2.6>",
+    "agent_behaviors": "<from 2.2.7 if applicable>",
+    "compiled_s3_template": "<full compiled template displayed in this step>"
+  }
+}
+||END_CANVAS_UPDATE||
 NEXT STEP: 2.2.9 (platform config for same round)
 
 ---
@@ -268,6 +303,35 @@ REQUIRED OUTPUT: Output all platform config settings for Round [n]:
 - Model: [choice]
 CONSTRAINT:
 - Display all settings clearly
+CANVAS_UPDATE: After checklist displayed and before verification:
+||CANVAS_UPDATE||
+{
+  "section": "rounds",
+  "action": "update",
+  "index": "<current round number>",
+  "data": {
+    "platform_config": {
+      "participants": "<from 2.2.9>",
+      "who_sends": "<from 2.2.10>",
+      "order": "<from 2.2.11>",
+      "end_condition": {
+        "method": "<from 2.2.12>",
+        "details": "<number or moderator config from 2.2.12>"
+      },
+      "transition": "<from 2.2.13>",
+      "detail_level": "<from 2.2.14>",
+      "creativity": "<from 2.2.15>",
+      "options": {
+        "ask_questions": "<true/false from 2.2.16>",
+        "self_reflection": "<true/false from 2.2.16>",
+        "isolated": "<true/false from 2.2.16>"
+      },
+      "model": "<from 2.2.17>",
+      "compiled_checklist": "<full checklist text displayed in this step>"
+    }
+  }
+}
+||END_CANVAS_UPDATE||
 NEXT STEP: 2.2.19
 
 ---
@@ -280,7 +344,13 @@ RCM CUE: "Does this setup enable testing [A] vs [B] in Round [n]?"
 CONSTRAINT:
 - Wait for confirmation
 - If student wants changes: Allow edits
-NEXT STEP: 2.2.1 (next round) OR 2.3 (if all rounds complete)
+NEXT STEP LOGIC:
+- **Count total rounds from Step 1.4.2**
+- **Check current round number**
+- If current round < total rounds: Go to Step 2.2.1 (next round scenario)
+- If current round = total rounds (all rounds complete): Go to Step 2.3.1 (helper templates)
+**DO NOT skip to Phase 2.3 if rounds remain!**
+NEXT STEP: 2.2.1 (next round) OR 2.3.1 (if all rounds complete)
 
 ---
 
@@ -337,6 +407,40 @@ INSTRUCTION: Check that helper functions serve KB[2] goals.
 REQUIRED OUTPUT: "Functions serve KB[2] goals?"
 CONSTRAINT:
 - Verify alignment with assignment requirements
+CANVAS_UPDATE: After verification confirmed:
+||CANVAS_UPDATE||
+{
+  "section": "helpers",
+  "action": "update",
+  "data": {
+    "moderator": {
+      "used": "<true/false from 1.7 or 2.2>",
+      "end_round_instructions": "<from 2.3.1 if used>"
+    },
+    "analyst": {
+      "required": true,
+      "note": "Required per v8.4, uses S4-ANALYST from KB[1]"
+    },
+    "non_anthropomorphic": {
+      "used": "<true/false from 1.7>",
+      "template": "<from 2.3.3 if used>"
+    },
+    "self_reflections": {
+      "used": "<true/false from 1.7>",
+      "note": "Checkbox only, configured in platform options per round"
+    }
+  }
+}
+||END_CANVAS_UPDATE||
+||CANVAS_UPDATE||
+{
+  "section": "status",
+  "action": "update",
+  "data": {
+    "phase2_complete": true
+  }
+}
+||END_CANVAS_UPDATE||
 NEXT STEP: 3.1 (Phase 3)
 
 ---
