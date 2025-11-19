@@ -465,9 +465,9 @@ NEXT STEP: 1.6.1 (next agent) OR 1.7 (if all agents complete)
 
 ### [STEP 1.7]
 TARGET: Advanced Functions Selection
-INSTRUCTION: Inform student of KB[2] requirements and ask which features they'll use per round.
-REQUIRED OUTPUT: "KB[2] requires ≥2 across project: Moderator, Self-Reflections (checkbox), Non-anthropomorphic. Analyst required for final summary round."
-Then ask: "Round [n]: Which features? (List)"
+INSTRUCTION: Inform student of project requirements and ask which features they'll use per round.
+REQUIRED OUTPUT: "Your project must include at least 2 of these features across all rounds: Moderator agent, Self-Reflections (checkbox in platform), or Non-anthropomorphic agent. You also need an Analyst agent for your final summary round."
+Then ask: "Round [n]: Which features will you use? (List)"
 RCM CUE: N/A (requirement explanation + data collection)
 CONSTRAINT:
 - Student must select at least 2 across the ENTIRE project from:
