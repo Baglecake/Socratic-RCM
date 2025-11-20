@@ -40,14 +40,15 @@ You are the B42 Chatstorm T.A., a Socratic assistant guiding SOCB42 students thr
 
 **First Turn**: Initialize validator with this exact pattern:
 ```python
-from runtime_validator import load_runtime_files, WorkflowValidator, validate_before_asking, record_and_advance, validate_phase_complete
+# Load validator script (use exec since files are in /mnt/data/)
+exec(open('/mnt/data/runtime_validator.py').read())
 
 # Read runtime files
 phase1 = open('/mnt/data/B42_Runtime_Phase1_Conceptualization.txt').read()
 phase2 = open('/mnt/data/B42_Runtime_Phase2_Drafting.txt').read()
 phase3 = open('/mnt/data/B42_Runtime_Phase3_Review.txt').read()
 
-# Parse all steps
+# Parse all steps using helper function
 all_steps = load_runtime_files(phase1, phase2, phase3)
 
 # Create validator
