@@ -1,0 +1,64 @@
+╔══════════════════════════════════════════════════════════════════╗
+║                   B42-BIOS UPLOAD CHECKLIST                      ║
+║                                                                  ║
+║  Upload these 11 files to Custom GPT Knowledge in this order:   ║
+╚══════════════════════════════════════════════════════════════════╝
+
+STEP 1: RUNTIME FILES (3 files)
+================================
+[ ] runtime-files/B42_Runtime_Phase1_Conceptualization.txt
+[ ] runtime-files/B42_Runtime_Phase2_Drafting.txt
+[ ] runtime-files/B42_Runtime_Phase3_Review.txt
+
+
+STEP 2: ASSIGNMENT FILES (3 files)
+===================================
+[ ] assignment-files/B42 Final Project.txt
+[ ] assignment-files/B42 Chatstorm T.A. Guide v4.2.txt
+[ ] assignment-files/Appendix A - Required Values Index v3.2.txt
+
+
+STEP 3: THEORY FILES (4 files)
+===============================
+[ ] theory-files/marx_theory.txt
+[ ] theory-files/tocqueville_theory.txt
+[ ] theory-files/wollstonecraft_theory.txt
+[ ] theory-files/smith_theory.txt
+
+
+STEP 4: VALIDATOR SCRIPT (1 file)
+==================================
+[ ] validator/runtime_validator.py
+
+
+TOTAL: 11 files uploaded
+========================
+
+
+STEP 5: PASTE INSTRUCTIONS (DO NOT UPLOAD)
+===========================================
+[ ] Open: CUSTOM_GPT_INSTRUCTIONS.txt
+[ ] Copy ENTIRE contents
+[ ] Paste into GPT "Instructions" box
+
+
+VERIFICATION
+============
+After upload, check GPT Knowledge section shows: 11 files
+
+Missing runtime_validator.py? → Validation won't work!
+Missing runtime files? → GPT won't know the steps!
+Uploaded CUSTOM_GPT_INSTRUCTIONS.txt? → Should be in Instructions, not Knowledge!
+
+
+DONE!
+=====
+[ ] Enable Code Interpreter in Capabilities
+[ ] Save GPT
+[ ] Test: "Help me start my project"
+[ ] Expected: "Have you completed your storyboard? (yes/no)"
+
+
+═══════════════════════════════════════════════════════════════════
+All files are in the B42-BIOS directory - ready to upload!
+═══════════════════════════════════════════════════════════════════

@@ -1,0 +1,92 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "BIOS Orchestrator API",
+    "description": "Backend for B42 Chatstorm Custom GPT - enforces workflow execution",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://YOUR_NGROK_URL_HERE.ngrok.app",
+      "description": "Local development server via ngrok"
+    }
+  ],
+  "paths": {
+    "/next_step": {
+      "post": {
+        "summary": "Get next workflow step",
+        "description": "Returns the next question to ask the student based on orchestrator state",
+        "operationId": "next_step",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "session_id": {
+                    "type": "string",
+                    "description": "Unique session ID for this student conversation"
+                  },
+                  "current_step_id": {
+                    "type": "string",
+                    "nullable": true,
+                    "description": "Current step ID (null if this is the first message)"
+                  },
+                  "student_message": {
+                    "type": "string",
+                    "description": "The student's response to the previous question"
+                  }
+                },
+                "required": ["session_id", "student_message"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Next step information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "next_step_id": {
+                      "type": "string",
+                      "description": "The ID of the next step"
+                    },
+                    "message_for_student": {
+                      "type": "string",
+                      "description": "The question or message to show the student"
+                    },
+                    "done": {
+                      "type": "boolean",
+                      "description": "True if the workflow is complete"
+                    },
+                    "canvas_update": {
+                      "type": "object",
+                      "nullable": true,
+                      "description": "Canvas update data (for internal use)"
+                    },
+                    "debug_info": {
+                      "type": "object",
+                      "nullable": true,
+                      "description": "Debug information (for internal use)"
+                    }
+                  },
+                  "required": ["next_step_id", "message_for_student", "done"]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (e.g., invalid step_id)"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    }
+  }
+}

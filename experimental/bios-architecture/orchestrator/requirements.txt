@@ -1,0 +1,14 @@
+# BIOS Orchestrator Requirements
+
+# Core dependencies (required)
+# None - uses only Python standard library for core functionality
+
+# Optional: OpenAI integration
+openai>=1.0.0
+
+# Optional: Anthropic integration
+anthropic>=0.18.0
+
+# Development/testing
+pytest>=7.4.0
+pytest-cov>=4.1.0

@@ -1,0 +1,16 @@
+# BIOS Orchestrator API Requirements
+
+# FastAPI and server
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.0.0
+
+# Optional: OpenAI integration
+openai>=1.0.0
+
+# Optional: Anthropic integration
+anthropic>=0.18.0
+
+# Development
+pytest>=7.4.0
+httpx>=0.25.0  # For testing FastAPI
