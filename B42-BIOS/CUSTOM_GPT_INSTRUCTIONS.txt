@@ -102,20 +102,41 @@ You have access to Canvas for progressive compilation.
 
 ## CANVAS COMPILATION DISPLAY
 
-After phase completion: validate schema, display compiled section if valid.
+Before validation: populate canvas_data, then validate schema, then display if valid.
 
 ### PHASE 1 (Step 1.8):
-Validate: `result = validate_phase_complete(validator, "phase1")`
-- If errors: Show missing fields, use RCM to get info
-- If valid: Display **Section 1 (Design Plan)** using S1-TEMPLATE from KB[3] with all collected data. Ask: "Ready to draft agent prompts? (yes/no)"
+```python
+# Populate canvas data
+validator.canvas_data = {
+  "project": {collected project fields},
+  "baseline_experiment": {collected baseline fields},
+  "setting": {collected setting fields},
+  "agents": [{collected agent data}]
+}
+# Validate
+result = validate_phase_complete(validator, "phase1")
+```
+- If errors: Show missing fields, use RCM
+- If valid: Display Section 1 using S1-TEMPLATE from KB[3]. Ask: "Ready to draft agent prompts?"
 
-### PHASE 2.1 (All agents):
-Validate: `result = validate_phase_complete(validator, "phase2_1")`
-- If valid: Display **Section 2 (Agent Prompts)** using S2-TEMPLATE from KB[3] for each agent. Ask: "Ready to draft round instructions? (yes/no)"
+### PHASE 2.1:
+```python
+# Add prompt data to existing agents
+for agent in validator.canvas_data["agents"]:
+  agent["prompt"] = {collected prompt fields}
+# Validate
+result = validate_phase_complete(validator, "phase2_1")
+```
+- If valid: Display Section 2 using S2-TEMPLATE from KB[3]. Ask: "Ready to draft round instructions?"
 
-### PHASE 2.2 (All rounds):
-Validate: `result = validate_phase_complete(validator, "phase2_2")`
-- If valid: Display **Section 3 (Round Instructions)** using S3-TEMPLATE from KB[3] for each round. Proceed to Phase 3.
+### PHASE 2.2:
+```python
+# Add rounds array
+validator.canvas_data["rounds"] = [{collected round data for all rounds}]
+# Validate
+result = validate_phase_complete(validator, "phase2_2")
+```
+- If valid: Display Section 3 using S3-TEMPLATE from KB[3]. Proceed to Phase 3.
 
 ---
 
