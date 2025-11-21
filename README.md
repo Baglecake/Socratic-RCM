@@ -207,8 +207,7 @@ https://github.com/delcoburn/Socratic-RCM
 
 ## License
 
-[LICENSE]LICENSE
-
+License: [LICENSE](https://github.com/Baglecake/Socratic-RCM/LICENSE)
 ---
 
 ## Contact
