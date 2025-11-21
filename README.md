@@ -215,7 +215,7 @@ https://github.com/delcoburn/Socratic-RCM
 
 For questions or collaboration:
 - Issues: [GitHub Issues](https://github.com/Baglecake/Socratic-RCM/issues)
-- 
+  
 > **Del Coburn**  
 > University of Toronto  
 > 📧 del.coburn@mail.utoronto.ca  
