@@ -221,5 +221,5 @@ Issues: [GitHub Issues](https://github.com/Baglecake/Socratic-RCM/issues)
 > 📧 del.coburn@mail.utoronto.ca  
 ---
 
-**Status**: Production system (v8.4) ready for student deployment ✅
+**Status**: Production system (v8.4) ready for student deployment ✅  
 **Experimental**: BIOS architecture under active research ⚠️
