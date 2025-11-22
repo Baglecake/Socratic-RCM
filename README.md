@@ -26,12 +26,12 @@
 
 ```
 Socratic-RCM/
-├── production/              # ✅ GPT Builder system (v8.4)
+├── production/             #  GPT Builder system (v8.4)
 │   ├── system-prompt/      # GPT Builder instructions
 │   ├── knowledge-base/     # Assignment docs & templates
 │   └── deployment/         # Deployment checklist
 │
-├── local_rcm/              # ✅ Local Python orchestrator
+├── local_rcm/              # Local Python orchestrator
 │   ├── orchestrator.py     # Core workflow engine
 │   ├── canvas_state.py     # Data model & compilation
 │   ├── llm_client.py       # LLM abstraction (mock/vLLM)
