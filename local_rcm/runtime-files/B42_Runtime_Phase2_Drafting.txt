@@ -1,0 +1,450 @@
+# B42 Chatstorm Runtime Logic - Phase 2: Drafting
+
+This file contains Phase 2 step-by-step instructions for the B42 Chatstorm BIOS.
+The BIOS will retrieve and execute steps from this file during Phase 2.
+
+**Phase**: 2 - DRAFTING
+**Steps**: 2.1 through 2.3
+**Purpose**: Create agent prompts, round instructions, and helper templates
+
+---
+
+## PHASE 2: DRAFTING
+
+### [STEP 2.1.1]
+TARGET: Agent Prompt Creation (Iterative - per agent)
+INSTRUCTION: For each agent, create their agent prompt using KB[1] [S2-TEMPLATE].
+REQUIRED OUTPUT:
+"Let's create the prompt for [Identifier]. Using KB[1] [S2-TEMPLATE]:"
+Then output:
+```
+ROLE: You are [Identifier]
+PRIMARY GOAL: [Goal]
+PERSONA: [Persona]
+```
+Within ||...|| markers
+- Replace [Identifier] with agent's identifier from 1.5.2
+- Replace [Goal] with measurable goal from 1.6.1
+- Replace [Persona] with persona from 1.6.2
+RCM CUE (after output):
+"Does this agent prompt accurately capture their theoretical role from your framework? Does it reflect how [theorist] would predict they'd behave?"
+IMPORTANT: Output this RCM CUE verbatim - do NOT abbreviate to "Represents theory?"
+CONSTRAINT:
+- Pull data from Section 1 (compiled in 1.8)
+- Use exact student wording for Goal and Persona
+- One agent at a time
+- Behaviors do NOT go here (they go in S3 Round Instructions)
+- Repeat for each agent
+- After student confirms alignment, move to next agent
+NOTE: After all agent prompts created, proceed to round instructions
+CANVAS_UPDATE: After each agent prompt displayed and confirmed:
+||CANVAS_UPDATE||
+{
+  "section": "agents",
+  "action": "update",
+  "index": "<current agent index>",
+  "data": {
+    "prompt": {
+      "role": "<identifier from 1.5.2>",
+      "primary_goal": "<goal from 1.6.1>",
+      "persona": "<persona from 1.6.2>",
+      "compiled_in_step": "2.1.1"
+    }
+  }
+}
+||END_CANVAS_UPDATE||
+NEXT STEP: 2.1.1 (next agent) OR 2.2.1 (if all agents complete)
+
+---
+
+## PHASE 2.2: ROUND INSTRUCTIONS & CONFIG
+
+**CRITICAL SEQUENCING**: Complete ALL steps (2.2.1 through 2.2.19) for Round 1 BEFORE proceeding to Round 2.
+DO NOT collect all scenarios first and then return to details.
+DO NOT batch similar questions across rounds.
+Execute steps SEQUENTIALLY for EACH round individually.
+
+### [STEP 2.2.1]
+TARGET: Round Scenario Description
+INSTRUCTION: For each round, ask for vivid scenario description.
+REQUIRED OUTPUT: "Round [n] Scenario (4-5 sent.): RCM: 'Make vivid—what tension?'"
+- Replace [n] with round number
+RCM CUE:
+- Reflect: "Paint the picture of what's happening in this round"
+- Connect: "What makes the tension between [A] and [B] vivid?"
+- Ask: "Describe in 4-5 sentences"
+CONSTRAINT:
+- Must be 4-5 sentences
+- Must create vivid, specific scenario
+- Should set up the tension for this round
+NEXT STEP: 2.2.2 (same round)
+
+---
+
+### [STEP 2.2.2]
+TARGET: Concept A in This Round
+INSTRUCTION: Ask how Concept A manifests in this specific round.
+REQUIRED OUTPUT: "[A] in this round (2-3 sent.)"
+- Replace [A] with Concept A name from 1.2.3
+RCM CUE:
+- Reflect: "How does [A] show up in Round [n]?"
+- Connect: "What specific features of [A] are relevant here?"
+CONSTRAINT:
+- Must be 2-3 sentences
+- Specific to this round's context
+NEXT STEP: 2.2.3 (same round)
+
+---
+
+### [STEP 2.2.3]
+TARGET: Concept B in This Round
+INSTRUCTION: Ask how Concept B manifests in this specific round.
+REQUIRED OUTPUT: "[B] in this round (2-3 sent.)"
+- Replace [B] with Concept B name from 1.2.4
+RCM CUE:
+- Reflect: "How does [B] contrast with [A] in this round?"
+CONSTRAINT:
+- Must be 2-3 sentences
+- Should show how B differs from A in this context
+NEXT STEP: 2.2.4 (same round)
+
+---
+
+### [STEP 2.2.4]
+TARGET: Round Rules
+INSTRUCTION: Ask what agents can and cannot do in this round.
+REQUIRED OUTPUT: "Rules: What can/can't agents do?"
+RCM CUE:
+- Reflect: "What are the constraints or freedoms in this round?"
+CONSTRAINT:
+- Must specify both what IS allowed and what IS NOT allowed
+NEXT STEP: 2.2.5 (same round)
+
+---
+
+### [STEP 2.2.5]
+TARGET: Round Tasks
+INSTRUCTION: Ask what agents need to accomplish in this round.
+REQUIRED OUTPUT: "Tasks: What to accomplish?"
+RCM CUE:
+- Reflect: "What should agents achieve by the end of this round?"
+CONSTRAINT:
+- Must be specific and actionable
+NEXT STEP: 2.2.6 (same round)
+
+---
+
+### [STEP 2.2.6]
+TARGET: Round Sequence/Flow
+INSTRUCTION: Ask for expected flow of interaction in this round.
+REQUIRED OUTPUT: "Sequence: Expected flow? (2-3 sent.)"
+RCM CUE:
+- Reflect: "How do you expect the round to unfold?"
+- Ask: "What's the expected sequence of events?"
+CONSTRAINT:
+- Must be 2-3 sentences
+- Should describe expected progression
+NEXT STEP: 2.2.7 (same round - if agent behaviors defined)
+
+---
+
+### [STEP 2.2.7]
+TARGET: Add Agent Behaviors (if defined in 1.6.3)
+INSTRUCTION: If any agents have behaviors defined, add them to round instructions.
+REQUIRED OUTPUT: Check if behaviors were defined in Section 1 for agents in this round.
+If yes, include them in the round instructions.
+CONSTRAINT:
+- Only include if defined during Phase 1
+- Goes into S3 (Round Instructions), not S2 (Agent Prompts)
+NEXT STEP: 2.2.8 (compile round instructions)
+
+---
+
+### [STEP 2.2.8]
+TARGET: Compile Round Instructions
+INSTRUCTION: Output round instructions using KB[1] [S3-TEMPLATE].
+REQUIRED OUTPUT: Reference KB[1] [S3-TEMPLATE] and output within ||...|| markers with all components:
+- Scenario
+- [A] in this round
+- [B] in this round
+- Rules
+- Tasks
+- Sequence
+- Agent Behaviors (if applicable)
+CONSTRAINT:
+- Use student's exact wording
+- Follow KB[1] template structure
+**CRITICAL STOP**: DO NOT proceed to Phase 2.3 yet! After compiling round instructions, you MUST ask platform configuration questions (Steps 2.2.9-2.2.19) for THIS round BEFORE moving to the next round or Phase 2.3.
+CANVAS_UPDATE: After round instructions compiled and displayed:
+||CANVAS_UPDATE||
+{
+  "section": "rounds",
+  "action": "append",
+  "data": {
+    "index": "<current round number>",
+    "scenario": "<from 2.2.1>",
+    "concept_a_in_round": "<from 2.2.2>",
+    "concept_b_in_round": "<from 2.2.3>",
+    "rules": "<from 2.2.4>",
+    "tasks": "<from 2.2.5>",
+    "sequence": "<from 2.2.6>",
+    "agent_behaviors": "<from 2.2.7 if applicable>",
+    "compiled_s3_template": "<full compiled template displayed in this step>"
+  }
+}
+||END_CANVAS_UPDATE||
+NEXT STEP: 2.2.9 (platform config for same round)
+
+---
+
+## PHASE 2.2: PLATFORM CONFIGURATION (Per Round)
+
+### [STEP 2.2.9]
+TARGET: Participants
+INSTRUCTION: Ask which agents participate in this round.
+REQUIRED OUTPUT: "Which agents in Round [n]?"
+CONSTRAINT:
+- Must select from agents defined in Section 1
+NEXT STEP: 2.2.10
+
+---
+
+### [STEP 2.2.10]
+TARGET: Flow - Who Sends
+INSTRUCTION: Ask who can send messages.
+REQUIRED OUTPUT: "Who sends? (All/Moderator)"
+CONSTRAINT:
+- Must choose All or Moderator
+NEXT STEP: 2.2.11
+
+---
+
+### [STEP 2.2.11]
+TARGET: Flow - Participant Order
+INSTRUCTION: Ask what order participants speak.
+REQUIRED OUTPUT: "Order? (Default/Random/Active/Moderator)"
+CONSTRAINT:
+- Must choose one option
+NEXT STEP: 2.2.12
+
+---
+
+### [STEP 2.2.12]
+TARGET: Flow - End Round
+INSTRUCTION: Ask how the round ends.
+REQUIRED OUTPUT: "End: 1) Total msgs (how many?) 2) Per participant (how many?) 3) Moderator (who? max? instructions 2-3 sent.?)"
+RCM CUE: Ask about each option separately
+CONSTRAINT:
+- Must choose one method
+- If Moderator: need moderator name, max messages, and END ROUND INSTRUCTIONS (2-3 sent.)
+NEXT STEP: 2.2.13
+
+---
+
+### [STEP 2.2.13]
+TARGET: Flow - Transition
+INSTRUCTION: Ask how to transition to next round.
+REQUIRED OUTPUT: "Transition? (Pause/Auto/Moderator)"
+CONSTRAINT:
+- Must choose one option
+NEXT STEP: 2.2.14
+
+---
+
+### [STEP 2.2.14]
+TARGET: Style - Detail Level
+INSTRUCTION: Ask for detail level preference.
+REQUIRED OUTPUT: "Detail? (Min/Brief/Med/Thor/Exh/Dyn)"
+CONSTRAINT:
+- Must choose one option
+NEXT STEP: 2.2.15
+
+---
+
+### [STEP 2.2.15]
+TARGET: Style - Creativity
+INSTRUCTION: Ask for creativity settings.
+REQUIRED OUTPUT: "Creativity? (Defaults/Custom: which?)"
+CONSTRAINT:
+- If Custom: ask which creativity parameters to adjust
+NEXT STEP: 2.2.16
+
+---
+
+### [STEP 2.2.16]
+TARGET: Options - Platform Features
+INSTRUCTION: Ask which platform features to enable.
+REQUIRED OUTPUT: "Enable: Ask Questions? Self-Reflection? Isolated?"
+CONSTRAINT:
+- Check each separately
+NEXT STEP: 2.2.17
+
+---
+
+### [STEP 2.2.17]
+TARGET: Options - Model Selection
+INSTRUCTION: Ask which model to use.
+REQUIRED OUTPUT: "Model: Defaults or DeepSeek42?"
+CONSTRAINT:
+- Choose one
+NEXT STEP: 2.2.18
+
+---
+
+### [STEP 2.2.18]
+TARGET: Output Config Checklist
+INSTRUCTION: Display complete configuration for this round as checklist.
+REQUIRED OUTPUT: Output all platform config settings for Round [n]:
+- Participants: [list]
+- Who sends: [choice]
+- Order: [choice]
+- End: [method + details]
+- Transition: [choice]
+- Detail: [level]
+- Creativity: [settings]
+- Options: [enabled features]
+- Model: [choice]
+CONSTRAINT:
+- Display all settings clearly
+CANVAS_UPDATE: After checklist displayed and before verification:
+||CANVAS_UPDATE||
+{
+  "section": "rounds",
+  "action": "update",
+  "index": "<current round number>",
+  "data": {
+    "platform_config": {
+      "participants": "<from 2.2.9>",
+      "who_sends": "<from 2.2.10>",
+      "order": "<from 2.2.11>",
+      "end_condition": {
+        "method": "<from 2.2.12>",
+        "details": "<number or moderator config from 2.2.12>"
+      },
+      "transition": "<from 2.2.13>",
+      "detail_level": "<from 2.2.14>",
+      "creativity": "<from 2.2.15>",
+      "options": {
+        "ask_questions": "<true/false from 2.2.16>",
+        "self_reflection": "<true/false from 2.2.16>",
+        "isolated": "<true/false from 2.2.16>"
+      },
+      "model": "<from 2.2.17>",
+      "compiled_checklist": "<full checklist text displayed in this step>"
+    }
+  }
+}
+||END_CANVAS_UPDATE||
+NEXT STEP: 2.2.19
+
+---
+
+### [STEP 2.2.19]
+TARGET: Config Verification
+INSTRUCTION: Check if configuration is appropriate and tests hypothesis.
+REQUIRED OUTPUT: "Config appropriate? Tests hypothesis?"
+RCM CUE: "Does this setup enable testing [A] vs [B] in Round [n]?"
+CONSTRAINT:
+- Wait for confirmation
+- If student wants changes: Allow edits
+NEXT STEP LOGIC:
+- **Count total rounds from Step 1.4.2**
+- **Check current round number**
+- If current round < total rounds: Go to Step 2.2.1 (next round scenario)
+- If current round = total rounds (all rounds complete): Go to Step 2.3.1 (helper templates)
+**DO NOT skip to Phase 2.3 if rounds remain!**
+NEXT STEP: 2.2.1 (next round) OR 2.3.1 (if all rounds complete)
+
+---
+
+## PHASE 2.3: HELPER TEMPLATES
+
+### [STEP 2.3.1]
+TARGET: Moderator Template (if used)
+INSTRUCTION: If student selected Moderator in 1.7 or 2.2, provide template.
+REQUIRED OUTPUT: Reference KB[1] [S4-MODERATOR] template.
+Ask: "END ROUND INSTRUCTIONS for moderator? (2-3 sent.)"
+CONSTRAINT:
+- Only if Moderator is used
+- Need END ROUND INSTRUCTIONS (2-3 sentences)
+- These go into Flow → End settings
+NEXT STEP: 2.3.2
+
+---
+
+### [STEP 2.3.2]
+TARGET: Analyst Template (required)
+INSTRUCTION: Provide Analyst/Tabulator template for final summary round.
+REQUIRED OUTPUT: Reference KB[1] [S4-ANALYST] template.
+Explain: "Analyst is required for your final summary round. This agent analyzes all transcripts and produces a summary table."
+CONSTRAINT:
+- Required per v8.4 (Line 124)
+- Uses [S4-ANALYST] from KB[1]
+NEXT STEP: 2.3.3
+
+---
+
+### [STEP 2.3.3]
+TARGET: Non-Anthropomorphic Template (if used)
+INSTRUCTION: If student selected non-anthropomorphic agent in 1.7, provide template.
+REQUIRED OUTPUT: Reference KB[1] [S4-NONANTHRO] template.
+CONSTRAINT:
+- Only if non-anthropomorphic agent selected
+NEXT STEP: 2.3.4
+
+---
+
+### [STEP 2.3.4]
+TARGET: Self-Reflections Configuration (if used)
+INSTRUCTION: If student selected Self-Reflections in 1.7, confirm it's checkbox only.
+REQUIRED OUTPUT: "Self-Reflections: Checkbox only (enabled in Options per round)"
+CONSTRAINT:
+- Reminder that it's configured via checkbox, not template
+NEXT STEP: 2.3.5
+
+---
+
+### [STEP 2.3.5]
+TARGET: Helper Functions Verification
+INSTRUCTION: Check that helper functions serve KB[2] goals.
+REQUIRED OUTPUT: "Functions serve KB[2] goals?"
+CONSTRAINT:
+- Verify alignment with assignment requirements
+CANVAS_UPDATE: After verification confirmed:
+||CANVAS_UPDATE||
+{
+  "section": "helpers",
+  "action": "update",
+  "data": {
+    "moderator": {
+      "used": "<true/false from 1.7 or 2.2>",
+      "end_round_instructions": "<from 2.3.1 if used>"
+    },
+    "analyst": {
+      "required": true,
+      "note": "Required per v8.4, uses S4-ANALYST from KB[1]"
+    },
+    "non_anthropomorphic": {
+      "used": "<true/false from 1.7>",
+      "template": "<from 2.3.3 if used>"
+    },
+    "self_reflections": {
+      "used": "<true/false from 1.7>",
+      "note": "Checkbox only, configured in platform options per round"
+    }
+  }
+}
+||END_CANVAS_UPDATE||
+||CANVAS_UPDATE||
+{
+  "section": "status",
+  "action": "update",
+  "data": {
+    "phase2_complete": true
+  }
+}
+||END_CANVAS_UPDATE||
+NEXT STEP: 3.1 (Phase 3)
+
+---
+

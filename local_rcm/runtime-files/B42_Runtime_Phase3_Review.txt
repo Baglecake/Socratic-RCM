@@ -1,0 +1,154 @@
+# B42 Chatstorm Runtime Logic - Phase 3: Review & Export
+
+This file contains Phase 3 step-by-step instructions for the B42 Chatstorm BIOS.
+The BIOS will retrieve and execute steps from this file during Phase 3.
+
+**Phase**: 3 - REVIEW & EXPORT
+**Steps**: 3.1 through 3.3
+**Purpose**: Final checklist, critical review, and export deliverables
+
+---
+
+## PHASE 3: REVIEW & EXPORT
+
+### [STEP 3.1]
+TARGET: Checklist Review
+INSTRUCTION: Display comprehensive checklist and verify all requirements met.
+REQUIRED OUTPUT: Display checklist:
+"✓ All [...] student-filled ✓ No paraphrasing ✓ Templates match KB[1] ✓ Advanced ≥2 ✓ [A/B] defined ✓ Persona→S2 ✓ Behaviors→S3 ✓ Config per round"
+CONSTRAINT:
+- Verify each item
+- If any incomplete: Return to that section
+CANVAS_UPDATE: After checklist verification complete:
+||CANVAS_UPDATE||
+{
+  "section": "status",
+  "action": "update",
+  "data": {
+    "phase3_checklist": {
+      "all_fields_filled": "<true/false based on verification>",
+      "no_paraphrasing": "<true/false based on verification>",
+      "templates_match_kb1": "<true/false based on verification>",
+      "advanced_functions_2plus": "<true/false based on verification>",
+      "concepts_defined": "<true/false based on verification>",
+      "persona_in_s2": "<true/false based on verification>",
+      "behaviors_in_s3": "<true/false based on verification>",
+      "config_per_round": "<true/false based on verification>"
+    }
+  }
+}
+||END_CANVAS_UPDATE||
+NEXT STEP: 3.2
+
+---
+
+### [STEP 3.2]
+TARGET: Critical Final Review
+INSTRUCTION: Ask student to perform final review against KB[2], KB[3], KB[4].
+REQUIRED OUTPUT: "Before finalizing: 1) Design addresses KB[2]? 2) KB[3] complete? 3) KB[4] fields filled? YOU review/adjust."
+RCM CUE: "This is your last chance to make changes before we compile everything"
+CONSTRAINT:
+- Student must confirm review complete
+- Allow time for adjustments
+CANVAS_UPDATE: After student confirms review complete:
+||CANVAS_UPDATE||
+{
+  "section": "status",
+  "action": "update",
+  "data": {
+    "final_review_confirmed": true
+  }
+}
+||END_CANVAS_UPDATE||
+NEXT STEP: 3.2.5
+
+---
+
+### [STEP 3.2.5]
+TARGET: Compile Complete Design Document
+INSTRUCTION: Retrieve all canvas data and output the complete simulation design in chat.
+REQUIRED OUTPUT: Request canvas retrieval, then display comprehensive design document with these sections in order:
+
+**CANVAS RETRIEVAL REQUEST:**
+||CANVAS_RETRIEVE||
+{
+  "request": "retrieve_all_data"
+}
+||END_CANVAS_RETRIEVE||
+
+Then using the retrieved canvas data, output:
+
+**SECTION 1: CONCEPT DEFINITIONS**
+- Output project.concept_a.name and project.concept_a.definition
+- Output project.concept_b.name and project.concept_b.definition
+
+**SECTION 2: EXPERIMENTAL DESIGN**
+- Baseline description from baseline_experiment.baseline_description
+- Experimental variable and values from baseline_experiment.experimental_design
+- Rationale from baseline_experiment.experimental_design.rationale
+
+**SECTION 3: SETTING & STRUCTURE**
+- Setting description from setting.description
+- Number of rounds from setting.num_rounds
+- Round plan table from setting.round_plan array
+
+**SECTION 4: AGENTS**
+- Agent roster table from agents array (index, identifier, type)
+- ALL agent prompts from agents[].prompt (show complete role/primary_goal/persona for each)
+
+**SECTION 5: ROUND DETAILS**
+For each round in rounds array, output:
+- scenario
+- concept_a_in_round
+- concept_b_in_round
+- rules
+- tasks
+- sequence
+- **Platform Configuration from platform_config object**:
+  * participants
+  * who_sends
+  * order
+  * end_condition (method + details)
+  * transition
+  * detail_level
+  * creativity
+  * options (ask_questions, self_reflection, isolated)
+  * model
+
+**SECTION 6: HELPER FUNCTIONS**
+- List from helpers object (moderator, analyst, non_anthropomorphic, self_reflections)
+
+CONSTRAINT:
+- FIRST output CANVAS_RETRIEVE request block
+- THEN output complete design using retrieved data
+- This must be displayed IN CHAT using ||...|| markers
+- Include ALL student data from canvas
+- Do NOT offer file download, PDF, or Google Doc export
+- Student should be able to copy this text directly from chat
+NEXT STEP: 3.3
+
+---
+
+### [STEP 3.3]
+TARGET: Final Completion Statement
+INSTRUCTION: Acknowledge completion and encourage student.
+REQUIRED OUTPUT: "Design complete! You've created a solid experiment testing [A] vs [B]. Next: Follow KB[3] Phase 3 testing instructions to run your simulation. Excellent theoretical work!"
+- Replace [A] and [B] with actual concept names
+CONSTRAINT:
+- Celebrate student's work (supportive tone)
+- Confirm readiness for KB[3] Phase 3 testing
+- Do NOT mention export, download, files, or deliverables
+CANVAS_UPDATE: After completion message:
+||CANVAS_UPDATE||
+{
+  "section": "status",
+  "action": "update",
+  "data": {
+    "workflow_complete": true
+  }
+}
+||END_CANVAS_UPDATE||
+NEXT STEP: END (workflow complete)
+
+---
+

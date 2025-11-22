@@ -36,3 +36,14 @@ Temporary Items
 *.tmp
 *.temp
 ~*
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.env
+
+# Workflow state files (local testing)
+workflow_*.json
