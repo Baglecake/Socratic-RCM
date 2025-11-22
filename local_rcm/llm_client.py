@@ -30,17 +30,25 @@ class LLMClient(ABC):
 class OpenAIClient(LLMClient):
     """OpenAI API client (GPT-4, etc.) - also works with vLLM and other OpenAI-compatible APIs"""
 
-    def __init__(self, api_key: str, model: str = "gpt-4", base_url: str = None):
+    def __init__(self, api_key: str, model: str = "gpt-4", base_url: str = None, timeout: float = 120.0):
         self.api_key = api_key
         self.model = model
         self.base_url = base_url
+        self.timeout = timeout
         # Import here to make it optional
         try:
             from openai import OpenAI
             if base_url:
-                self.client = OpenAI(api_key=api_key, base_url=base_url)
+                # Add ngrok header to skip browser warning page (403 Forbidden fix)
+                # Use longer timeout for vLLM + ngrok latency
+                self.client = OpenAI(
+                    api_key=api_key,
+                    base_url=base_url,
+                    default_headers={"ngrok-skip-browser-warning": "true"},
+                    timeout=timeout
+                )
             else:
-                self.client = OpenAI(api_key=api_key)
+                self.client = OpenAI(api_key=api_key, timeout=timeout)
         except ImportError:
             raise ImportError("Please install openai: pip install openai")
 
@@ -122,6 +130,240 @@ class MockClient(LLMClient):
         return {"ok": True, "reason": "Mock validation passed"}
 
 
+# =============================================================================
+# STUDENT SIMULATOR - For autonomous demos and testing
+# =============================================================================
+
+STUDENT_PERSONA = """You are a sociology undergraduate student at the University of Toronto working on designing an agent-based simulation for your SOC342 course assignment.
+
+Your background:
+- You've read Marx, Wollstonecraft, Tocqueville, and Adam Smith in your social theory lectures
+- You're interested in exploring labor dynamics and gender in organizational settings
+- You're thoughtful but still learning - you make good points but don't sound like an expert
+
+Your task: Answer the instructor's questions thoughtfully and concisely.
+
+Guidelines:
+- Give substantive answers in 2-4 sentences (not too short, not too long)
+- Reference specific theorists when relevant (e.g., "Drawing on Marx's concept of alienation...")
+- Stay consistent with previous answers in the conversation
+- Be creative but grounded in social theory
+- When asked for numbers, give reasonable small numbers (2-4 agents, 3-5 rounds)
+- When asked to choose options, make a clear choice and briefly explain why
+- When asked about advanced functions, pick 2 of: Moderator, Self-Reflections, Non-anthropomorphic
+
+IMPORTANT: You are the STUDENT answering questions, not the instructor asking them.
+Do NOT ask questions back. Just provide your answer."""
+
+
+# Framework-specific student personas (used after option selection)
+FRAMEWORK_PERSONAS = {
+    "A": """You are a sociology undergraduate working on an agent-based simulation.
+You chose Option A: Class Conflict / Alienation (Marx + Wollstonecraft).
+
+YOUR THEORETICAL TOOLKIT (use ONLY these):
+- Marx: alienation, exploitation, class conflict, commodification, labor, capital
+- Wollstonecraft: patriarchy, sexual alienation, domination, gender oppression
+
+STRICT RULE: Do NOT reference Tocqueville or Smith. They are not part of your framework.
+When answering, draw connections between Marx's workplace alienation and Wollstonecraft's
+analysis of patriarchal domination in domestic/institutional settings.""",
+
+    "B": """You are a sociology undergraduate working on an agent-based simulation.
+You chose Option B: Cultural Systems (Tocqueville only).
+
+YOUR THEORETICAL TOOLKIT (use ONLY these):
+- Tocqueville: equality of conditions, tyranny of the majority, democratic conformity,
+  voluntary associations, public opinion, individualism, democratic melancholy
+
+STRICT RULE: Do NOT reference Marx, Wollstonecraft, or Smith. They are not part of your framework.
+Focus on how democratic equality creates paradoxes - social pressure, conformity,
+suppression of minority views through public opinion rather than force.""",
+
+    "C": """You are a sociology undergraduate working on an agent-based simulation.
+You chose Option C: Institutional Power (Marx + Tocqueville).
+
+YOUR THEORETICAL TOOLKIT (use ONLY these):
+- Marx: revolution, class consciousness, proletarian solidarity, exploitation
+- Tocqueville: conformity, property ownership, risk aversion, democratic individualism
+
+STRICT RULE: Do NOT reference Wollstonecraft or Smith. They are not part of your framework.
+Explore the tension: Marx predicted workers would unite for revolution, but Tocqueville
+predicted democratic property-owners would be too risk-averse and conformist.""",
+
+    "D": """You are a sociology undergraduate working on an agent-based simulation.
+You chose Option D: Network Dynamics (Smith + Tocqueville).
+
+YOUR THEORETICAL TOOLKIT (use ONLY these):
+- Smith: commerce, self-interest, division of labor, markets, unintended consequences
+- Tocqueville: equality of conditions, providential leveling, institutional disruption
+
+STRICT RULE: Do NOT reference Marx or Wollstonecraft. They are not part of your framework.
+Compare two engines of modernity: Smith's commercial engine (trade drives change) vs.
+Tocqueville's leveling engine (equality as providential force).""",
+
+    "E": """You are a sociology undergraduate working on an agent-based simulation.
+You chose Option E: Custom Framework.
+
+You may draw from any theorists you proposed, but stay internally consistent.
+Reference your chosen theoretical pairing throughout."""
+}
+
+
+class StudentSimulator:
+    """
+    Simulates a student responding to Socratic questions.
+    Uses an LLM (e.g., Qwen via vLLM) to generate realistic student responses.
+    """
+
+    def __init__(self, llm_client: LLMClient, persona: str = None):
+        """
+        Initialize the student simulator.
+
+        Args:
+            llm_client: LLM client to use for generating responses (e.g., vLLM)
+            persona: Optional custom persona prompt (uses default if None)
+        """
+        self.llm = llm_client
+        self.base_persona = persona or STUDENT_PERSONA
+        self.persona = self.base_persona
+        self.chosen_framework: Optional[str] = None
+        self.conversation_history: list = []
+
+    def set_framework(self, option: str):
+        """
+        Update the student's persona to match the chosen framework.
+        Called after the student selects their theoretical option.
+        """
+        option = option.upper().strip()
+        # Extract just the letter if needed
+        for letter in ["A", "B", "C", "D", "E"]:
+            if letter in option:
+                option = letter
+                break
+
+        if option in FRAMEWORK_PERSONAS:
+            self.chosen_framework = option
+            # Combine base guidelines with framework-specific constraints
+            self.persona = FRAMEWORK_PERSONAS[option] + """
+
+Guidelines:
+- Give substantive answers in 2-4 sentences
+- Stay consistent with previous answers
+- When asked for numbers, give reasonable small numbers (2-4 agents, 3-5 rounds)
+- When asked about advanced functions, pick 2 of: Moderator, Self-Reflections, Non-anthropomorphic
+
+IMPORTANT: You are the STUDENT answering questions. Do NOT ask questions back."""
+            print(f"[Student] Persona updated for Option {option}")
+        else:
+            print(f"[Student] Warning: Unknown option '{option}', keeping base persona")
+
+    def respond(self, question: str) -> str:
+        """
+        Generate a student response to a Socratic question.
+
+        Args:
+            question: The question from the orchestrator/instructor
+
+        Returns:
+            Simulated student response
+        """
+        # Build context from recent conversation
+        context = ""
+        if self.conversation_history:
+            recent = self.conversation_history[-5:]  # Last 5 exchanges
+            context = "\n\nRecent conversation:\n"
+            for q, a in recent:
+                context += f"Instructor: {q[:100]}...\n" if len(q) > 100 else f"Instructor: {q}\n"
+                context += f"You answered: {a[:100]}...\n\n" if len(a) > 100 else f"You answered: {a}\n\n"
+
+        # Build the prompt
+        user_prompt = f"""{context}
+The instructor now asks:
+"{question}"
+
+Respond as the student (2-4 sentences, substantive and thoughtful):"""
+
+        # Generate response
+        response = self.llm.send_message(self.persona, user_prompt)
+
+        # Clean up response (remove any role-playing artifacts)
+        response = response.strip()
+        if response.startswith('"') and response.endswith('"'):
+            response = response[1:-1]
+        # Remove "Student:" prefix if present
+        if response.lower().startswith("student:"):
+            response = response[8:].strip()
+
+        # Store in history
+        self.conversation_history.append((question, response))
+
+        return response
+
+    def get_input_function(self):
+        """
+        Returns a function compatible with orchestrator's get_student_input.
+
+        Usage:
+            simulator = StudentSimulator(vllm_client)
+            orchestrator = WorkflowOrchestrator(..., get_student_input=simulator.get_input_function())
+        """
+        def input_fn(prompt: str) -> str:
+            print(f"\n[Instructor]: {prompt}")
+            response = self.respond(prompt)
+            print(f"[Student]: {response}")
+            return response
+
+        return input_fn
+
+    def reset(self):
+        """Clear conversation history for a new session"""
+        self.conversation_history = []
+
+
+# =============================================================================
+# FRAMEWORK DEFINITIONS - Theorist mappings for each option
+# =============================================================================
+
+FRAMEWORK_THEORISTS = {
+    "A": {
+        "name": "Class Conflict / Alienation",
+        "theorists": ["Marx", "Wollstonecraft"],
+        "concepts": ["alienation", "exploitation", "class conflict", "patriarchy",
+                     "domination", "sexual alienation", "commodification", "labor"],
+        "description": "Marx's workplace alienation + Wollstonecraft's patriarchal domination"
+    },
+    "B": {
+        "name": "Cultural Systems",
+        "theorists": ["Tocqueville"],
+        "concepts": ["equality of conditions", "tyranny of majority", "conformity",
+                     "democratic culture", "voluntary associations", "public opinion",
+                     "individualism", "democratic melancholy"],
+        "description": "Tocqueville's democratic paradoxes - equality vs. tyranny of majority"
+    },
+    "C": {
+        "name": "Institutional Power",
+        "theorists": ["Marx", "Tocqueville"],
+        "concepts": ["revolution", "class consciousness", "conformity", "property",
+                     "proletarian solidarity", "risk aversion", "democratic individualism"],
+        "description": "Marx's revolution prediction vs. Tocqueville's conformity prediction"
+    },
+    "D": {
+        "name": "Network Dynamics",
+        "theorists": ["Smith", "Tocqueville"],
+        "concepts": ["commerce", "self-interest", "division of labor", "equality",
+                     "providential leveling", "feudalism", "modernity", "market"],
+        "description": "Smith's commercial engine vs. Tocqueville's leveling engine of modernity"
+    },
+    "E": {
+        "name": "Custom Framework",
+        "theorists": [],  # Student-defined
+        "concepts": [],
+        "description": "Student-proposed framework (requires approval)"
+    }
+}
+
+
 class StudentInteractionHandler:
     """
     Handles the LLM's interaction with the student.
@@ -131,6 +373,7 @@ class StudentInteractionHandler:
     def __init__(self, llm_client: LLMClient, bios_prompt: str):
         self.llm = llm_client
         self.bios_prompt = bios_prompt
+        self.chosen_framework: Optional[str] = None  # Set after step 1.2.1
 
     def ask_question(
         self,
@@ -175,21 +418,93 @@ but the core question text must be preserved exactly."""
         # In production, you could use the LLM for minor rewording
         return required_output
 
-    def validate_answer(
-        self,
-        answer: str,
-        constraint: Optional[str],
-        target: str
-    ) -> Dict[str, Any]:
+    def set_framework(self, option: str):
         """
-        Validate a student's answer against the constraint.
+        Set the chosen theoretical framework after step 1.2.1.
+        This enables framework coherence validation for subsequent answers.
+        """
+        option = option.upper().strip()
+        if option in FRAMEWORK_THEORISTS:
+            self.chosen_framework = option
+            print(f"[BIOS] Framework set to Option {option}: {FRAMEWORK_THEORISTS[option]['name']}")
+        else:
+            # Try to extract just the letter
+            for letter in ["A", "B", "C", "D", "E"]:
+                if letter in option:
+                    self.chosen_framework = letter
+                    print(f"[BIOS] Framework set to Option {letter}: {FRAMEWORK_THEORISTS[letter]['name']}")
+                    return
+            print(f"[BIOS] Warning: Could not parse framework option from '{option}'")
+
+    def validate_framework_coherence(self, answer: str) -> Dict[str, Any]:
+        """
+        Check if the answer uses theorists/concepts consistent with the chosen framework.
+
+        This is a simple keyword-based check. In multi-model setup, this could be
+        replaced by a dedicated validation model.
 
         Returns:
             {"ok": bool, "reason": str, "suggestion": str}
         """
+        if not self.chosen_framework or self.chosen_framework == "E":
+            # No framework set yet or custom framework - skip coherence check
+            return {"ok": True, "reason": "No framework constraint"}
+
+        framework = FRAMEWORK_THEORISTS.get(self.chosen_framework, {})
+        valid_theorists = framework.get("theorists", [])
+
+        # All theorists in the system
+        all_theorists = ["Marx", "Wollstonecraft", "Tocqueville", "Smith"]
+        invalid_theorists = [t for t in all_theorists if t not in valid_theorists]
+
+        answer_lower = answer.lower()
+
+        # Check if student references theorists outside their chosen framework
+        violations = []
+        for theorist in invalid_theorists:
+            if theorist.lower() in answer_lower:
+                violations.append(theorist)
+
+        if violations:
+            valid_names = " and ".join(valid_theorists) if valid_theorists else "your chosen theorists"
+            return {
+                "ok": False,
+                "reason": f"Framework mismatch: You chose Option {self.chosen_framework} ({framework['name']}), "
+                         f"which uses {valid_names}. But your answer references {', '.join(violations)}.",
+                "suggestion": f"Please revise your answer to draw only from {valid_names}. "
+                             f"Key concepts for your framework: {', '.join(framework.get('concepts', [])[:5])}..."
+            }
+
+        return {"ok": True, "reason": "Framework coherent"}
+
+    def validate_answer(
+        self,
+        answer: str,
+        constraint: Optional[str],
+        target: str,
+        check_framework: bool = True
+    ) -> Dict[str, Any]:
+        """
+        Validate a student's answer against the constraint AND framework coherence.
+
+        Args:
+            answer: The student's answer
+            constraint: Optional constraint from runtime file
+            target: What the answer should address
+            check_framework: Whether to check framework coherence (default True)
+
+        Returns:
+            {"ok": bool, "reason": str, "suggestion": str}
+        """
+        # First check framework coherence (if enabled and framework is set)
+        if check_framework and self.chosen_framework:
+            coherence_result = self.validate_framework_coherence(answer)
+            if not coherence_result.get("ok"):
+                return coherence_result
+
         if not constraint:
-            # No constraint = always valid
-            return {"ok": True, "reason": "No constraint specified"}
+            # No constraint = valid (framework already checked above)
+            return {"ok": True, "reason": "Accepted"}
 
         validation_prompt = f"""Check if the student's answer is acceptable. Be LENIENT and generous.
 
@@ -326,10 +641,18 @@ def create_llm_client(
             raise ValueError("API key required for OpenAI")
         return OpenAIClient(api_key, model or "gpt-4", base_url)
 
-    elif provider == "vllm":
-        # vLLM provides OpenAI-compatible API
+    elif provider == "runpod":
+        # RunPod serverless provides OpenAI-compatible API
         if not base_url:
-            raise ValueError("base_url required for vLLM (e.g., https://xxxx.ngrok.io/v1)")
+            raise ValueError("base_url required for RunPod (e.g., https://api.runpod.ai/v2/YOUR_ENDPOINT_ID/openai/v1)")
+        if not api_key:
+            raise ValueError("api_key required for RunPod")
+        return OpenAIClient(api_key, model or "default", base_url)
+
+    elif provider == "vllm":
+        # vLLM provides OpenAI-compatible API (for local vLLM servers)
+        if not base_url:
+            raise ValueError("base_url required for vLLM (e.g., http://localhost:8000/v1)")
         # vLLM doesn't need a real API key, but OpenAI client requires one
         return OpenAIClient(api_key or "not-needed", model or "default", base_url)
 

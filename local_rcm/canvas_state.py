@@ -349,76 +349,84 @@ def compile_final_document(canvas: CanvasState) -> str:
     Compile the final Chatstorm-ready document from canvas state.
     This implements the CANVAS_RETRIEVE functionality.
     """
+    def to_str(val) -> str:
+        """Convert any value to string, handling lists by taking the last item."""
+        if val is None:
+            return ""
+        if isinstance(val, list):
+            return str(val[-1]) if val else ""
+        return str(val)
+
     doc = []
 
     # Project Goal
     doc.append("=== PROJECT GOAL ===")
-    doc.append(canvas.project.goal)
+    doc.append(to_str(canvas.project.goal))
     doc.append("")
 
     # Theoretical Framework
     doc.append("=== THEORETICAL FRAMEWORK ===")
-    doc.append(f"Option: {canvas.project.theoretical_option_label}")
+    doc.append(f"Option: {to_str(canvas.project.theoretical_option_label)}")
     doc.append("")
 
     # Concepts
     doc.append("=== CONCEPTS ===")
     if canvas.project.concept_a:
-        doc.append(f"Concept A: {canvas.project.concept_a.name}")
-        doc.append(f"Definition: {canvas.project.concept_a.definition}")
+        doc.append(f"Concept A: {to_str(canvas.project.concept_a.name)}")
+        doc.append(f"Definition: {to_str(canvas.project.concept_a.definition)}")
         doc.append("")
     if canvas.project.concept_b:
-        doc.append(f"Concept B: {canvas.project.concept_b.name}")
-        doc.append(f"Definition: {canvas.project.concept_b.definition}")
+        doc.append(f"Concept B: {to_str(canvas.project.concept_b.name)}")
+        doc.append(f"Definition: {to_str(canvas.project.concept_b.definition)}")
         doc.append("")
 
     # Variable (if experimental design)
     if canvas.project.variable:
         doc.append("=== VARIABLE ===")
-        doc.append(f"Variable: {canvas.project.variable.name}")
-        doc.append(f"Baseline: {canvas.project.variable.baseline}")
-        doc.append(f"Experimental: {canvas.project.variable.experimental}")
-        doc.append(f"Rationale: {canvas.project.variable.rationale}")
+        doc.append(f"Variable: {to_str(canvas.project.variable.name)}")
+        doc.append(f"Baseline: {to_str(canvas.project.variable.baseline)}")
+        doc.append(f"Experimental: {to_str(canvas.project.variable.experimental)}")
+        doc.append(f"Rationale: {to_str(canvas.project.variable.rationale)}")
         doc.append("")
 
     # Setting
     doc.append("=== SETTING ===")
-    doc.append(canvas.project.setting)
+    doc.append(to_str(canvas.project.setting))
     doc.append("")
 
     # Agents
     doc.append("=== AGENTS ===")
     for agent in canvas.agents:
-        doc.append(f"\n{agent.identifier}:")
-        doc.append(f"Goal: {agent.goal}")
-        doc.append(f"Persona: {agent.persona}")
-        doc.append(f"Prompt: {agent.prompt}")
+        doc.append(f"\n{to_str(agent.identifier)}:")
+        doc.append(f"Goal: {to_str(agent.goal)}")
+        doc.append(f"Persona: {to_str(agent.persona)}")
+        doc.append(f"Prompt: {to_str(agent.prompt)}")
         doc.append("")
 
     # Rounds
     for round_def in canvas.rounds:
         doc.append(f"=== ROUND {round_def.round_number} ===")
-        doc.append(f"Scenario: {round_def.scenario}")
+        doc.append(f"Scenario: {to_str(round_def.scenario)}")
         if round_def.concept_a_manifestation:
-            doc.append(f"Concept A Manifestation: {round_def.concept_a_manifestation}")
+            doc.append(f"Concept A Manifestation: {to_str(round_def.concept_a_manifestation)}")
         if round_def.concept_b_manifestation:
-            doc.append(f"Concept B Manifestation: {round_def.concept_b_manifestation}")
+            doc.append(f"Concept B Manifestation: {to_str(round_def.concept_b_manifestation)}")
         if round_def.rules:
-            doc.append(f"Rules: {round_def.rules}")
+            doc.append(f"Rules: {to_str(round_def.rules)}")
         if round_def.tasks:
-            doc.append(f"Tasks: {round_def.tasks}")
+            doc.append(f"Tasks: {to_str(round_def.tasks)}")
         if round_def.sequence:
-            doc.append(f"Sequence: {round_def.sequence}")
+            doc.append(f"Sequence: {to_str(round_def.sequence)}")
 
         if round_def.platform_config:
             doc.append("\nPlatform Configuration:")
             config = round_def.platform_config
-            doc.append(f"  Participants: {config.participants}")
-            doc.append(f"  Who Sends: {config.who_sends}")
-            doc.append(f"  Order: {config.order}")
-            doc.append(f"  End Condition: {config.end_condition}")
-            doc.append(f"  Transition: {config.transition}")
-            doc.append(f"  Detail Level: {config.detail_level}")
+            doc.append(f"  Participants: {to_str(config.participants)}")
+            doc.append(f"  Who Sends: {to_str(config.who_sends)}")
+            doc.append(f"  Order: {to_str(config.order)}")
+            doc.append(f"  End Condition: {to_str(config.end_condition)}")
+            doc.append(f"  Transition: {to_str(config.transition)}")
+            doc.append(f"  Detail Level: {to_str(config.detail_level)}")
         doc.append("")
 
     # Helper Functions
@@ -428,7 +436,7 @@ def compile_final_document(canvas: CanvasState) -> str:
     # Required function (Analyst is always required)
     doc.append("REQUIRED:")
     if canvas.helpers.analyst_function:
-        doc.append(f"  Analyst: {canvas.helpers.analyst_function}")
+        doc.append(f"  Analyst: {to_str(canvas.helpers.analyst_function)}")
     else:
         doc.append("  Analyst: (not configured)")
     doc.append("")
@@ -437,17 +445,17 @@ def compile_final_document(canvas: CanvasState) -> str:
     doc.append("ADVANCED FUNCTIONS (2 of 3 selected):")
     advanced_count = 0
     if canvas.helpers.moderator_function:
-        doc.append(f"  [X] Moderator: {canvas.helpers.moderator_function}")
+        doc.append(f"  [X] Moderator: {to_str(canvas.helpers.moderator_function)}")
         advanced_count += 1
     else:
         doc.append("  [ ] Moderator: (not selected)")
     if canvas.helpers.self_reflection_prompts:
-        doc.append(f"  [X] Self-Reflections: {canvas.helpers.self_reflection_prompts}")
+        doc.append(f"  [X] Self-Reflections: {to_str(canvas.helpers.self_reflection_prompts)}")
         advanced_count += 1
     else:
         doc.append("  [ ] Self-Reflections: (not selected)")
     if canvas.helpers.non_anthropomorphic_cues:
-        doc.append(f"  [X] Non-Anthropomorphic: {canvas.helpers.non_anthropomorphic_cues}")
+        doc.append(f"  [X] Non-Anthropomorphic: {to_str(canvas.helpers.non_anthropomorphic_cues)}")
         advanced_count += 1
     else:
         doc.append("  [ ] Non-Anthropomorphic: (not selected)")

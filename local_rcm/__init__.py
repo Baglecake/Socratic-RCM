@@ -12,7 +12,7 @@ from .canvas_state import (
     compile_final_document
 )
 from .runtime_parser import Runtime
-from .llm_client import create_llm_client, StudentInteractionHandler
+from .llm_client import create_llm_client, StudentInteractionHandler, StudentSimulator, FRAMEWORK_THEORISTS
 
 __version__ = "0.1.0"
 __all__ = [
@@ -23,4 +23,6 @@ __all__ = [
     "Runtime",
     "create_llm_client",
     "StudentInteractionHandler",
+    "StudentSimulator",
+    "FRAMEWORK_THEORISTS",
 ]
