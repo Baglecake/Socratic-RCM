@@ -14,11 +14,11 @@
 
 | Component | Location | Status | Use Case |
 |-----------|----------|--------|----------|
-| **Production System** | [production/](production/) | ✅ Stable | GPT Builder deployment |
-| **Local Orchestrator** | [local_rcm/](local_rcm/) | ✅ Active | Local/vLLM execution |
-| **Experimental** | [experimental/](experimental/) | ⚠️ Research | Architecture testing |
-| **Theory KB** | [theory/](theory/) | ✅ Stable | Shared lecture notes |
-| **Documentation** | [docs/](docs/) | ✅ Current | Architecture, papers |
+| **Production System** | [production/](production/) | Stable | GPT Builder deployment |
+| **Local Orchestrator** | [local_rcm/](local_rcm/) | Active | Local/vLLM execution |
+| **Experimental** | [experimental/](experimental/) | Research | Architecture testing |
+| **Theory KB** | [theory/](theory/) | Stable | Shared lecture notes |
+| **Documentation** | [docs/](docs/) | Current | Architecture, papers |
 
 ---
 
@@ -224,7 +224,7 @@ For EVERY question: **Reflect** requirement, **Connect** to theory, **Ask** with
 If you use this framework in your research or teaching, please cite:
 
 ```
-Coburn, D. (2025). The Reflect and Connect Model: A Socratic RAG Framework
+Coburn, D. (2025). The Reflect and Connect Model: Socratic Process-Retrieval Augmented Reasoning
 for Pedagogical Applications. GitHub repository:
 https://github.com/delcoburn/Socratic-RCM
 ```
