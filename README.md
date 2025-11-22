@@ -12,11 +12,13 @@
 
 ## Quick Links
 
-- **Production System**: [production/](production/) - v8.4-FINAL (Ready for student deployment)
-- **Experimental**: [experimental/bios-architecture/](experimental/bios-architecture/) - BIOS + Runtime (Research branch)
-- **Theory KB**: [theory/](theory/) - Lecture notes (Marx, Tocqueville, Wollstonecraft, Smith)
-- **Documentation**: [docs/](docs/) - Architecture, research, papers
-- **Literature**: [literature/](literature/) - Academic references
+| Component | Location | Status | Use Case |
+|-----------|----------|--------|----------|
+| **Production System** | [production/](production/) | ✅ Stable | GPT Builder deployment |
+| **Local Orchestrator** | [local_rcm/](local_rcm/) | ✅ Active | Local/vLLM execution |
+| **Experimental** | [experimental/](experimental/) | ⚠️ Research | Architecture testing |
+| **Theory KB** | [theory/](theory/) | ✅ Stable | Shared lecture notes |
+| **Documentation** | [docs/](docs/) | ✅ Current | Architecture, papers |
 
 ---
 
@@ -24,50 +26,63 @@
 
 ```
 Socratic-RCM/
-├── production/              # ✅ Current production system (v8.4)
+├── production/              # ✅ GPT Builder system (v8.4)
 │   ├── system-prompt/      # GPT Builder instructions
 │   ├── knowledge-base/     # Assignment docs & templates
 │   └── deployment/         # Deployment checklist
 │
-├── experimental/           # ⚠️ Experimental branches
-│   └── bios-architecture/  # BIOS + Runtime approach (research)
+├── local_rcm/              # ✅ Local Python orchestrator
+│   ├── orchestrator.py     # Core workflow engine
+│   ├── canvas_state.py     # Data model & compilation
+│   ├── llm_client.py       # LLM abstraction (mock/vLLM)
+│   ├── runtime-files/      # Workflow definitions
+│   ├── tests/              # Automated test suite
+│   └── notebooks/          # Colab/Jupyter support
+│
+├── experimental/           # ⚠️ Research branches
+│   └── bios-architecture/  # BIOS + Runtime approach
 │
 ├── theory/                 # Shared theory knowledge base
-│   ├── marx_theory.txt
-│   ├── tocqueville_theory.txt
-│   ├── wollstonecraft_theory.txt
-│   └── smith_theory.txt
+│   └── *.txt               # Marx, Tocqueville, Wollstonecraft, Smith
 │
 ├── docs/                   # Project documentation
-│   ├── research/          # Validation protocols, toolkits
-│   ├── architecture/      # System design docs
+│   ├── research/          # Validation protocols
+│   ├── architecture/      # System design
 │   └── papers/            # Research papers (LaTeX)
 │
 ├── literature/             # Academic references
-└── archive/                # Deprecated files
+└── archive/                # Deprecated versions (v3-v8)
 ```
 
 ---
 
-## Current Version: v8.4 (Production)
+## Current Versions
 
-**Last Updated:** 2025-01-19
-**Status:** Production Ready
+**Last Updated:** 2025-11-22
 **Framework:** Reflect and Connect Model (RCM)
+
+### Which Version Should I Use?
+
+| Deployment Target | Recommended Version | Location |
+|-------------------|---------------------|----------|
+| GPT Builder (students) | v8.4 Monolithic | [production/](production/) |
+| Local Python (vLLM/API) | Local Orchestrator | [local_rcm/](local_rcm/) |
+| Research/Testing | BIOS Architecture | [experimental/](experimental/) |
 
 ### Quick Start
 
-1. **Deploy Production System**:
-   - See [production/README.md](production/README.md) for deployment instructions
-   - Upload system prompt + knowledge base to GPT Builder
-   - Disable DALL-E image generation in settings
+**Option A: GPT Builder Deployment** (v8.4)
+1. See [production/README.md](production/README.md) for instructions
+2. Upload system prompt + knowledge base to GPT Builder
+3. Disable DALL-E image generation in settings
 
-2. **Understand the Architecture**:
-   - Read [The Reflect and Connect Model](#the-reflect-and-connect-model-rcm) below
-   - Review [docs/architecture/](docs/architecture/) for design rationale
+**Option B: Local Python Orchestrator**
+1. See [local_rcm/README.md](local_rcm/README.md) for setup
+2. Run with mock LLM: `python example_usage.py --mode mock`
+3. Run with vLLM: `python example_usage.py --mode vllm --base-url URL`
 
-3. **Explore Experimental Branches**:
-   - [experimental/bios-architecture/](experimental/bios-architecture/) - Overcoming 8KB limit (research)
+**Option C: Explore Experimental**
+- [experimental/bios-architecture/](experimental/bios-architecture/) - BIOS + Runtime research
 
 ---
 
@@ -111,13 +126,24 @@ The B42 Chatstorm T.A. implements RCM to guide sociology students through multi-
 
 See: [production/README.md](production/README.md)
 
+### Local Orchestrator (local_rcm/)
+
+**Python-based workflow engine**:
+- Runs 112-step workflow locally (no GPT Builder required)
+- Supports multiple LLM backends: mock, vLLM, OpenAI API
+- Canvas state management with JSON export
+- Automated test suite for validation
+- Jupyter/Colab support for GPU inference via ngrok
+
+See: [local_rcm/README.md](local_rcm/README.md)
+
 ### Experimental: BIOS + Runtime (Research)
 
 **Separated Architecture**:
 - BIOS (~7KB): Execution engine with prohibitions & force-read protocol
 - Runtime Files (unlimited): Step-by-step workflow instructions
 - **Goal**: Overcome 8KB limit while maintaining strict control
-- **Status**: Force-read reliability issues (step-skipping observed)
+- **Status**: Research branch - force-read reliability under investigation
 
 See: [experimental/bios-architecture/README.md](experimental/bios-architecture/README.md)
 
@@ -221,5 +247,7 @@ Issues: [GitHub Issues](https://github.com/Baglecake/Socratic-RCM/issues)
 > 📧 del.coburn@mail.utoronto.ca  
 ---
 
-**Status**: Production system (v8.4) ready for student deployment ✅  
-**Experimental**: BIOS architecture under active research ⚠️
+**Status Summary**:
+- ✅ **Production (v8.4)**: Ready for GPT Builder student deployment
+- ✅ **Local Orchestrator**: Ready for local/vLLM execution
+- ⚠️ **Experimental (BIOS)**: Research branch - not for production use

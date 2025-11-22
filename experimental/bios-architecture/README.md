@@ -1,19 +1,19 @@
 # BIOS + Runtime Architecture (Experimental)
 
-**Status**: ✅ **v2.3 Production Ready - Canvas Protocol Implementation**
+**Status**: ⚠️ **Experimental - Force-Read Reliability Under Investigation**
 **Created**: 2025-01-18
-**Updated**: 2025-01-19 (v2.3 with Canvas Protocol complete)
+**Updated**: 2025-11-22
 **Concept Source**: Gemini architectural analysis + GPT advice
 
-**Latest Version**: BIOS v2.3-PRODUCTION + Phase-Split Runtime Files + Canvas Protocol
-- ✅ Three critical issues from chat_test3.txt resolved
-- ✅ Platform config step-skipping fixed (Steps 2.2.9-2.2.19)
-- ✅ File export hallucination prevented
-- ✅ Table accumulation solved via Canvas Protocol
-- ✅ Progressive compilation with 13 CANVAS_UPDATE blocks
-- ✅ Ready for testing phase
+**Latest Version**: BIOS v2.3 + Phase-Split Runtime Files + Canvas Protocol
+- ✅ Three critical issues from chat_test3.txt addressed
+- ✅ Platform config step-skipping fix attempted
+- ✅ Canvas Protocol implemented
+- ⚠️ Force-read reliability still under investigation
+- ⚠️ Step-skipping observed in testing
+- ❌ **Not recommended for student deployment**
 
-**Recommendation**: Test v2.3 with local LLM before production deployment.
+**Recommendation**: Use [production/](../../production/) (v8.4) or [local_rcm/](../../local_rcm/) for reliable execution.
 
 See [docs/BIOS_v2.3_CHANGELOG.md](docs/BIOS_v2.3_CHANGELOG.md) for complete implementation details.
 
@@ -291,16 +291,14 @@ See: [docs/PRODUCTION_FIXES_v2.1.md](docs/PRODUCTION_FIXES_v2.1.md)
 
 ---
 
-**Current Status**: ✅ **v2.3 Implementation Complete - Ready for Testing**
+**Current Status**: ⚠️ **Experimental - Not Recommended for Production**
 
-**Latest Version**: v2.3-PRODUCTION (2025-01-19)
+**Latest Version**: v2.3 (2025-01-19)
 - BIOS: 5,247 bytes (65.6% of 8KB limit)
 - Canvas Protocol: 13 updates + 1 retrieval
-- Three critical issues resolved
+- Force-read reliability issues persist
 
 **Recommended Action**:
-- Test v2.3 with local LLM first
-- Verify canvas compilation works correctly
-- Confirm platform config steps execute
-- Compare results to v8.4 behavior
-- Deploy to production GPT if testing successful
+- Use [production/](../../production/) (v8.4) for GPT Builder deployment
+- Use [local_rcm/](../../local_rcm/) for local Python execution
+- This architecture remains a research branch for overcoming 8KB limits

@@ -22,6 +22,7 @@ local_rcm/
 ├── bios_reduced_prompt.txt
 ├── requirements.txt
 ├── runtime-files/        # Workflow definition files
+│   ├── B42_Runtime_Logic_v2.0-COMPLETE.txt   # Full 112-step workflow
 │   ├── B42_Runtime_Phase1_Conceptualization.txt
 │   ├── B42_Runtime_Phase2_Drafting.txt
 │   └── B42_Runtime_Phase3_Review.txt
