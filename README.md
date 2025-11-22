@@ -1,7 +1,7 @@
 # The Reflect and Connect Model (RCM)
 ## A Socratic RAG Framework For Process-Retrieval Augmented Reasoning (PRAR)
 
-> **B42 Chatstorm T.A. - Implementation of RCM for Social Theory**
+> **Socratic AI Beyond the Oracle**
 
 [![Status](https://img.shields.io/badge/status-production-brightgreen)]()
 [![Version](https://img.shields.io/badge/version-8.4-blue)]()
