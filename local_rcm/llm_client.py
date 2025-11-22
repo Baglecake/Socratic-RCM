@@ -191,7 +191,7 @@ but the core question text must be preserved exactly."""
             # No constraint = always valid
             return {"ok": True, "reason": "No constraint specified"}
 
-        validation_prompt = f"""You are a strict validator. Check if the student's answer satisfies the constraint.
+        validation_prompt = f"""Check if the student's answer is acceptable. Be LENIENT and generous.
 
 TARGET: {target}
 
@@ -201,23 +201,17 @@ CONSTRAINT:
 STUDENT ANSWER:
 {answer}
 
-Rules:
-1. If the constraint says "If yes: Get description" and the student just says "yes", it is INVALID.
-2. If the answer is too short or vague, it is INVALID.
-3. If the answer meets all criteria, it is VALID.
+IMPORTANT: Accept most reasonable answers. Only reject if:
+- The answer is completely empty or just "yes"/"no" when a description was requested
+- The answer is wildly off-topic
 
-Respond with this exact JSON format:
-{{
-  "ok": true,
-  "reason": "Explanation",
-  "suggestion": ""
-}}
+Length requirements like "2-3 sentences" are GUIDELINES, not strict rules.
+If the answer addresses the question meaningfully, mark it as OK.
+
+Respond with JSON:
+{{"ok": true, "reason": "Accepted"}}
 OR
-{{
-  "ok": false,
-  "reason": "What is missing",
-  "suggestion": "Follow-up question to get the missing info"
-}}
+{{"ok": false, "reason": "Brief issue", "suggestion": "Specific follow-up question"}}
 """
 
         try:
