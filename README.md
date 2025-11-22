@@ -39,7 +39,7 @@ Socratic-RCM/
 │   ├── tests/              # Automated test suite
 │   └── notebooks/          # Colab/Jupyter support
 │
-├── experimental/           # ⚠️ Research branches
+├── experimental/           # Research branches
 │   └── bios-architecture/  # BIOS + Runtime approach
 │
 ├── theory/                 # Shared theory knowledge base
