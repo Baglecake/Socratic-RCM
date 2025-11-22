@@ -103,33 +103,40 @@ class WorkflowOrchestrator:
 
     def _text_to_int(self, text: str) -> int:
         """Helper to convert text numbers to integers"""
-        text = text.lower()
+        import re
+        text_lower = text.lower()
         word_map = {
             "one": 1, "two": 2, "three": 3, "four": 4, "five": 5,
             "six": 6, "seven": 7, "eight": 8, "nine": 9, "ten": 10
         }
-        
-        # Try to find digits first
-        import re
-        digits = re.search(r'\d+', text)
-        if digits:
-            return int(digits.group())
-            
+
+        # Check for word numbers FIRST (e.g., "Three rounds..." should return 3)
         # Find all word matches and their positions
         matches = []
         for word, val in word_map.items():
-            # Use word boundary to avoid partial matches (e.g. "one" in "phone")
-            # But simple 'in' check is safer for now given the limited map
-            idx = text.find(word)
+            idx = text_lower.find(word)
             if idx != -1:
                 matches.append((idx, val))
-        
+
         if matches:
-            # Sort by index (position in string)
+            # Sort by index (position in string) - earliest word wins
             matches.sort(key=lambda x: x[0])
-            print(f"[System] Detected number: {matches[0][1]} (from '{text}')")
+            print(f"[System] Detected number word: {matches[0][1]} (from '{text[:40]}...')")
             return matches[0][1]
-                
+
+        # Fall back to digits only if no word numbers found
+        # Look for standalone digits at the start of the text
+        digits = re.search(r'^\s*(\d+)', text)
+        if digits:
+            print(f"[System] Detected digit: {digits.group(1)} (from '{text[:40]}...')")
+            return int(digits.group(1))
+
+        # Last resort: find any digit in the text
+        digits = re.search(r'\d+', text)
+        if digits:
+            print(f"[System] Detected digit (fallback): {digits.group()} (from '{text[:40]}...')")
+            return int(digits.group())
+
         return 1  # Default fallback
 
     def resolve_next_step(self, current_step_id: str, raw_next_step: str) -> Optional[str]:
@@ -230,7 +237,29 @@ class WorkflowOrchestrator:
             else:
                 if "current_agent_prompt_counter" in self.student_state:
                     del self.student_state["current_agent_prompt_counter"]
+                # Initialize Phase 2 round counter
+                self.student_state["current_phase2_round_counter"] = 1
                 return "2.2.1"
+
+        # Case 10: Phase 2 Round Loop at 2.2.19 (Config Verification)
+        if current_step_id == "2.2.19":
+            rounds_answer = self.student_state.get("1.4.2", "1")
+            if isinstance(rounds_answer, list): rounds_answer = rounds_answer[-1]
+            total_rounds = self._text_to_int(rounds_answer)
+
+            current_round = self.student_state.get("current_phase2_round_counter", 1)
+
+            print(f"[DEBUG] Loop 2.2.19: Total Rounds={total_rounds}, Current Phase 2 Round={current_round}")
+
+            if current_round < total_rounds:
+                self.student_state["current_phase2_round_counter"] = current_round + 1
+                print(f"[DEBUG] Loop 2.2.19: Continuing to Round {current_round + 1} (Next: 2.2.1)")
+                return "2.2.1"
+            else:
+                if "current_phase2_round_counter" in self.student_state:
+                    del self.student_state["current_phase2_round_counter"]
+                print(f"[DEBUG] Loop 2.2.19: All rounds complete (Next: 2.3.1)")
+                return "2.3.1"
 
         # --- GENERIC LOGIC LAST ---
 
@@ -279,6 +308,11 @@ class WorkflowOrchestrator:
         if step_id in ["1.6.1", "1.6.2", "1.6.3"]:
             current_agent = self.student_state.get("current_agent_detail_counter", 1)
             context += f"\n[SYSTEM NOTE]: Current Agent: {current_agent}"
+
+        # Phase 2 round context for steps 2.2.1 through 2.2.19
+        if step_id.startswith("2.2."):
+            current_round = self.student_state.get("current_phase2_round_counter", 1)
+            context += f"\n[SYSTEM NOTE]: Drafting Round: {current_round}"
 
         # Substitute placeholders in the question
         question_text = self._substitute_placeholders(step.required_output, step_id)
@@ -423,6 +457,9 @@ class WorkflowOrchestrator:
             elif "2.1" in step_id:
                 # Phase 2.1 iterates through agents
                 counter = self.student_state.get("current_agent_prompt_counter", 1)
+            elif "2.2" in step_id:
+                # Phase 2.2 iterates through rounds
+                counter = self.student_state.get("current_phase2_round_counter", 1)
             elif "1.7" in step_id:
                 # Step 1.7 asks for all rounds at once or needs to be treated as a single question
                 # We'll replace [n] with "1, 2, 3..." based on total rounds

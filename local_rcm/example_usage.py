@@ -116,6 +116,74 @@ def run_with_anthropic(api_key: str, model: str = "claude-3-5-sonnet-20241022"):
     return orchestrator
 
 
+def run_with_vllm(base_url: str, model: str = "default"):
+    """Run with vLLM remote server (Colab, etc.)"""
+    print(f"=== vLLM Mode ===")
+    print(f"Server: {base_url}")
+    print(f"Model: {model}\n")
+
+    # Create vLLM client (uses OpenAI-compatible API)
+    llm = create_llm_client("vllm", base_url=base_url, model=model)
+
+    # Load BIOS prompt
+    bios_prompt = load_bios_prompt()
+
+    # Create orchestrator
+    orchestrator = create_orchestrator(
+        llm_client=llm,
+        bios_prompt=bios_prompt,
+        starting_step="1.1"
+    )
+
+    print("\nStarting workflow...")
+    print("You will be asked questions step by step.")
+    print("The orchestrator GUARANTEES no steps will be skipped.\n")
+
+    # Run the workflow
+    final_canvas = orchestrator.run_workflow()
+
+    # Save final state
+    orchestrator.save_state("workflow_final_state.json")
+
+    print("\n=== Workflow Complete ===")
+    print(f"Total steps completed: {len(orchestrator.get_student_answers())}")
+
+    return orchestrator
+
+
+def run_with_ollama(model: str = "llama3"):
+    """Run with Ollama local model"""
+    print(f"=== Ollama Mode ({model}) ===\n")
+
+    # Create Ollama client
+    llm = create_llm_client("ollama", model=model)
+
+    # Load BIOS prompt
+    bios_prompt = load_bios_prompt()
+
+    # Create orchestrator
+    orchestrator = create_orchestrator(
+        llm_client=llm,
+        bios_prompt=bios_prompt,
+        starting_step="1.1"
+    )
+
+    print("\nStarting workflow...")
+    print("You will be asked questions step by step.")
+    print("The orchestrator GUARANTEES no steps will be skipped.\n")
+
+    # Run the workflow
+    final_canvas = orchestrator.run_workflow()
+
+    # Save final state
+    orchestrator.save_state("workflow_final_state.json")
+
+    print("\n=== Workflow Complete ===")
+    print(f"Total steps completed: {len(orchestrator.get_student_answers())}")
+
+    return orchestrator
+
+
 def run_from_checkpoint(step_id: str, provider: str = "mock", api_key: str = None):
     """Resume workflow from a specific step"""
     print(f"=== Resume from Step {step_id} ===\n")
@@ -150,9 +218,11 @@ def interactive_mode():
     print("1. Mock (testing only, no API calls)")
     print("2. OpenAI (GPT-4)")
     print("3. Anthropic (Claude)")
-    print("4. Exit")
+    print("4. Ollama (local models)")
+    print("5. vLLM (remote server - Colab, etc.)")
+    print("6. Exit")
 
-    choice = input("\nEnter choice (1-4): ").strip()
+    choice = input("\nEnter choice (1-6): ").strip()
 
     if choice == "1":
         return run_mock_test()
@@ -172,6 +242,18 @@ def interactive_mode():
         return run_with_anthropic(api_key, model)
 
     elif choice == "4":
+        model = input("Model (default: llama3): ").strip() or "llama3"
+        return run_with_ollama(model)
+
+    elif choice == "5":
+        base_url = input("vLLM server URL (e.g., https://xxxx.ngrok.io/v1): ").strip()
+        if not base_url:
+            print("Error: URL required")
+            return interactive_mode()
+        model = input("Model name (default: default): ").strip() or "default"
+        return run_with_vllm(base_url, model)
+
+    elif choice == "6":
         print("Exiting...")
         sys.exit(0)
 
@@ -234,12 +316,13 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="BIOS Orchestrator Example Usage")
     parser.add_argument(
         "--mode",
-        choices=["interactive", "mock", "openai", "anthropic", "demo"],
+        choices=["interactive", "mock", "openai", "anthropic", "ollama", "vllm", "demo"],
         default="interactive",
         help="Execution mode"
     )
     parser.add_argument("--api-key", help="API key for OpenAI/Anthropic")
     parser.add_argument("--model", help="Model name")
+    parser.add_argument("--base-url", help="Base URL for vLLM server (e.g., https://xxxx.ngrok.io/v1)")
     parser.add_argument("--start-step", default="1.1.1", help="Starting step ID")
 
     args = parser.parse_args()
@@ -267,3 +350,13 @@ if __name__ == "__main__":
             print("Error: Anthropic API key required (--api-key or ANTHROPIC_API_KEY env var)")
             sys.exit(1)
         run_with_anthropic(api_key, args.model or "claude-3-5-sonnet-20241022")
+
+    elif args.mode == "ollama":
+        run_with_ollama(args.model or "llama3")
+
+    elif args.mode == "vllm":
+        if not args.base_url:
+            print("Error: --base-url required for vLLM mode")
+            print("Example: python example_usage.py --mode vllm --base-url https://xxxx.ngrok.io/v1")
+            sys.exit(1)
+        run_with_vllm(args.base_url, args.model or "default")

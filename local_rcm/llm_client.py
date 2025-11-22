@@ -28,15 +28,19 @@ class LLMClient(ABC):
 
 
 class OpenAIClient(LLMClient):
-    """OpenAI API client (GPT-4, etc.)"""
+    """OpenAI API client (GPT-4, etc.) - also works with vLLM and other OpenAI-compatible APIs"""
 
-    def __init__(self, api_key: str, model: str = "gpt-4"):
+    def __init__(self, api_key: str, model: str = "gpt-4", base_url: str = None):
         self.api_key = api_key
         self.model = model
+        self.base_url = base_url
         # Import here to make it optional
         try:
             from openai import OpenAI
-            self.client = OpenAI(api_key=api_key)
+            if base_url:
+                self.client = OpenAI(api_key=api_key, base_url=base_url)
+            else:
+                self.client = OpenAI(api_key=api_key)
         except ImportError:
             raise ImportError("Please install openai: pip install openai")
 
@@ -326,7 +330,14 @@ def create_llm_client(
     if provider == "openai":
         if not api_key:
             raise ValueError("API key required for OpenAI")
-        return OpenAIClient(api_key, model or "gpt-4")
+        return OpenAIClient(api_key, model or "gpt-4", base_url)
+
+    elif provider == "vllm":
+        # vLLM provides OpenAI-compatible API
+        if not base_url:
+            raise ValueError("base_url required for vLLM (e.g., https://xxxx.ngrok.io/v1)")
+        # vLLM doesn't need a real API key, but OpenAI client requires one
+        return OpenAIClient(api_key or "not-needed", model or "default", base_url)
 
     elif provider == "anthropic":
         if not api_key:
