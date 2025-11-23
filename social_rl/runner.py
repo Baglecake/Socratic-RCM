@@ -292,8 +292,6 @@ class SocialRLRunner:
         if self.config.verbose:
             print(f"\nRound {round_number} complete: {len(messages)} messages in {duration:.1f}s")
             self._print_feedback_summary(round_feedback)
-            if self.config.auto_save:
-                print(f"  Saved to: {self.output_dir}/round{round_number}_social_rl.json")
 
         return result
 
@@ -602,9 +600,22 @@ class SocialRLRunner:
 
     def _save_round(self, result: SocialRLRoundResult):
         """Save a single round result (called automatically if auto_save=True)."""
-        output_file = self.output_dir / f"round{result.round_number}_social_rl.json"
-        with open(output_file, "w") as f:
-            json.dump(result.to_dict(), f, indent=2)
+        try:
+            # Ensure directory exists
+            self.output_dir.mkdir(parents=True, exist_ok=True)
+
+            output_file = self.output_dir / f"round{result.round_number}_social_rl.json"
+            with open(output_file, "w") as f:
+                json.dump(result.to_dict(), f, indent=2)
+
+            # Also save policy state after each round
+            policy_file = self.output_dir / "policy_state.json"
+            self.process_retriever.save_policy_state(str(policy_file))
+
+            if self.config.verbose:
+                print(f"  [SAVED] {output_file}")
+        except Exception as e:
+            print(f"  [SAVE ERROR] Failed to save round {result.round_number}: {e}")
 
     def save_results(self, output_dir: str = None):
         """Save all results to files."""
