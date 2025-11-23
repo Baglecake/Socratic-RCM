@@ -63,16 +63,46 @@ class OpenAIClient(LLMClient):
         return response.choices[0].message.content
 
     def send_json(self, system_prompt: str, user_message: str) -> Dict:
+        """
+        Request a JSON reply from the model, without relying on native JSON mode.
+
+        This works both for real OpenAI and OpenAI-compatible servers like vLLM,
+        which may not support `response_format={"type": "json_object"}`.
+        """
         response = self.client.chat.completions.create(
             model=self.model,
             messages=[
                 {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_message}
+                {
+                    "role": "user",
+                    "content": user_message + "\n\nRespond with valid JSON only, no explanations."
+                },
             ],
-            response_format={"type": "json_object"}
+            temperature=0,
         )
         content = response.choices[0].message.content
-        return json.loads(content)
+
+        # Try to extract JSON from common patterns
+        try:
+            text = content.strip()
+
+            # Case 1: fenced code block ```json ... ```
+            if "```json" in text:
+                json_str = text.split("```json", 1)[1].split("```", 1)[0].strip()
+            elif "```" in text:
+                # Generic fenced block ``` ... ```
+                json_str = text.split("```", 1)[1].split("```", 1)[0].strip()
+            else:
+                # Fallback: best-effort slice from first '{' to last '}'
+                start = text.find("{")
+                end = text.rfind("}")
+                if start == -1 or end == -1 or end <= start:
+                    raise ValueError(f"No JSON object found in response: {text}")
+                json_str = text[start : end + 1]
+
+            return json.loads(json_str)
+        except Exception as e:
+            raise ValueError(f"Failed to parse JSON from LLM response: {content}") from e
 
 
 class AnthropicClient(LLMClient):
