@@ -1,0 +1,1097 @@
+# Socratic-RCM Working Document
+
+> **Purpose**: Comprehensive reference document for development, onboarding, and maintaining context across sessions.
+> **Last Updated**: 2025-11-22
+> **Maintainer**: Del Coburn / Claude Development Sessions
+
+---
+
+## Table of Contents
+
+1. [Project Overview](#1-project-overview)
+2. [Vision: Dual-LLM Agent Simulation](#2-vision-dual-llm-agent-simulation)
+3. [Architecture Summary](#3-architecture-summary)
+4. [Deployment Targets](#4-deployment-targets)
+5. [Local Setup (local_rcm/)](#5-local-setup-local_rcm)
+6. [Production GPT Builder (v8.4)](#6-production-gpt-builder-v84)
+7. [Experimental BIOS Architecture](#7-experimental-bios-architecture)
+8. [Data Models & Schemas](#8-data-models--schemas)
+9. [LLM Client Architecture](#9-llm-client-architecture)
+10. [Runtime Files & Workflow](#10-runtime-files--workflow)
+11. [Testing Infrastructure](#11-testing-infrastructure)
+12. [GPU/Cloud Options](#12-gpucloud-options)
+13. [Current Status & Known Issues](#13-current-status--known-issues)
+14. [Development Roadmap](#14-development-roadmap)
+15. [Quick Reference](#15-quick-reference)
+16. [Session Log](#16-session-log)
+
+---
+
+## 1. Project Overview
+
+### What is Socratic-RCM?
+
+**The Reflect and Connect Model (RCM)** is a Socratic RAG framework for pedagogical applications. Unlike traditional RAG that retrieves content to answer questions, RCM retrieves **process schemas** to generate **Socratic scaffolds** that guide learners through complex creative tasks without doing the work for them.
+
+### Core Innovation: Process-Retrieval Architecture
+
+```
+Traditional RAG: Query -> Retrieve Information -> Generate Answer
+Pedagogical RAG (RCM): Query -> Retrieve Process Schema -> Generate Socratic Scaffold
+```
+
+### The RCM Method
+
+For **EVERY** question, the system follows:
+1. **Reflect**: Help student articulate the requirement
+2. **Connect**: Link to relevant social theory from lecture notes
+3. **Ask**: Pose a Socratic question with encouragement
+
+### Key Constraint
+
+**Students create ALL content. The system NEVER fills placeholders, writes creative content, or paraphrases student ideas.**
+
+### Primary Use Case
+
+The B42 Chatstorm T.A. guides sociology students (SOCB42 at University of Toronto) through designing multi-agent simulation experiments that test theoretical tensions between classical theorists (Marx, Wollstonecraft, Tocqueville, Smith).
+
+---
+
+## 2. Vision: Dual-LLM Agent Simulation
+
+### The Big Picture
+
+This project is evolving from a teaching assistant into a **generalizable agent simulation framework** governed by PRAR (Process-Retrieval Augmented Reasoning). The architecture mirrors CQB (Central Query Brain) principles: central orchestrator owns workflow state, LLMs are demoted to "IO devices."
+
+### Evolution Path
+
+```
+CURRENT STATE (B42 Teaching Assistant):
+┌─────────────────┐                    ┌─────────────────┐
+│  Human Student  │ <-- Socratic --> │   LLM Coach     │
+│  (types answers)│     PRAR          │  (asks/validates)│
+└─────────────────┘                    └─────────────────┘
+
+NEAR FUTURE (B42 Dual-LLM):
+┌─────────────────┐                    ┌─────────────────┐
+│  Student Agent  │ <-- Socratic --> │   Coach LLM     │
+│  (LLM #2)       │     PRAR          │  (LLM #1)       │
+│  Generated from │                    │  Same PRAR/RCM  │
+│  Option A-E     │                    │  logic          │
+└─────────────────┘                    └─────────────────┘
+
+GENERALIZED FUTURE (CES/Research Simulations):
+┌─────────────────┐                    ┌─────────────────┐
+│  N Synthetic    │ <-- Process   --> │   Coach LLM     │
+│  Agents         │     Schema         │                 │
+│  (demographics) │     (PRAR)         │  Interrogates,  │
+│  CES respondents│                    │  validates,     │
+│  Survey panels  │                    │  shapes behavior│
+└─────────────────┘                    └─────────────────┘
+```
+
+### Dual-LLM Architecture Concept
+
+**LLM #1 - Coach/Orchestrator**:
+- Continues PRAR/RCM function
+- Reads runtime steps, formulates Socratic questions
+- Validates agent responses against constraints
+- Never controls workflow state (code does)
+
+**LLM #2 - Agent**:
+- Inhabits a generated persona (student, CES respondent, etc.)
+- Responds to Socratic prompts from Coach
+- Produces content that Coach validates/shapes
+- Persona built from config (B42 option, CES demographics, etc.)
+
+### B42 Dual-LLM Flow
+
+1. Orchestrator presents 5 theoretical options (A-E)
+2. User (or system) selects option
+3. **AgentConfig generated**: System prompt tailored to theoretical problem
+   - "You are a B42 student examining Marx vs Wollstonecraft..."
+   - Framework-specific constraints and vocabulary
+4. **Agent LLM instantiated** with this persona
+5. **Coach LLM + Orchestrator** run the 3-phase workflow
+   - Coach formulates RCM questions
+   - Agent responds as the "student"
+   - Orchestrator validates, updates canvas, advances steps
+
+### CES/Research Generalization
+
+Same architecture, different inputs:
+
+| Component | B42 Mode | CES Mode |
+|-----------|----------|----------|
+| **AgentConfig Source** | Option A-E selection | CES survey row |
+| **Persona Elements** | Theoretical framework | Demographics, ideology, prior vote |
+| **Runtime Schema** | B42 3-phase workflow | Survey experiment rounds |
+| **Canvas/Output** | Simulation design document | Survey responses, behavioral traces |
+
+### What Already Exists (Proto-Agent)
+
+The `StudentSimulator` class in `llm_client.py` is already a proto-agent:
+
+```python
+class StudentSimulator:
+    def __init__(self, llm_client, persona=None):
+        self.llm = llm_client
+        self.persona = persona or STUDENT_PERSONA
+        self.conversation_history = []
+
+    def set_framework(self, option):  # Update persona after option selection
+        if option in FRAMEWORK_PERSONAS:
+            self.persona = FRAMEWORK_PERSONAS[option] + guidelines
+```
+
+**Framework-Specific Personas** already exist:
+- Option A: Marx + Wollstonecraft (alienation, domination)
+- Option B: Tocqueville only (democratic paradoxes)
+- Option C: Marx + Tocqueville (revolution vs conformity)
+- Option D: Smith + Tocqueville (commerce vs equality)
+- Option E: Custom framework
+
+### Implementation Phases
+
+**Phase 0 - Single Model, Dual Roles** (Can start now):
+- One RunPod model
+- Different system prompts for coach vs agent
+- Same infrastructure, test the logic
+
+**Phase 1 - Same Family, Two Endpoints**:
+- Coach: Lower temp, more careful reasoning
+- Agent: Higher temp, more "human-ish" responses
+
+**Phase 2 - Different Models**:
+- Coach: Large reasoning model
+- Agents: Smaller/faster models for population-scale simulation
+
+### Relationship to CQB
+
+This project is a **specialized, PRAR-flavored mini-CQB**:
+
+| CQB Principle | Socratic-RCM Implementation |
+|---------------|----------------------------|
+| Central orchestrator | `WorkflowOrchestrator` state machine |
+| LLMs as tools | `LLMClient` abstraction, pluggable backends |
+| Multi-step pipelines as code | Runtime files parsed into `Step` objects |
+| RAG | Process-Retrieval (PRAR) over schemas, not facts |
+
+### Key Insight
+
+> "Keep RCM/PRAR as the governing logic. Turn the 'student' slot into a generated agent. Use a second LLM (or second role) to inhabit that agent, while the first LLM continues to be the Socratic PRAR engine."
+
+---
+
+## 3. Architecture Summary
+
+### Three Deployment Paradigms
+
+```
++------------------+     +------------------+     +------------------+
+|   GPT Builder    |     |  Local Python    |     |  Experimental    |
+|   (Production)   |     |  Orchestrator    |     |  BIOS + Runtime  |
++------------------+     +------------------+     +------------------+
+        |                        |                        |
+   Monolithic              Code-enforced            Separated
+   8KB System              State Machine            Architecture
+   Prompt                  + LLM Client             (Research)
+        |                        |                        |
+   production/             local_rcm/              experimental/
++------------------+     +------------------+     +------------------+
+```
+
+### What Each Paradigm Solves
+
+| Paradigm | Problem Solved | Trade-off |
+|----------|---------------|-----------|
+| GPT Builder | Zero-code deployment for students | 8KB limit, no customization |
+| Local Orchestrator | Full control, GPU options, testing | Requires hosting/setup |
+| BIOS + Runtime | Overcomes 8KB limit | Force-read reliability issues |
+
+---
+
+## 3. Deployment Targets
+
+### 3.1 GPT Builder (Production v8.4)
+
+**Location**: `production/`
+
+**Files**:
+- `system-prompt/B42 Chatstorm TA System Prompt v8.4-FINAL.txt` (7,994 bytes)
+- `knowledge-base/` - 4 assignment docs + 4 theory files
+- `deployment/DEPLOYMENT_CHECKLIST.md`
+
+**Status**: Production-ready, actively deployed for students
+
+**Limitations**:
+- At 99% of 8KB character limit
+- Cannot add new features
+- Requires DALL-E disabled in GPT settings
+
+### 3.2 Local Python Orchestrator
+
+**Location**: `local_rcm/`
+
+**Core Files**:
+- `orchestrator.py` - Workflow state machine
+- `canvas_state.py` - Data model and compilation
+- `llm_client.py` - Multi-backend LLM interface
+- `runtime_parser.py` - Runtime file parser
+- `app.py` - Streamlit web interface
+- `runpod_setup.py` - RunPod connectivity test
+
+**Status**: Active development, ready for local/vLLM/RunPod execution
+
+### 3.3 Experimental BIOS Architecture
+
+**Location**: `experimental/bios-architecture/`
+
+**Status**: Research branch - force-read reliability issues
+
+**Purpose**: Overcome 8KB limit by separating BIOS (kernel) from Runtime (instructions)
+
+---
+
+## 4. Local Setup (local_rcm/)
+
+### Directory Structure
+
+```
+local_rcm/
+├── orchestrator.py          # Core workflow engine (state machine)
+├── canvas_state.py          # Data model & compilation
+├── llm_client.py            # LLM abstraction (mock/OpenAI/Anthropic/vLLM)
+├── runtime_parser.py        # Runtime file parser
+├── app.py                   # Streamlit web interface
+├── example_usage.py         # CLI entry point
+├── runpod_setup.py          # RunPod connectivity test
+├── bios_reduced_prompt.txt  # Minimal system instructions
+├── requirements.txt         # Dependencies
+├── runtime-files/           # 3-phase workflow definitions
+│   ├── B42_Runtime_Phase1_Conceptualization.txt
+│   ├── B42_Runtime_Phase2_Drafting.txt
+│   ├── B42_Runtime_Phase3_Review.txt
+│   └── B42_Runtime_Logic_v2.0-COMPLETE.txt
+├── tests/                   # Test suite
+│   ├── test_full_workflow.py
+│   ├── test_realistic.py
+│   ├── test_auto.py
+│   └── test_simulator.py
+└── output/                  # Generated workflows (gitignored)
+```
+
+### Installation
+
+```bash
+cd local_rcm
+pip install -r requirements.txt
+```
+
+**Dependencies**:
+- `requests>=2.31.0`
+- `openai>=1.0.0`
+- `anthropic>=0.18.0`
+- `streamlit>=1.28.0`
+
+### Running the Local Setup
+
+#### Option 1: CLI with Mock (Testing)
+```bash
+python example_usage.py --mode mock
+```
+
+#### Option 2: CLI with vLLM/RunPod
+```bash
+python example_usage.py --mode vllm --base-url "https://api.runpod.ai/v2/YOUR_ENDPOINT/openai/v1" --api-key YOUR_KEY
+```
+
+#### Option 3: Streamlit Web Interface
+```bash
+streamlit run app.py
+```
+
+### Core Module: orchestrator.py
+
+The `WorkflowOrchestrator` class enforces the BIOS specification:
+
+```python
+class WorkflowOrchestrator:
+    """
+    Main orchestrator that enforces BIOS workflow execution.
+    The LLM NEVER controls step advancement. Code owns the state machine.
+    """
+
+    def __init__(self, runtime, student_handler, canvas=None, starting_step="1.1.1"):
+        self.runtime = runtime
+        self.student_handler = student_handler
+        self.canvas = canvas or CanvasState()
+        self.current_step_id = starting_step
+        self.student_state = {}  # step_id -> answer
+```
+
+**Key Methods**:
+- `run_workflow()` - Execute complete workflow
+- `execute_step(step_id)` - Execute single step with validation
+- `resolve_next_step()` - Handle conditional routing and loops
+- `save_state() / load_state()` - Persist workflow state
+
+### Core Module: llm_client.py
+
+**LLM Providers Supported**:
+
+| Provider | Class | Notes |
+|----------|-------|-------|
+| Mock | `MockClient` | Testing without API calls |
+| OpenAI | `OpenAIClient` | GPT-4, also works with vLLM |
+| Anthropic | `AnthropicClient` | Claude models |
+| RunPod | `OpenAIClient` | Via OpenAI-compatible API |
+| Ollama | `OllamaClient` | Local models |
+
+**Factory Function**:
+```python
+llm = create_llm_client(
+    provider="runpod",  # or "openai", "anthropic", "vllm", "ollama", "mock"
+    api_key="your-key",
+    model="Qwen/Qwen2.5-7B-Instruct",
+    base_url="https://api.runpod.ai/v2/YOUR_ENDPOINT/openai/v1"
+)
+```
+
+### Core Module: canvas_state.py
+
+**Data Model**:
+```python
+@dataclass
+class CanvasState:
+    project: ProjectInfo           # Goal, concepts, framework
+    agents: List[AgentDefinition]  # Agent roster with prompts
+    rounds: List[RoundDefinition]  # Round instructions + config
+    helpers: HelperFunctions       # Moderator, analyst, etc.
+    status: WorkflowStatus         # Phase completion flags
+```
+
+**Key Functions**:
+- `compile_canvas_from_student_state()` - Build canvas from collected answers
+- `compile_final_document()` - Generate exportable document
+- `apply_canvas_update()` - Apply runtime updates to canvas
+
+### Core Module: runtime_parser.py
+
+**Step Structure**:
+```python
+@dataclass
+class Step:
+    id: str                    # e.g., "1.2.3"
+    target: str                # What this step collects
+    instruction: str           # Internal guidance
+    required_output: str       # Exact question text
+    rcm_cue: str               # RCM guidance
+    constraint: str            # Validation rules
+    next_step: str             # Next step ID or conditional
+    canvas_update: Dict        # Canvas update block
+```
+
+---
+
+## 5. Production GPT Builder (v8.4)
+
+### System Prompt Structure (7,994 bytes)
+
+```
+# B42 Chatstorm T.A. v8.4
+
+## CORE IDENTITY
+## ABSOLUTE PROHIBITIONS (5 rules)
+## KNOWLEDGE BASE (8 files)
+## THEORY QUERIES
+## SOCRATIC METHOD (RCM)
+## ONE QUESTION AT A TIME RULE
+## THREE-PHASE WORKFLOW
+  ### PHASE 1: CONCEPTUALIZATION (Steps 1.1-1.8)
+  ### PHASE 2: DRAFTING (Steps 2.1-2.3)
+  ### PHASE 3: REVIEW & EXPORT
+## POSITION TRACKING
+## KEY TERMS
+## PROTOCOLS
+## SUCCESS CRITERIA
+```
+
+### Absolute Prohibitions
+
+1. **NO CREATIVE WRITING** - System never writes/paraphrases student ideas
+2. **NO BATCHING** - ONE question at a time only
+3. **NO PLACEHOLDER ACCEPTANCE** - Rejects `[...]`, "TBD", vague responses
+4. **NO TRAINING DATA THEORY** - Uses ONLY KB[5-8] lecture notes
+5. **NO FILE CREATION** - Displays in chat with `||...||` markers
+
+### Knowledge Base Files
+
+| KB ID | File | Purpose |
+|-------|------|---------|
+| KB[1] | B42 Chatstorm T.A. Guide v4.2.txt | Templates |
+| KB[2] | B42 Final Project.txt | Assignment requirements |
+| KB[3] | B42 Step-by-Step Guide.txt | Workflow phases |
+| KB[4] | Appendix A - Required Values Index v3.2.txt | Field definitions |
+| KB[5] | marx_theory.txt | Marx theory |
+| KB[6] | tocqueville_theory.txt | Tocqueville theory |
+| KB[7] | wollstonecraft_theory.txt | Wollstonecraft theory |
+| KB[8] | smith_theory.txt | Smith theory |
+
+### Deployment Steps
+
+See `production/deployment/DEPLOYMENT_CHECKLIST.md` for complete steps:
+1. Create new GPT in GPT Builder
+2. Paste system prompt
+3. Upload all knowledge base files
+4. Disable DALL-E image generation
+5. Test workflow execution
+
+---
+
+## 6. Experimental BIOS Architecture
+
+### Concept
+
+Move from **"Monolithic Prompt"** to **"BIOS + OS"** architecture:
+
+- **BIOS** (~5KB): Prime directives, prohibitions, runtime loop protocol
+- **Runtime Files** (unlimited): Detailed step instructions, RCM cues
+
+### Problem Solved
+
+| Aspect | Monolithic (v8.4) | BIOS + Runtime |
+|--------|-------------------|----------------|
+| Space Constraint | 8,000 byte hard limit | Unlimited runtime file |
+| Updates | Risky (full prompt edit) | Easy (edit text file) |
+| Scalability | Cannot add features | Can add 100+ steps |
+
+### Current Status
+
+**Version**: v2.3
+**Status**: Experimental - NOT recommended for production
+
+**Issues**:
+- Force-read reliability problems
+- Step-skipping observed in testing
+- LLM sometimes doesn't retrieve runtime instructions
+
+### Files
+
+```
+experimental/bios-architecture/
+├── system-prompts/
+│   ├── B42_BIOS_System_Prompt_v2.3-PRODUCTION.txt (5,247 bytes)
+│   ├── B42_BIOS_System_Prompt_v2.2-PRODUCTION.txt (aborted)
+│   └── B42_BIOS_System_Prompt_v2.1-PRODUCTION.txt
+├── runtime-files/
+│   ├── B42_Runtime_Phase1_Conceptualization.txt
+│   ├── B42_Runtime_Phase2_Drafting.txt
+│   └── B42_Runtime_Phase3_Review.txt
+└── docs/
+    ├── CANVAS_DATA_SCHEMA.md
+    ├── FORCE_READ_PROTOCOL.md
+    ├── BIOS_vs_MONOLITHIC.md
+    └── [other design docs]
+```
+
+---
+
+## 7. Data Models & Schemas
+
+### Canvas Data Schema
+
+The canvas accumulates student data progressively:
+
+```json
+{
+  "project": {
+    "goal": "string",
+    "theoretical_option": "A|B|C|D|E",
+    "theoretical_option_label": "string",
+    "concept_a": { "name": "string", "definition": "string" },
+    "concept_b": { "name": "string", "definition": "string" },
+    "design_approach": "single|two-design",
+    "variable": {
+      "name": "string",
+      "baseline": "string",
+      "experimental": "string",
+      "rationale": "string"
+    },
+    "setting": "string",
+    "rounds_count": "integer",
+    "rounds_plan": "string"
+  },
+  "agents": [
+    {
+      "identifier": "[purpose]+[name]",
+      "goal": "string",
+      "persona": "string",
+      "prompt": "string (generated in Phase 2)"
+    }
+  ],
+  "rounds": [
+    {
+      "round_number": "integer",
+      "scenario": "string",
+      "concept_a_manifestation": "string",
+      "concept_b_manifestation": "string",
+      "rules": "string",
+      "tasks": "string",
+      "sequence": "string",
+      "platform_config": {
+        "participants": "string",
+        "who_sends": "All|Moderator",
+        "order": "Default|Random|Active|Moderator",
+        "end_condition": "string",
+        "transition": "Pause|Auto|Moderator",
+        "detail_level": "Min|Brief|Med|Thor|Exh|Dyn",
+        "creativity": "string",
+        "ask_questions": "boolean",
+        "self_reflection": "boolean",
+        "model": "string"
+      }
+    }
+  ],
+  "helpers": {
+    "moderator_function": "string",
+    "analyst_function": "string",
+    "non_anthropomorphic_cues": "string",
+    "self_reflection_prompts": "string"
+  },
+  "status": {
+    "phase1_complete": "boolean",
+    "phase2_complete": "boolean",
+    "phase3_complete": "boolean",
+    "ready_for_export": "boolean"
+  }
+}
+```
+
+### Theoretical Framework Options
+
+| Option | Name | Theorists | Key Concepts |
+|--------|------|-----------|--------------|
+| A | Class Conflict / Alienation | Marx, Wollstonecraft | alienation, exploitation, patriarchy, domination |
+| B | Cultural Systems | Tocqueville | equality, tyranny of majority, conformity |
+| C | Institutional Power | Marx, Tocqueville | revolution, class consciousness, conformity |
+| D | Network Dynamics | Smith, Tocqueville | commerce, self-interest, equality |
+| E | Custom Framework | Student-defined | Variable |
+
+---
+
+## 8. LLM Client Architecture
+
+### StudentInteractionHandler
+
+Wraps LLM client for Socratic interactions:
+
+```python
+class StudentInteractionHandler:
+    def __init__(self, llm_client, bios_prompt):
+        self.llm = llm_client
+        self.bios_prompt = bios_prompt
+        self.chosen_framework = None  # Set after step 1.2.1
+
+    def ask_question(self, required_output, rcm_cue, context) -> str
+    def validate_answer(self, answer, constraint, target) -> Dict
+    def validate_framework_coherence(self, answer) -> Dict
+    def remediate_answer(self, answer, validation, required_output) -> str
+```
+
+### StudentSimulator
+
+For automated testing and demos:
+
+```python
+class StudentSimulator:
+    """Simulates a student responding to Socratic questions."""
+
+    def __init__(self, llm_client, persona=None):
+        self.llm = llm_client
+        self.persona = persona or STUDENT_PERSONA
+        self.conversation_history = []
+
+    def set_framework(self, option)  # Update persona after option selection
+    def respond(self, question) -> str  # Generate student response
+    def get_input_function()  # Returns function for orchestrator
+```
+
+### Framework-Specific Personas
+
+The simulator updates its persona after the student selects a theoretical option to ensure framework coherence:
+
+```python
+FRAMEWORK_PERSONAS = {
+    "A": """You chose Option A: Class Conflict / Alienation (Marx + Wollstonecraft).
+YOUR THEORETICAL TOOLKIT: alienation, exploitation, class conflict, patriarchy...
+STRICT RULE: Do NOT reference Tocqueville or Smith.""",
+    # ... etc for B, C, D, E
+}
+```
+
+---
+
+## 9. Runtime Files & Workflow
+
+### Three-Phase Workflow
+
+**Phase 1: Conceptualization** (Steps 1.1-1.8)
+- Welcome and storyboard check
+- Theoretical framework selection
+- Concept A/B definitions
+- Experiment structure
+- Baseline/experimental design
+- Setting and rounds
+- Agent roster and details
+- Advanced functions selection
+- Section 1 compilation
+
+**Phase 2: Drafting** (Steps 2.1-2.3)
+- Agent prompts (one per agent)
+- Round instructions (scenario, rules, tasks)
+- Platform configuration (per round)
+- Helper templates (moderator, analyst, etc.)
+
+**Phase 3: Review & Export** (Steps 3.1-3.3)
+- Checklist verification
+- Final document compilation
+- Export options
+
+### Step Structure in Runtime Files
+
+```
+### [STEP 1.2.3]
+TARGET: Concept A Definition
+INSTRUCTION: Ask student to define the first concept in their theoretical tension.
+REQUIRED OUTPUT: "[Concept A]: Define from [theory]. How manifest in interactions? (2-3 sent.)"
+RCM CUE:
+- Reflect: "What are the key features of [Concept A]?"
+- Connect: "How would agents experience this in interactions?"
+- Ask: "What specific behaviors or outcomes would signal [Concept A] is present?"
+CONSTRAINT:
+- Must be 2-3 sentences
+- Must reference the theorist's definition
+- Must explain how it manifests
+THEORY CHECK: YES - Search KB[5-8] for this concept
+CANVAS_UPDATE: { "section": "project", "action": "update", ... }
+NEXT STEP: 1.2.4
+```
+
+### Conditional Routing
+
+The orchestrator handles several types of conditional routing:
+
+1. **Type A/B Branching** (at 1.3.1): Based on answer to 1.2.6
+2. **Round Loops** (at 1.4.3): Repeats for each round
+3. **Agent Loops** (at 1.5.2/1.5.3, 1.6.1-1.6.3): Repeats for each agent
+4. **Phase 2 Round Loop** (at 2.2.19): Repeats round instructions for each round
+
+---
+
+## 10. Testing Infrastructure
+
+### Test Files
+
+| File | Purpose | Mode |
+|------|---------|------|
+| `test_realistic.py` | Phase 1 with realistic answers | Mock or vLLM |
+| `test_full_workflow.py` | Complete Phase 1-3 | Mock |
+| `test_auto.py` | Automated testing | Any LLM |
+| `test_simulator.py` | Student simulator testing | Any LLM |
+
+### Running Tests
+
+```bash
+# Mock mode (no API)
+python tests/test_realistic.py --mock
+
+# With vLLM/RunPod
+python tests/test_realistic.py --base-url "https://..." --api-key "..."
+
+# Full workflow test
+python tests/test_full_workflow.py
+```
+
+### Realistic Test Data
+
+`test_realistic.py` includes a complete set of realistic student answers for an alienation vs. non-domination project:
+
+```python
+STUDENT_ANSWERS = {
+    "1.2.1": "A",  # Option A: Class Conflict / Alienation
+    "1.2.2": "I want to model how workers lose control over their labor...",
+    # ... complete answers for Phase 1
+}
+```
+
+---
+
+## 11. GPU/Cloud Options
+
+### Option 1: RunPod Serverless (Recommended)
+
+**Setup**:
+1. Create RunPod account at runpod.io
+2. Deploy Serverless vLLM endpoint:
+   - Template: vLLM
+   - Model: `Qwen/Qwen2.5-7B-Instruct` (or similar)
+3. Get API key from Settings > API Keys
+4. Get endpoint URL: `https://api.runpod.ai/v2/YOUR_ENDPOINT_ID/openai/v1`
+
+**Test Connection**:
+```bash
+python runpod_setup.py --endpoint-id YOUR_ID --api-key YOUR_KEY
+```
+
+**Usage**:
+```python
+llm = create_llm_client(
+    provider="runpod",
+    api_key="rp_xxxxxxxx",
+    base_url="https://api.runpod.ai/v2/YOUR_ENDPOINT/openai/v1",
+    model="Qwen/Qwen2.5-7B-Instruct"
+)
+```
+
+### Option 2: Google Colab + VSCode Extension
+
+**Requirements**:
+- Google Colab Pro (for GPU access)
+- VSCode with Jupyter extension
+
+**Steps**:
+1. Install Colab extension in VSCode
+2. Connect to Colab runtime
+3. Install vLLM in Colab notebook
+4. Use Colab's GPU for inference
+
+### Option 3: Local vLLM Server
+
+**Requirements**:
+- Local NVIDIA GPU (8GB+ VRAM)
+- vLLM installed locally
+
+**Setup**:
+```bash
+pip install vllm
+vllm serve Qwen/Qwen2.5-7B-Instruct --port 8000
+```
+
+**Usage**:
+```python
+llm = create_llm_client(
+    provider="vllm",
+    base_url="http://localhost:8000/v1",
+    model="Qwen/Qwen2.5-7B-Instruct"
+)
+```
+
+### Option 4: Ollama (Lightweight Local)
+
+**Requirements**:
+- Ollama installed
+- Less powerful model (fits on CPU or small GPU)
+
+**Setup**:
+```bash
+ollama pull gemma:2b
+ollama serve
+```
+
+**Usage**:
+```python
+llm = create_llm_client(
+    provider="ollama",
+    model="gemma:2b",
+    base_url="http://localhost:11434"
+)
+```
+
+---
+
+## 12. Current Status & Known Issues
+
+### Production (v8.4)
+
+**Status**: Stable, deployed
+
+**Known Issues**:
+- Image generation requires DALL-E disabled
+- At 99% character capacity (7,994/8,000 bytes)
+- Cannot add new features without compression
+
+### Local Orchestrator
+
+**Status**: Active development
+
+**Known Issues**:
+- Runtime file path hardcoded to `B42_Runtime_Logic_v2.0-COMPLETE.txt`
+- Some canvas update logic is placeholder
+- Need to verify all loop counters work correctly
+
+**Working Features**:
+- Mock mode testing
+- RunPod integration
+- Streamlit web interface
+- Student simulator with framework personas
+- Canvas compilation and export
+
+### Experimental BIOS
+
+**Status**: Research only
+
+**Known Issues**:
+- Force-read protocol unreliable
+- Step-skipping observed
+- NOT recommended for production
+
+---
+
+## 14. Development Roadmap
+
+### Phase 0: Foundation (Current Priority)
+
+**Goal**: Get local_rcm running reliably with GPU backend
+
+1. **Verify local_rcm works end-to-end with RunPod**
+   - Test full Phase 1-3 workflow
+   - Verify canvas compilation
+   - Test export functionality
+
+2. **Fix runtime file path issue**
+   - Currently expects `B42_Runtime_Logic_v2.0-COMPLETE.txt`
+   - Should gracefully handle 3 phase files
+
+3. **Test with Colab VSCode extension** (alternative GPU option)
+   - Document Colab setup process
+   - Verify GPU inference works
+
+### Phase 1: Dual-LLM B42 Mode
+
+**Goal**: Generate student agents from theoretical option selection
+
+1. **Refactor StudentSimulator into AgentSimulator**
+   - Accept `AgentConfig` dataclass
+   - Generalize persona generation
+   - Support different LLM backends for coach vs agent
+
+2. **Add dual LLMClient support to orchestrator**
+   ```python
+   class WorkflowOrchestrator:
+       def __init__(self, ..., coach_llm, agent_llm=None):
+           self.coach_llm = coach_llm
+           self.agent_llm = agent_llm or coach_llm  # Fallback to single model
+   ```
+
+3. **Implement AgentConfig factory**
+   - Input: Option A-E selection
+   - Output: Full agent persona config
+   - System prompt, constraints, theoretical vocabulary
+
+4. **Test dual-LLM workflow**
+   - Coach generates Socratic questions
+   - Agent responds as framework-specific student
+   - Verify canvas compilation and export
+
+### Phase 2: Generalization
+
+**Goal**: Abstract agent generation beyond B42
+
+1. **Create AgentFactory interface**
+   ```python
+   class AgentFactory(ABC):
+       @abstractmethod
+       def create_agent(self, config: dict) -> AgentConfig
+
+   class B42AgentFactory(AgentFactory):
+       def create_agent(self, option: str) -> AgentConfig
+
+   class CESAgentFactory(AgentFactory):
+       def create_agent(self, survey_row: dict) -> AgentConfig
+   ```
+
+2. **Create RuntimeSchema interface**
+   - B42 workflow (current 3-phase)
+   - CES survey experiment workflow
+   - Generic multi-round process schema
+
+3. **Add batch agent simulation**
+   - Run N agents through same process schema
+   - Aggregate results for analysis
+   - Support parallel execution
+
+### Phase 3: Research Platform
+
+**Goal**: Full CES-style population simulation
+
+1. **CES data integration**
+   - Parse CES survey data
+   - Generate agent configs from demographics
+   - Map ideology, prior vote, etc. to persona elements
+
+2. **Experimental runtime schemas**
+   - Baseline survey round
+   - Treatment/stimulus exposure
+   - Post-treatment response measurement
+
+3. **Analysis and export**
+   - Structured output for statistical analysis
+   - Behavioral trace logging
+   - Comparison to real survey data
+
+### Infrastructure Enhancements (Ongoing)
+
+1. **Improve canvas update logic**
+   - Currently simplified/placeholder
+   - Should fully parse CANVAS_UPDATE blocks
+
+2. **Add conversation history to Streamlit**
+   - Currently limited to last 10 messages
+   - Add export of full conversation
+
+3. **Framework coherence validation**
+   - Currently keyword-based
+   - Could use LLM for semantic validation
+
+4. **API wrapper (for future Custom GPT Actions)**
+   - FastAPI/Flask wrapper around orchestrator
+   - Expose endpoints for external callers
+
+---
+
+## 15. Quick Reference
+
+### Key Commands
+
+```bash
+# Install dependencies
+cd local_rcm && pip install -r requirements.txt
+
+# Run Streamlit app
+streamlit run app.py
+
+# Test with mock
+python example_usage.py --mode mock
+
+# Test RunPod connection
+python runpod_setup.py --endpoint-id XXX --api-key YYY
+
+# Run realistic test
+python tests/test_realistic.py --mock
+```
+
+### Important Paths
+
+| Path | Purpose |
+|------|---------|
+| `local_rcm/orchestrator.py` | Main workflow engine |
+| `local_rcm/llm_client.py` | LLM client implementations |
+| `local_rcm/app.py` | Streamlit web interface |
+| `local_rcm/runtime-files/` | Workflow step definitions |
+| `production/system-prompt/` | GPT Builder system prompt |
+| `theory/` | Shared theory lecture notes |
+
+### Environment Variables (if needed)
+
+```bash
+OPENAI_API_KEY=sk-...
+ANTHROPIC_API_KEY=sk-ant-...
+RUNPOD_API_KEY=rp_...
+```
+
+---
+
+## 16. Session Log
+
+### 2025-11-22 - Initial Comprehensive Audit
+
+**Session Goals**:
+- Perform exhaustive audit of entire codebase
+- Understand all components and their relationships
+- Create this working document
+
+**Completed**:
+- Explored all directories and key files
+- Analyzed Custom GPT v8.4 system prompt
+- Examined local orchestrator architecture
+- Reviewed LLM client implementations
+- Analyzed runtime file structure
+- Reviewed testing infrastructure
+- Examined experimental BIOS architecture
+- Created this comprehensive working document
+
+**Key Findings**:
+1. Local setup is functional with mock mode
+2. RunPod integration is ready to test
+3. Canvas compilation works but has placeholder logic
+4. Experimental BIOS has reliability issues
+5. Production v8.4 is at capacity limit
+
+---
+
+### 2025-11-22 - Vision Integration (chat_gpt_debrief.txt)
+
+**Session Goals**:
+- Ingest ChatGPT conversation about project vision
+- Understand dual-LLM architecture goals
+- Update working document with roadmap
+
+**Key Insights from Debrief**:
+
+1. **This is a mini-CQB**: The project implements CQB principles with PRAR as the governance model. Orchestrator owns state, LLMs are IO devices.
+
+2. **Dual-LLM Architecture Vision**:
+   - LLM #1 (Coach): Continues PRAR/RCM function
+   - LLM #2 (Agent): Generated persona (student, CES respondent)
+   - Same orchestrator governs both
+
+3. **Evolution Path**:
+   - Current: Human student + Socratic LLM
+   - Near: Generated student agent + Coach LLM
+   - Future: N synthetic agents (CES demographics) + Coach LLM
+
+4. **Existing Proto-Agent**: `StudentSimulator` with framework personas is the foundation for agent generation
+
+5. **Generalization Strategy**:
+   - AgentConfig/AgentFactory layer
+   - RuntimeSchema abstraction (B42, CES, etc.)
+   - Same PRAR orchestrator underneath
+
+**Updated Roadmap**:
+- Phase 0: Foundation (get RunPod working)
+- Phase 1: Dual-LLM B42 mode
+- Phase 2: Generalization (AgentFactory, RuntimeSchema)
+- Phase 3: Research platform (CES simulation)
+
+**Next Steps**:
+1. Test RunPod integration end-to-end
+2. Verify existing auto-mode/simulator tests
+3. Begin Phase 0 foundation work
+
+---
+
+## Appendix A: File Count by Directory
+
+```
+production/           ~10 files (system prompt + knowledge base)
+local_rcm/            ~20 files (orchestrator + tests)
+experimental/         ~30 files (BIOS versions + docs)
+theory/               4 files (theorist lecture notes)
+docs/                 ~15 files (architecture + research docs)
+literature/           11 files (academic papers)
+archive/              ~50 files (deprecated versions)
+```
+
+## Appendix B: Theory Files Summary
+
+| File | Theorist | Key Concepts |
+|------|----------|--------------|
+| marx_theory.txt | Karl Marx | alienation, exploitation, class conflict, commodification |
+| wollstonecraft_theory.txt | Mary Wollstonecraft | patriarchy, sexual alienation, domination, virtue |
+| tocqueville_theory.txt | Alexis de Tocqueville | equality, tyranny of majority, conformity, associations |
+| smith_theory.txt | Adam Smith | commerce, self-interest, division of labor, sympathy |
+
+---
+
+*This document should be updated as development progresses. Add session logs, track issues, and document solutions.*
