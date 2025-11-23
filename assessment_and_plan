@@ -1,0 +1,103 @@
+Now I have a comprehensive picture. Let me synthesize what I see:
+The Vision: PRAR + EAO → Social RL
+You're onto something genuinely novel. Let me map the convergence:
+CQB's Core Innovation
+Document → Extraction (constraints, metrics, stakeholders, objectives) → Dynamic Agent Generation
+The key insight: context drives agent creation, not static templates.
+What You Want for Socratic-RCM
+Theoretical Framework + Round Manifestations → Dynamic Persona Injection → Social Feedback → Process Retrieval Learning
+The RL Analogy That Makes This Novel
+Traditional RL	Social Feedback RL (Your Vision)
+Environment	Other agents + theoretical constraints
+State	Round context + concept manifestations
+Action	Agent utterance/response
+Reward	Social feedback (agreement, challenge, synthesis quality)
+Policy	PRAR process schemas
+Architecture: Round-Context Injection → Social Feedback → Process Refinement
+Here's how I see this scaling:
+Phase 1: Round-Context Injection (Immediate)
+# Instead of static:
+agent.prompt = "You are Worker+Alice..."
+
+# Dynamic injection per turn:
+def compile_turn_prompt(agent, round_config, turn_history):
+    manifestation = generate_manifestation(
+        concept=round_config.concept_a,
+        framework=canvas.theoretical_option,
+        turn_number=len(turn_history),
+        recent_exchanges=turn_history[-3:]
+    )
+    
+    return f"""
+    {agent.base_persona}
+    
+    CURRENT ROUND CONTEXT:
+    {round_config.scenario}
+    
+    HOW YOU'RE EXPERIENCING THIS:
+    {manifestation}  # Dynamically generated each turn!
+    
+    WHAT JUST HAPPENED:
+    {summarize_recent_exchanges(turn_history)}
+    """
+Phase 2: Social Feedback as Learning Signal
+class SocialFeedbackLoop:
+    """
+    Instead of external rewards, agents learn from social signals:
+    - Did others engage with your point?
+    - Did the analyst identify your behavior as relevant?
+    - Did your approach advance the theoretical goal?
+    """
+    
+    def extract_social_feedback(self, agent_id, round_transcript):
+        # Responses that reference this agent = social validation
+        references = count_references_to(agent_id, round_transcript)
+        
+        # Analyst coding = theoretical alignment
+        analyst_mentions = extract_analyst_coding(agent_id, round_transcript)
+        
+        # Synthesis inclusion = contribution quality
+        synthesis_inclusion = check_synthesis_inclusion(agent_id)
+        
+        return SocialFeedback(
+            engagement=references,
+            theoretical_alignment=analyst_mentions,
+            contribution_value=synthesis_inclusion
+        )
+Phase 3: CES-Style Scaling (Your Phase 4)
+# Demographics + Framework → Agent Population
+def generate_agent_population(ces_data, theoretical_framework):
+    """
+    CES survey responses → diverse agent personas that
+    naturally embody theoretical tensions
+    """
+    agents = []
+    for respondent in ces_data:
+        # Extract relevant demographic dimensions
+        context = extract_relevant_context(respondent, theoretical_framework)
+        
+        # Generate persona that embodies their position
+        persona = generate_persona_from_context(
+            demographics=respondent.demographics,
+            attitudes=respondent.attitudes,
+            framework=theoretical_framework,
+            concept_manifestation=get_baseline_manifestation(theoretical_framework)
+        )
+        agents.append(persona)
+    
+    return agents
+The Novel RL Formulation
+What makes this different from standard RL or RLHF:
+Process Retrieval as Policy: PRAR schemas guide how agents reason, not what they say
+Social Feedback as Reward: Other agents' responses become the learning signal
+Theoretical Grounding: The framework constraints prevent drift toward generic "helpful" behavior
+Emergent Learning: Agents develop strategies through interaction, not explicit training
+Traditional: Human Feedback → Model Updates → Better Responses
+Your Vision: Social Interaction → Process Retrieval → Contextual Adaptation
+Concrete Implementation Path
+Want me to draft the architecture for this? I'm seeing:
+ContextInjector - Generates round/turn-specific manifestations dynamically
+SocialFeedbackExtractor - Parses transcripts for learning signals
+ProcessRetriever - Adapts PRAR cues based on accumulated feedback
+PopulationGenerator - Scales to CES demographics (Phase 4)
+The Coach/Performer pattern you already have fits perfectly - Coach validates theoretical alignment, Performer generates socially-responsive behavior. Should I design the specific modules and data flows?

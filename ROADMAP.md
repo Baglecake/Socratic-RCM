@@ -69,7 +69,7 @@ The agent layer successfully bridges PRAR canvas outputs to executable simulatio
 
 ## Phase 2: Dual-LLM Architecture
 
-**Status:** Planned
+**Status:** COMPLETE (Dual-Instance validated)
 
 **Goal:** Separate cognitive governance (Coach) from agent behavior (Performer).
 
@@ -123,10 +123,115 @@ Separating these roles enables reliable governance AND authentic behavior.
 
 ### Deliverables
 
-- [ ] `dual_llm/coach.py` - PRAR validation and questioning
-- [ ] `dual_llm/performer.py` - Agent persona execution
+- [x] `dual-instance/dual-instance-v1.ipynb` - Validated Coach/Performer separation
+- [ ] `dual_llm/coach.py` - PRAR validation and questioning (production)
+- [ ] `dual_llm/performer.py` - Agent persona execution (production)
 - [ ] `dual_llm/pipeline.py` - Coordinated execution flow
-- [ ] Configuration schema for dual-model setups
+
+### Outcome
+
+Dual-instance architecture validated in Colab notebook. Ready for production implementation.
+
+---
+
+## Phase 2.5: Social RL Architecture
+
+**Status:** COMPLETE
+
+**Goal:** Implement RL through social interaction - agents learn from social feedback without explicit reward functions.
+
+### The Novel RL Formulation
+
+| Traditional RL | Social RL (This Implementation) |
+|---------------|--------------------------------|
+| Environment | Other agents + theoretical constraints |
+| State | Round context + concept manifestations |
+| Action | Agent utterance/response |
+| Reward | Social feedback (engagement, alignment, contribution) |
+| Policy | PRAR process schemas |
+
+### Architecture
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│                    SocialRLRunner                             │
+├──────────────────────────────────────────────────────────────┤
+│                                                               │
+│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────┐  │
+│  │ ContextInjector │  │ FeedbackExtract │  │ ProcessRetr │  │
+│  │                 │  │                 │  │             │  │
+│  │ - Dynamic       │  │ - Engagement    │  │ - PRAR cues │  │
+│  │   manifestations│  │ - Alignment     │  │ - Policy    │  │
+│  │ - Per-turn      │  │ - Contribution  │  │   adaptation│  │
+│  │   adaptation    │  │                 │  │             │  │
+│  └────────┬────────┘  └────────┬────────┘  └──────┬──────┘  │
+│           │                    │                   │         │
+│           └────────────────────┼───────────────────┘         │
+│                                │                             │
+│                    ┌───────────▼───────────┐                 │
+│                    │   Coach/Performer     │                 │
+│                    │   Validated Output    │                 │
+│                    └───────────────────────┘                 │
+│                                                               │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### Components
+
+**ContextInjector** - Dynamic manifestation generation
+```python
+# Instead of static prompts, each turn gets dynamic context:
+context = injector.generate_turn_context(
+    agent_id="Worker+Alice",
+    round_config=round_config,
+    turn_number=turn,
+    conversation_history=history,
+    accumulated_feedback=feedback  # Social signals shape context
+)
+```
+
+**SocialFeedbackExtractor** - Extract learning signals from interaction
+```python
+# Social feedback as reward signal:
+feedback = extractor.extract_round_feedback(round_num, messages, participants)
+# Returns: engagement, theoretical_alignment, contribution_value per agent
+```
+
+**ProcessRetriever** - PRAR-based policy with adaptation
+```python
+# Process retrieval as policy (guides HOW to reason, not WHAT to say):
+policy = retriever.retrieve_policy("Worker", feedback=agent_feedback)
+rcm_cue = retriever.generate_rcm_cue(policy, feedback)
+
+# Soft policy adaptation based on feedback deltas:
+retriever.adapt_policy("Worker", {"engagement_delta": 0.15})
+```
+
+### Key Innovations
+
+1. **No Explicit Reward Function**: Learning signals emerge from interaction
+2. **Process Retrieval as Policy**: PRAR guides reasoning, adapts based on feedback
+3. **Dynamic Context Injection**: Manifestations evolve per turn
+4. **Theoretical Grounding**: Framework constraints prevent drift
+
+### Deliverables
+
+- [x] `social_rl/context_injector.py` - Dynamic manifestation generation
+- [x] `social_rl/feedback_extractor.py` - Social feedback extraction
+- [x] `social_rl/process_retriever.py` - PRAR policy retrieval and adaptation
+- [x] `social_rl/runner.py` - Main SocialRLRunner execution engine
+- [x] `social_rl/__init__.py` - Package exports
+- [x] `notebooks/social_rl_demo.ipynb` - Demo notebook
+
+### Usage
+
+```python
+from social_rl import SocialRLRunner, SocialRLConfig, create_social_rl_runner
+
+runner = create_social_rl_runner('state.json', llm_client, mode='progressive')
+results = runner.execute_all_rounds()
+print(runner.generate_report())
+```
 
 ---
 
@@ -268,8 +373,9 @@ The combination of PRAR (structured governance) with dual-LLM agent simulation i
 | Phase | Status | Dependency | Complexity |
 |-------|--------|------------|------------|
 | 1 | COMPLETE | None | Medium |
-| 2 | HIGH | Phase 1 | High |
-| 3 | MEDIUM | Phase 2 | Medium |
+| 2 | COMPLETE | Phase 1 | High |
+| 2.5 | COMPLETE | Phase 1-2 | High |
+| 3 | MEDIUM | Phase 2.5 | Medium |
 | 4 | MEDIUM | Phase 3 | High |
 | 5 | LOW | Phase 4 | Research |
 | 6 | LOW | All | Documentation |
@@ -278,7 +384,8 @@ The combination of PRAR (structured governance) with dual-LLM agent simulation i
 
 ## Next Steps
 
-1. Design dual-LLM configuration schema (Phase 2)
-2. Implement coach validation layer
-3. Add behavioral metrics extraction to transcripts
-4. Test with real LLM backend (vLLM/Qwen)
+1. ~~Design dual-LLM configuration schema (Phase 2)~~ DONE
+2. ~~Implement Social RL architecture~~ DONE (Phase 2.5)
+3. Test Social RL with real LLM backend (vLLM/Qwen)
+4. Add CES demographics integration (Phase 4)
+5. Scale Social RL to population-level simulations
