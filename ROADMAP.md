@@ -16,40 +16,54 @@ This document outlines the phased development plan for Socratic-RCM, from the cu
 
 ## Phase 1: Agent Layer
 
-**Status:** Next priority
+**Status:** COMPLETE
 
 **Goal:** Transform canvas agent definitions into executable simulation participants.
 
 ### Components
 
-**AgentConfig**
+**AgentConfig** - Configuration dataclass with canvas parsing
 ```python
 @dataclass
 class AgentConfig:
     identifier: str      # e.g., "Worker+Alice"
-    role_prompt: str     # Compiled from canvas
+    role: str            # e.g., "Worker"
+    name: str            # e.g., "Alice"
+    goal: str            # Agent's objective
+    persona: str         # Behavioral description
+    prompt: str          # Compiled system prompt
     model: str           # LLM model identifier
     temperature: float   # Generation temperature
     max_tokens: int      # Response length limit
+    behaviors: dict      # Conditional behavior rules
 ```
 
-**AgentFactory**
+**AgentFactory** - Canvas-to-agent instantiation
 ```python
-factory = AgentFactory(canvas)
+factory = AgentFactory.from_state_file("state.json")
 alice = factory.create("Worker+Alice")
-marta = factory.create("Owner+Marta")
+all_agents = factory.create_all()
+round1_participants = factory.get_round_participants(1)
+```
+
+**AgentRunner** - Multi-agent simulation execution
+```python
+runner = AgentRunner(factory, llm_client)
+transcript = runner.execute_round(1)
+runner.save_transcript(transcript, "round1.json")
 ```
 
 ### Deliverables
 
-- [ ] `agents/agent_config.py` - AgentConfig dataclass
-- [ ] `agents/agent_factory.py` - Factory for instantiating agents from canvas
-- [ ] `agents/persona_library/` - Reusable persona templates
-- [ ] Integration tests with mock LLM
+- [x] `agents/agent_config.py` - AgentConfig, AgentResponse, RoundConfig dataclasses
+- [x] `agents/agent_factory.py` - Factory for instantiating agents from canvas
+- [x] `agents/agent_runner.py` - Runtime for multi-agent simulation execution
+- [x] Integration tests with mock LLM
+- [ ] `agents/persona_library/` - Reusable persona templates (deferred)
 
-### Why This Matters
+### Outcome
 
-This is the bridge from PRAR (design) to simulation (execution). Without executable agents, the canvas remains a static document.
+The agent layer successfully bridges PRAR canvas outputs to executable simulations. Agents can be instantiated from state.json files and executed in rounds with transcript logging.
 
 ---
 
@@ -251,9 +265,9 @@ The combination of PRAR (structured governance) with dual-LLM agent simulation i
 
 ## Implementation Priority
 
-| Phase | Priority | Dependency | Estimated Complexity |
-|-------|----------|------------|---------------------|
-| 1 | HIGH | None | Medium |
+| Phase | Status | Dependency | Complexity |
+|-------|--------|------------|------------|
+| 1 | COMPLETE | None | Medium |
 | 2 | HIGH | Phase 1 | High |
 | 3 | MEDIUM | Phase 2 | Medium |
 | 4 | MEDIUM | Phase 3 | High |
@@ -264,7 +278,7 @@ The combination of PRAR (structured governance) with dual-LLM agent simulation i
 
 ## Next Steps
 
-1. Implement AgentConfig and AgentFactory (Phase 1)
-2. Test with baseline canvas from completed experiment
-3. Design dual-LLM configuration schema
-4. Prototype coach/performer separation
+1. Design dual-LLM configuration schema (Phase 2)
+2. Implement coach validation layer
+3. Add behavioral metrics extraction to transcripts
+4. Test with real LLM backend (vLLM/Qwen)
