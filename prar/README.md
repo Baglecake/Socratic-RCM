@@ -111,3 +111,11 @@ When referencing the PRAR methodology:
   url = {https://github.com/Baglecake/Socratic-RCM}
 }
 ```
+
+## See Also
+
+- [ROADMAP.md](../ROADMAP.md) - Development phases and implementation roadmap
+- [local_rcm/README.md](../local_rcm/README.md) - Orchestrator documentation
+- [agents/README.md](../agents/README.md) - Agent system (consumes PRAR outputs)
+- [social_rl/README.md](../social_rl/README.md) - Social RL framework
+- [theory/README.md](../theory/README.md) - Theoretical knowledge base

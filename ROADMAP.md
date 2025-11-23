@@ -382,10 +382,259 @@ The combination of PRAR (structured governance) with dual-LLM agent simulation i
 
 ---
 
-## Next Steps
+## Next Steps: Implementation Roadmap
+
+The following roadmap outlines concrete implementation tasks to move from the current state (Phase 2.5 complete) toward a publication-ready system.
+
+---
+
+### Immediate: Schema Formalization
+
+**Goal:** Make PRAR and Social RL outputs follow explicit, versioned schemas.
+
+**Tasks:**
+
+1. Create `social_rl/schema.py` with TypedDicts or dataclasses:
+   - `SocialRLMessage`: agent_id, role, content, turn_index, context_frame
+   - `SocialRLRoundResult`: round_number, messages, feedback, policy_adaptations, duration_seconds
+   - `FeedbackVector`: engagement, alignment, contribution_value
+   - `PolicyAdaptation`: agent_id, type, cue, reason, round
+
+2. Create `prar/schema.py`:
+   - `PRARState`: student_state, canvas, metadata
+   - `PRARPolicyState`: framework_option, policies, timestamp, source_run_id
+
+3. Update `SocialRLRunner` to serialize via these schemas
+
+4. Add metadata block to each output file:
+   ```json
+   "meta": {
+     "experiment_id": "social_rl_2025-11-23_175825",
+     "prar_run_id": "2025-11-23_baseline_full_qwen",
+     "framework": "Alienation vs Non-Domination",
+     "model": "Qwen/Qwen2.5-7B-Instruct",
+     "performer_temperature": 0.7,
+     "coach_temperature": 0.1,
+     "social_rl_version": "0.2.0"
+   }
+   ```
+
+**Deliverables:**
+- [ ] `social_rl/schema.py`
+- [ ] `prar/schema.py`
+- [ ] Updated runner with schema validation
+- [ ] `docs/architecture/SOCIAL_RL_SCHEMA.md`
+
+---
+
+### Short-term: Dual-LLM Client Implementation
+
+**Goal:** Implement true coach/performer separation with distinct LLM clients.
+
+**Tasks:**
+
+1. Create `social_rl/dual_llm_client.py`:
+   ```python
+   class DualLLMClient:
+       def __init__(self, performer_client, coach_client=None):
+           self.performer = performer_client
+           self.coach = coach_client or performer_client
+           self.performer_temp = 0.7
+           self.coach_temp = 0.1
+
+       def generate(self, system, user, mode="performer"):
+           client = self.performer if mode == "performer" else self.coach
+           temp = self.performer_temp if mode == "performer" else self.coach_temp
+           return client.send_message(system, user, temperature=temp)
+   ```
+
+2. Update `SocialRLRunner._generate_with_validation()`:
+   - Use `mode="performer"` for initial generation
+   - Use `mode="coach"` for critique/validation
+   - Log coach critiques as internal messages (optional)
+
+3. Update `run_social_rl_local.py` with CLI flags:
+   - `--dual-llm`: Enable dual-LLM mode
+   - `--coach-model`: Model for coach role
+   - `--performer-model`: Model for performer role
+   - `--coach-temp`, `--performer-temp`: Temperature overrides
+
+4. Extract dual-instance logic from notebook to module
+
+**Deliverables:**
+- [ ] `social_rl/dual_llm_client.py`
+- [ ] Updated `SocialRLRunner` integration
+- [ ] CLI flag support in `run_social_rl_local.py`
+- [ ] Documentation in `social_rl/README.md`
+
+---
+
+### Short-term: Test Suite for Social RL
+
+**Goal:** Establish testable surface for Social RL components.
+
+**Tasks:**
+
+1. Create `tests/test_social_rl_minimal_round.py`:
+   - Build synthetic canvas (1 round, 2 agents)
+   - Use mock LLM client with deterministic responses
+   - Assert `execute_round(1)` returns valid `SocialRLRoundResult`
+   - Validate JSON structure matches schema
+
+2. Create `tests/test_social_feedback_invariants.py`:
+   - Construct message list, feed through `SocialFeedbackExtractor`
+   - Assert feedback values in valid ranges [0, 1]
+   - Test monotonicity properties
+
+3. Create `tests/test_process_retriever_policies.py`:
+   - Create `ProcessRetriever` with defined policies
+   - Mock feedback and assert `get_active_cues` returns expected subsets
+
+4. Add test runner configuration:
+   - pytest configuration
+   - CI integration (optional)
+
+**Deliverables:**
+- [ ] `tests/test_social_rl_minimal_round.py`
+- [ ] `tests/test_social_feedback_invariants.py`
+- [ ] `tests/test_process_retriever_policies.py`
+- [ ] `pytest.ini` or `pyproject.toml` test config
+
+---
+
+### Medium-term: Experiment Structure Normalization
+
+**Goal:** Create clear separation between PRAR outputs and Social RL experiments.
+
+**Tasks:**
+
+1. Establish experiment directory structure:
+   ```
+   experiments/
+     social_rl/
+       2025-11-23_alienation_qwen/
+         prar_state.json        # Copy or symlink
+         config.json            # Experiment metadata
+         social_rl_*/           # Output directories
+         analysis_notes.md      # Interpretive notes
+   ```
+
+2. Create `scripts/create_experiment.py`:
+   - Initialize experiment directory
+   - Copy/link PRAR state
+   - Generate config.json template
+
+3. Add README to `experiments/`:
+   - Explain structure
+   - Document naming conventions
+   - Provide analysis guidance
+
+4. Mark legacy directories:
+   - Add README to `simulation_test/` indicating legacy status
+
+**Deliverables:**
+- [ ] `experiments/` directory structure
+- [ ] `scripts/create_experiment.py`
+- [ ] `experiments/README.md`
+- [ ] Legacy directory documentation
+
+---
+
+### Medium-term: Behavioral Metrics (Phase 3)
+
+**Goal:** Extract quantitative behavioral metrics from simulation transcripts.
+
+**Tasks:**
+
+1. Create `social_rl/metrics.py`:
+   - Message sentiment analysis
+   - Assertiveness indicators
+   - Compliance patterns
+   - Conflict triggers
+   - Thematic markers (alienation, domination, etc.)
+
+2. Extend `SocialFeedbackExtractor`:
+   - Add behavioral metric extraction
+   - Aggregate metrics per round and per experiment
+
+3. Create analysis notebook:
+   - Load experiment outputs
+   - Compute behavioral metrics
+   - Generate visualizations
+
+**Deliverables:**
+- [ ] `social_rl/metrics.py`
+- [ ] Extended `SocialFeedbackExtractor`
+- [ ] Analysis notebook template
+
+---
+
+### Long-term: CES Agent Generation (Phase 5)
+
+**Goal:** Generate synthetic survey respondents from Canadian Election Study data.
+
+**Tasks:**
+
+1. Create `agents/ces_generators/row_to_agent.py`:
+   - CES row to AgentConfig transformation
+   - Demographic-to-persona mapping
+   - Behavioral prior generation
+
+2. Define CES variable mapping schema
+
+3. Create persona generation templates
+
+4. Validate against actual CES distributions
+
+**Deliverables:**
+- [ ] `agents/ces_generators/row_to_agent.py`
+- [ ] CES variable mapping documentation
+- [ ] Validation scripts
+
+---
+
+### Long-term: Publication Package (Phase 6)
+
+**Goal:** Prepare reproducibility package for academic publication.
+
+**Tasks:**
+
+1. Finalize paper: "PRAR-Guided Dual-LLM Agent Simulations: A Framework for Computational Sociology"
+
+2. Create reproducibility package:
+   - Canonical experiment configurations
+   - Expected outputs for validation
+   - Step-by-step reproduction guide
+
+3. Prepare dataset: Synthetic CES simulation corpus
+
+4. Documentation review and polish
+
+**Deliverables:**
+- [ ] Paper draft
+- [ ] Reproducibility package
+- [ ] Public dataset
+- [ ] Final documentation
+
+---
+
+## Implementation Priority
+
+| Task | Priority | Dependency | Complexity | Status |
+|------|----------|------------|------------|--------|
+| Schema formalization | High | None | Low | Planned |
+| Dual-LLM client | High | Schema | Medium | Planned |
+| Social RL tests | High | Schema | Medium | Planned |
+| Experiment structure | Medium | None | Low | Planned |
+| Behavioral metrics | Medium | Tests | Medium | Planned |
+| CES generators | Low | Metrics | High | Future |
+| Publication | Low | All | Documentation | Future |
+
+---
+
+## Completed Milestones
 
 1. ~~Design dual-LLM configuration schema (Phase 2)~~ DONE
-2. ~~Implement Social RL architecture~~ DONE (Phase 2.5)
-3. Test Social RL with real LLM backend (vLLM/Qwen)
-4. Add CES demographics integration (Phase 4)
-5. Scale Social RL to population-level simulations
+2. ~~Implement Social RL architecture (Phase 2.5)~~ DONE
+3. ~~Test Social RL with real LLM backend (vLLM/Qwen)~~ DONE
+4. ~~Local runner with Ollama support~~ DONE

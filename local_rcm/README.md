@@ -278,3 +278,11 @@ Each experiment produces:
 2. **Deterministic execution**: Same inputs produce identical step sequences
 3. **LLM-agnostic**: Backend can be swapped without code changes
 4. **Incremental compilation**: Canvas builds progressively from student responses
+
+## See Also
+
+- [ROADMAP.md](../ROADMAP.md) - Development phases and implementation roadmap
+- [prar/README.md](../prar/README.md) - PRAR methodology
+- [agents/README.md](../agents/README.md) - Agent system documentation
+- [social_rl/README.md](../social_rl/README.md) - Social RL framework
+- [notebooks/README.md](../notebooks/README.md) - Notebooks and Colab links
