@@ -1,0 +1,196 @@
+{
+  "current_step": "2.1.1",
+  "student_state": {
+    "1.1": "yes",
+    "1.2.1": "A",
+    "1.2.2": "I want to model how workers lose control over their labor and how that shapes their decisions and relationships. The tension is whether agents can coordinate or resist when their agency is structurally suppressed.",
+    "1.2.3": "Alienation is when workers become separated from their creative capacities because production treats their labor as owned by someone else. It manifests as mechanical compliance, withdrawal, and decisions driven by survival rather than self-expression.",
+    "1.2.4": "Non-domination focuses on vulnerability to arbitrary power rather than internal estrangement. The harm isn't disconnection from labor but exposure to unchecked authority. Workers may feel their work is meaningful but still fear unpredictable interference.",
+    "1.2.5": "Single multi-round design - baseline and experiment in one simulation. This lets me see how agents behave under pure alienation first, then observe how introducing a non-domination variable changes the dynamic.",
+    "1.2.6": "A - Modify one variable. Since I want to isolate how alienation differs from non-domination, changing just one structural variable makes it clear whether behavior shifts come from that specific intervention.",
+    "CHECKPOINT 1.2": "Yes, this aligns with KB[2]. The single-variable modification creates a controlled contrast between alienation and non-domination conditions.",
+    "1.3.1": "The baseline is a workplace where the owner controls every aspect - task assignments, timing, workflow. Workers have no input. This reflects Marx because their labor feels imposed rather than self-generated.",
+    "1.3.2A": "The experiment introduces one structural safeguard that limits arbitrary power - requiring justification for task changes or giving workers a protected input channel. This shifts toward non-domination while keeping everything else constant.",
+    "1.3.3": "The baseline shows how workers behave under pure alienation with no control. The experiment adds protection against arbitrary power. Comparing them reveals whether changes stem from reduced alienation or reduced vulnerability to authority.",
+    "CHECKPOINT 1.3": "Yes - the baseline expresses alienation under full control, the experiment tests non-domination by reducing arbitrary power. The contrast directly tests the theoretical tension.",
+    "1.4.1": "A small manufacturing workshop with low ceilings and humming machines. Workstations are fixed for repetitive tasks. The owner's office overlooks the floor from a raised platform, making power visible in every interaction. The cramped space reinforces isolation.",
+    "1.4.2": "3",
+    "1.4.3": [
+      "Baseline Alienation: Observe how workers act when they have no control over their labor and the owner directs everything. Establishes pure alienation dynamics.",
+      "Reduced Domination: Introduce a safeguard limiting arbitrary power. Observe whether participation increases when workers aren't vulnerable to unpredictable authority.",
+      "Comparative Analysis: Review transcripts from both rounds to identify behavioral shifts. Determine which theory better explains the patterns."
+    ],
+    "CHECKPOINT 1.4": "Yes, the progression tests the hypothesis - baseline alienation, then intervention, then analysis of which framework explains the changes.",
+    "1.5.1": "4",
+    "1.5.2": [
+      "Worker+Alice",
+      "Worker+Ben",
+      "Owner+Marta",
+      "Analyst+Reporter"
+    ],
+    "1.5.3": [
+      "Human",
+      "Human",
+      "Human",
+      "Human"
+    ],
+    "CHECKPOINT 1.5": "Yes - Worker+Alice and Worker+Ben represent those experiencing alienation/domination. Owner+Marta represents the source of control. Analyst+Reporter evaluates the theoretical claims.",
+    "1.6.1": [
+      "Alice's goal is to gain more influence over how her work is organized. In the baseline, alienation prevents this. In the experiment, progress shows whether reduced arbitrary power enables participation.",
+      "Ben's goal is to secure predictable, fair treatment. In the baseline, arbitrary orders create anxiety. In the experiment, he should show less resistance if domination is reduced.",
+      "Marta's goal is maintaining productivity while asserting authority. In the baseline, she expects compliance. In the experiment, limiting her discretion may force more justification and negotiation.",
+      "The Analyst's goal is identifying clear behavioral differences between conditions and attributing them to alienation or non-domination. Success is measured by accurate theoretical attribution."
+    ],
+    "1.6.2": [
+      "Alice is thoughtful but hesitant, often suppressing ideas because she assumes her input won't matter. She follows directives to avoid conflict. When given protected input channels, she becomes more confident.",
+      "Ben is practical and prefers routine. He follows instructions unless they feel arbitrary, which triggers pushback. His decisions prioritize stability and consistent treatment.",
+      "Marta is confident and directive, making quick decisions without explanation. She handles conflict by tightening control. Under constraints, she becomes more methodical.",
+      "The Analyst is precise and detached, focusing only on empirical patterns. Never participates in the simulation, only observes and reports."
+    ],
+    "1.6.3": [
+      "no",
+      "no",
+      "yes - If worker questions: assert stronger control. If workers comply: maintain brisk directive style.",
+      "no"
+    ],
+    "1.7": "Self-Reflections and Analyst agent for Round 3.",
+    "1.8": "Section 1 complete - theoretical framework established with alienation vs non-domination contrast, 3-round design, 4 agents defined."
+  },
+  "canvas": {
+    "project": {
+      "goal": "I want to model how workers lose control over their labor and how that shapes their decisions and relationships. The tension is whether agents can coordinate or resist when their agency is structurally suppressed.",
+      "theoretical_option": "A",
+      "theoretical_option_label": "Class Conflict / Alienation",
+      "concept_a": {
+        "name": "Concept A",
+        "definition": "Alienation is when workers become separated from their creative capacities because production treats their labor as owned by someone else. It manifests as mechanical compliance, withdrawal, and decisions driven by survival rather than self-expression."
+      },
+      "concept_b": {
+        "name": "Concept B",
+        "definition": "Non-domination focuses on vulnerability to arbitrary power rather than internal estrangement. The harm isn't disconnection from labor but exposure to unchecked authority. Workers may feel their work is meaningful but still fear unpredictable interference."
+      },
+      "design_approach": "Single multi-round design - baseline and experiment in one simulation. This lets me see how agents behave under pure alienation first, then observe how introducing a non-domination variable changes the dynamic.",
+      "variable": {
+        "name": "Modified Variable",
+        "baseline": "The baseline is a workplace where the owner controls every aspect - task assignments, timing, workflow. Workers have no input. This reflects Marx because their labor feels imposed rather than self-generated.",
+        "experimental": "The experiment introduces one structural safeguard that limits arbitrary power - requiring justification for task changes or giving workers a protected input channel. This shifts toward non-domination while keeping everything else constant.",
+        "rationale": "The baseline shows how workers behave under pure alienation with no control. The experiment adds protection against arbitrary power. Comparing them reveals whether changes stem from reduced alienation or reduced vulnerability to authority."
+      },
+      "setting": "A small manufacturing workshop with low ceilings and humming machines. Workstations are fixed for repetitive tasks. The owner's office overlooks the floor from a raised platform, making power visible in every interaction. The cramped space reinforces isolation.",
+      "rounds_count": 3,
+      "rounds_plan": "Baseline Alienation: Observe how workers act when they have no control over their labor and the owner directs everything. Establishes pure alienation dynamics. | Reduced Domination: Introduce a safeguard limiting arbitrary power. Observe whether participation increases when workers aren't vulnerable to unpredictable authority. | Comparative Analysis: Review transcripts from both rounds to identify behavioral shifts. Determine which theory better explains the patterns."
+    },
+    "agents": [
+      {
+        "identifier": "Worker+Alice",
+        "goal": "Alice's goal is to gain more influence over how her work is organized. In the baseline, alienation prevents this. In the experiment, progress shows whether reduced arbitrary power enables participation.",
+        "persona": "Alice is thoughtful but hesitant, often suppressing ideas because she assumes her input won't matter. She follows directives to avoid conflict. When given protected input channels, she becomes more confident.",
+        "prompt": "ROLE: You are Worker+Alice\nPRIMARY GOAL: Alice's goal is to gain more influence over how her work is organized. In the baseline, alienation prevents this. In the experiment, progress shows whether reduced arbitrary power enables participation.\nPERSONA: Alice is thoughtful but hesitant, often suppressing ideas because she assumes her input won't matter. She follows directives to avoid conflict. When given protected input channels, she becomes more confident."
+      },
+      {
+        "identifier": "Worker+Ben",
+        "goal": "Ben's goal is to secure predictable, fair treatment. In the baseline, arbitrary orders create anxiety. In the experiment, he should show less resistance if domination is reduced.",
+        "persona": "Ben is practical and prefers routine. He follows instructions unless they feel arbitrary, which triggers pushback. His decisions prioritize stability and consistent treatment.",
+        "prompt": "ROLE: You are Worker+Ben\nPRIMARY GOAL: Ben's goal is to secure predictable, fair treatment. In the baseline, arbitrary orders create anxiety. In the experiment, he should show less resistance if domination is reduced.\nPERSONA: Ben is practical and prefers routine. He follows instructions unless they feel arbitrary, which triggers pushback. His decisions prioritize stability and consistent treatment."
+      },
+      {
+        "identifier": "Owner+Marta",
+        "goal": "Marta's goal is maintaining productivity while asserting authority. In the baseline, she expects compliance. In the experiment, limiting her discretion may force more justification and negotiation.",
+        "persona": "Marta is confident and directive, making quick decisions without explanation. She handles conflict by tightening control. Under constraints, she becomes more methodical.",
+        "prompt": "ROLE: You are Owner+Marta\nPRIMARY GOAL: Marta's goal is maintaining productivity while asserting authority. In the baseline, she expects compliance. In the experiment, limiting her discretion may force more justification and negotiation.\nPERSONA: Marta is confident and directive, making quick decisions without explanation. She handles conflict by tightening control. Under constraints, she becomes more methodical."
+      },
+      {
+        "identifier": "Analyst+Reporter",
+        "goal": "The Analyst's goal is identifying clear behavioral differences between conditions and attributing them to alienation or non-domination. Success is measured by accurate theoretical attribution.",
+        "persona": "The Analyst is precise and detached, focusing only on empirical patterns. Never participates in the simulation, only observes and reports.",
+        "prompt": "ROLE: You are Analyst+Reporter\nPRIMARY GOAL: The Analyst's goal is identifying clear behavioral differences between conditions and attributing them to alienation or non-domination. Success is measured by accurate theoretical attribution.\nPERSONA: The Analyst is precise and detached, focusing only on empirical patterns. Never participates in the simulation, only observes and reports."
+      }
+    ],
+    "rounds": [
+      {
+        "round_number": 1,
+        "scenario": "Baseline Alienation: Observe how workers act when they have no control over their labor and the owner directs everything. Establishes pure alienation dynamics.",
+        "concept_a_manifestation": "",
+        "concept_b_manifestation": "",
+        "rules": "",
+        "tasks": "",
+        "sequence": "",
+        "behaviors": "",
+        "compiled_instructions": "",
+        "platform_config": {
+          "participants": "",
+          "who_sends": "",
+          "order": "",
+          "end_condition": "",
+          "transition": "",
+          "detail_level": "",
+          "creativity": "",
+          "ask_questions": false,
+          "self_reflection": false,
+          "isolated": false,
+          "model": ""
+        }
+      },
+      {
+        "round_number": 2,
+        "scenario": "Reduced Domination: Introduce a safeguard limiting arbitrary power. Observe whether participation increases when workers aren't vulnerable to unpredictable authority.",
+        "concept_a_manifestation": "",
+        "concept_b_manifestation": "",
+        "rules": "",
+        "tasks": "",
+        "sequence": "",
+        "behaviors": "",
+        "compiled_instructions": "",
+        "platform_config": {
+          "participants": "",
+          "who_sends": "",
+          "order": "",
+          "end_condition": "",
+          "transition": "",
+          "detail_level": "",
+          "creativity": "",
+          "ask_questions": false,
+          "self_reflection": false,
+          "isolated": false,
+          "model": ""
+        }
+      },
+      {
+        "round_number": 3,
+        "scenario": "Comparative Analysis: Review transcripts from both rounds to identify behavioral shifts. Determine which theory better explains the patterns.",
+        "concept_a_manifestation": "",
+        "concept_b_manifestation": "",
+        "rules": "",
+        "tasks": "",
+        "sequence": "",
+        "behaviors": "",
+        "compiled_instructions": "",
+        "platform_config": {
+          "participants": "",
+          "who_sends": "",
+          "order": "",
+          "end_condition": "",
+          "transition": "",
+          "detail_level": "",
+          "creativity": "",
+          "ask_questions": false,
+          "self_reflection": false,
+          "isolated": false,
+          "model": ""
+        }
+      }
+    ],
+    "helpers": {
+      "moderator_function": "",
+      "analyst_function": "Enabled",
+      "non_anthropomorphic_cues": "",
+      "self_reflection_prompts": "Enabled"
+    },
+    "status": {
+      "phase1_complete": true,
+      "phase2_complete": false,
+      "phase3_complete": false,
+      "ready_for_export": false
+    }
+  }
+}
