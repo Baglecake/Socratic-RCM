@@ -33,6 +33,22 @@ from feedback_extractor import (
 from process_retriever import ProcessRetriever, ReasoningPolicy
 
 
+def _get_default_output_dir() -> str:
+    """Get default output directory based on environment."""
+    import datetime
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H%M%S")
+
+    # Check if running in Colab
+    try:
+        import google.colab
+        return f"/content/Socratic-RCM/outputs/social_rl_{timestamp}"
+    except ImportError:
+        pass
+
+    # Local - use relative path from current working directory
+    return f"./outputs/social_rl_{timestamp}"
+
+
 @dataclass
 class SocialRLConfig:
     """Configuration for Social RL execution."""
@@ -56,6 +72,8 @@ class SocialRLConfig:
     # Output settings
     verbose: bool = True
     save_feedback_history: bool = True
+    auto_save: bool = True  # Auto-save after each round
+    output_dir: str = ""    # Empty = auto-detect
 
 
 @dataclass
@@ -154,11 +172,23 @@ class SocialRLRunner:
         self.round_results: Dict[int, SocialRLRoundResult] = {}
         self.accumulated_feedback: Dict[str, Dict[str, float]] = {}
 
+        # Setup output directory
+        if self.config.output_dir:
+            self.output_dir = Path(self.config.output_dir)
+        else:
+            self.output_dir = Path(_get_default_output_dir())
+
+        # Create output directory
+        if self.config.auto_save:
+            self.output_dir.mkdir(parents=True, exist_ok=True)
+
         if self.config.verbose:
             print(f"SocialRLRunner initialized")
             print(f"  Framework: {project.get('theoretical_option_label', self.framework_option)}")
             print(f"  Manifestation mode: {self.config.manifestation_mode}")
             print(f"  PRAR cues: {self.config.use_prar_cues}")
+            if self.config.auto_save:
+                print(f"  Output dir: {self.output_dir}")
 
     def execute_round(
         self,
@@ -255,9 +285,15 @@ class SocialRLRunner:
 
         self.round_results[round_number] = result
 
+        # Auto-save round result
+        if self.config.auto_save:
+            self._save_round(result)
+
         if self.config.verbose:
             print(f"\nRound {round_number} complete: {len(messages)} messages in {duration:.1f}s")
             self._print_feedback_summary(round_feedback)
+            if self.config.auto_save:
+                print(f"  Saved to: {self.output_dir}/round{round_number}_social_rl.json")
 
         return result
 
@@ -564,9 +600,15 @@ class SocialRLRunner:
 
         return "\n".join(report)
 
-    def save_results(self, output_dir: str):
+    def _save_round(self, result: SocialRLRoundResult):
+        """Save a single round result (called automatically if auto_save=True)."""
+        output_file = self.output_dir / f"round{result.round_number}_social_rl.json"
+        with open(output_file, "w") as f:
+            json.dump(result.to_dict(), f, indent=2)
+
+    def save_results(self, output_dir: str = None):
         """Save all results to files."""
-        output_path = Path(output_dir)
+        output_path = Path(output_dir) if output_dir else self.output_dir
         output_path.mkdir(parents=True, exist_ok=True)
 
         # Save round results
