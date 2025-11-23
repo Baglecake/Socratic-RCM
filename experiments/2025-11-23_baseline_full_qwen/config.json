@@ -1,0 +1,29 @@
+{
+  "experiment_name": "Baseline Full - Alienation vs Non-Domination",
+  "date": "2025-11-23",
+  "model": "Qwen/Qwen2.5-7B-Instruct",
+  "backend": "vLLM",
+  "base_url": "http://127.0.0.1:8000/v1",
+  "phases_completed": [
+    "1",
+    "2",
+    "3"
+  ],
+  "script": "scripts/run_baseline_experiment.py",
+  "theoretical_framework": {
+    "option": "A",
+    "name": "Class Conflict / Alienation",
+    "theorists": [
+      "Marx",
+      "Wollstonecraft"
+    ],
+    "concept_a": "Alienation",
+    "concept_b": "Non-domination"
+  },
+  "experiment_design": {
+    "type": "Single multi-round",
+    "variable_modification": "Type A (single variable)",
+    "rounds": 3,
+    "agents": 4
+  }
+}

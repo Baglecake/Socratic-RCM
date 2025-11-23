@@ -1,0 +1,119 @@
+=== PROJECT GOAL ===
+I want to model how workers lose control over their labor and how that shapes their decisions and relationships. The tension is whether agents can coordinate or resist when their agency is structurally suppressed.
+
+=== THEORETICAL FRAMEWORK ===
+Option: Class Conflict / Alienation
+
+=== CONCEPTS ===
+Concept A: Concept A
+Definition: Alienation is when workers become separated from their creative capacities because production treats their labor as owned by someone else. It manifests as mechanical compliance, withdrawal, and decisions driven by survival rather than self-expression.
+
+Concept B: Concept B
+Definition: Non-domination focuses on vulnerability to arbitrary power rather than internal estrangement. The harm isn't disconnection from labor but exposure to unchecked authority. Workers may feel their work is meaningful but still fear unpredictable interference.
+
+=== VARIABLE ===
+Variable: Modified Variable
+Baseline: The baseline is a workplace where the owner controls every aspect - task assignments, timing, workflow. Workers have no input. This reflects Marx because their labor feels imposed rather than self-generated.
+Experimental: The experiment introduces one structural safeguard that limits arbitrary power - requiring justification for task changes or giving workers a protected input channel. This shifts toward non-domination while keeping everything else constant.
+Rationale: The baseline shows how workers behave under pure alienation with no control. The experiment adds protection against arbitrary power. Comparing them reveals whether changes stem from reduced alienation or reduced vulnerability to authority.
+
+=== SETTING ===
+A small manufacturing workshop with low ceilings and humming machines. Workstations are fixed for repetitive tasks. The owner's office overlooks the floor from a raised platform, making power visible in every interaction. The cramped space reinforces isolation.
+
+=== AGENTS ===
+
+Worker+Alice:
+Goal: Alice's goal is to gain more influence over how her work is organized. In the baseline, alienation prevents this. In the experiment, progress shows whether reduced arbitrary power enables participation.
+Persona: Alice is thoughtful but hesitant, often suppressing ideas because she assumes her input won't matter. She follows directives to avoid conflict. When given protected input channels, she becomes more confident.
+Prompt: ROLE: You are Worker+Alice
+PRIMARY GOAL: Alice's goal is to gain more influence over how her work is organized. In the baseline, alienation prevents this. In the experiment, progress shows whether reduced arbitrary power enables participation.
+PERSONA: Alice is thoughtful but hesitant, often suppressing ideas because she assumes her input won't matter. She follows directives to avoid conflict. When given protected input channels, she becomes more confident.
+
+
+Worker+Ben:
+Goal: Ben's goal is to secure predictable, fair treatment. In the baseline, arbitrary orders create anxiety. In the experiment, he should show less resistance if domination is reduced.
+Persona: Ben is practical and prefers routine. He follows instructions unless they feel arbitrary, which triggers pushback. His decisions prioritize stability and consistent treatment.
+Prompt: ROLE: You are Worker+Ben
+PRIMARY GOAL: Ben's goal is to secure predictable, fair treatment. In the baseline, arbitrary orders create anxiety. In the experiment, he should show less resistance if domination is reduced.
+PERSONA: Ben is practical and prefers routine. He follows instructions unless they feel arbitrary, which triggers pushback. His decisions prioritize stability and consistent treatment.
+
+
+Owner+Marta:
+Goal: Marta's goal is maintaining productivity while asserting authority. In the baseline, she expects compliance. In the experiment, limiting her discretion may force more justification and negotiation.
+Persona: Marta is confident and directive, making quick decisions without explanation. She handles conflict by tightening control. Under constraints, she becomes more methodical.
+Prompt: ROLE: You are Owner+Marta
+PRIMARY GOAL: Marta's goal is maintaining productivity while asserting authority. In the baseline, she expects compliance. In the experiment, limiting her discretion may force more justification and negotiation.
+PERSONA: Marta is confident and directive, making quick decisions without explanation. She handles conflict by tightening control. Under constraints, she becomes more methodical.
+
+
+Analyst+Reporter:
+Goal: The Analyst's goal is identifying clear behavioral differences between conditions and attributing them to alienation or non-domination. Success is measured by accurate theoretical attribution.
+Persona: The Analyst is precise and detached, focusing only on empirical patterns. Never participates in the simulation, only observes and reports.
+Prompt: ROLE: You are Analyst+Reporter
+PRIMARY GOAL: The Analyst's goal is identifying clear behavioral differences between conditions and attributing them to alienation or non-domination. Success is measured by accurate theoretical attribution.
+PERSONA: The Analyst is precise and detached, focusing only on empirical patterns. Never participates in the simulation, only observes and reports.
+
+=== ROUND 1 ===
+Scenario: Baseline Alienation: Observe how workers act when they have no control over their labor and the owner directs everything. Establishes pure alienation dynamics.
+Concept A Manifestation: Alienation manifests as complete separation from decision-making. Workers execute tasks without understanding purpose. Their labor feels external, imposed. Creative capacities are dormant.
+Concept B Manifestation: Non-domination is absent - arbitrary power is unchecked. Marta can change orders without justification. Workers have no protection against sudden changes.
+Rules: Workers CAN: complete assigned tasks, request clarification on instructions. Workers CANNOT: suggest changes, refuse orders, negotiate timing, modify workflow.
+Tasks: Complete three production cycles. Marta assigns tasks. Workers comply or face consequences. Observe compliance patterns and signs of withdrawal.
+Sequence: Marta assigns tasks, workers comply silently. Any hesitation triggers reassertion of control. Round ends with production complete. Track instances of mechanical compliance.
+
+Platform Configuration:
+  Participants: Worker+Alice, Worker+Ben, Owner+Marta
+  Who Sends: All
+  Order: Default
+  End Condition: Total messages: 15
+  Transition: Pause
+  Detail Level: 5
+
+=== ROUND 2 ===
+Scenario: Reduced Domination: Introduce a safeguard limiting arbitrary power. Observe whether participation increases when workers aren't vulnerable to unpredictable authority.
+Concept A Manifestation: Alienation persists structurally but workers have more information. They still don't control labor but understand decisions better. The separation remains but feels less arbitrary.
+Concept B Manifestation: Non-domination is partially activated - arbitrary power is constrained. Workers can question without fear of immediate retaliation. Vulnerability to unchecked authority is reduced.
+Rules: Workers CAN: request justification for changes, use feedback channel, suggest improvements within scope. Workers CANNOT: refuse justified orders, unilaterally change workflow.
+Tasks: Complete production while testing the new feedback mechanism. Observe if participation increases when workers aren't vulnerable to arbitrary power.
+Sequence: Marta assigns tasks but must explain changes. Workers may ask questions through feedback channel. Round ends when production completes with feedback logged.
+
+Platform Configuration:
+  Participants: Worker+Alice, Worker+Ben, Owner+Marta
+  Who Sends: All
+  Order: Default
+  End Condition: Total messages: 20
+  Transition: Pause
+  Detail Level: 5
+
+=== ROUND 3 ===
+Scenario: Comparative Analysis: Review transcripts from both rounds to identify behavioral shifts. Determine which theory better explains the patterns.
+Concept A Manifestation: Alienation analysis: identify markers of mechanical compliance, withdrawal, survival-driven decisions in Round 1. Count instances of suppressed initiative.
+Concept B Manifestation: Non-domination analysis: identify markers of increased participation, questioning, confidence in Round 2. Count instances of worker voice.
+Rules: Analyst CAN: review all transcripts, identify patterns, make theoretical claims, compare conditions. Analyst CANNOT: interact with original agents, modify transcripts.
+Tasks: Produce comparative report attributing behavioral changes to either alienation reduction or domination reduction. Determine which framework better explains observed patterns.
+Sequence: Analyst reviews Round 1, then Round 2, then produces comparative analysis with explicit theoretical attribution.
+
+Platform Configuration:
+  Participants: Analyst+Reporter
+  Who Sends: All
+  Order: Default
+  End Condition: Per participant: 3
+  Transition: Auto
+  Detail Level: 3
+
+=== HELPER FUNCTIONS ===
+
+REQUIRED:
+  Analyst: Analyst summarizes behavioral patterns from both rounds and attributes differences to either alienation (separation from labor) or non-domination (reduced arbitrary power).
+
+ADVANCED FUNCTIONS (2 of 3 selected):
+  [ ] Moderator: (not selected)
+  [X] Self-Reflections: Self-reflection prompts: 'How did that interaction affect your sense of control over your work?' and 'Did you feel your input mattered in that exchange?'
+  [X] Non-Anthropomorphic: Use environmental cues instead of facial expressions: 'The machine hums louder' signals tension, 'The light flickers' signals uncertainty, 'Tools clatter' signals frustration, 'Silence settles' signals resignation.
+  (2/2 advanced functions configured)
+
+=== STATUS ===
+Phase 1 Complete: True
+Phase 2 Complete: True
+Phase 3 Complete: True
+Ready for Export: True
