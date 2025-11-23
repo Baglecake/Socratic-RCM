@@ -343,7 +343,7 @@ def main():
     else:
         experiments_dir = os.path.join(
             os.path.dirname(os.path.dirname(os.path.dirname(__file__))),
-            "experiments"
+            "prar", "outputs"
         )
     os.makedirs(experiments_dir, exist_ok=True)
 

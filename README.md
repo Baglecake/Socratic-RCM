@@ -19,36 +19,37 @@ This repository contains the reference implementation, experiment infrastructure
 
 ```
 Socratic-RCM/
-├── local_rcm/              # Primary development: Python orchestrator
+├── local_rcm/              # Orchestrator engine
 │   ├── orchestrator.py     # Workflow state machine
 │   ├── canvas_state.py     # Data model and compilation
 │   ├── llm_client.py       # LLM abstraction layer
-│   ├── runtime_parser.py   # Step definition parser
 │   ├── runtime-files/      # 3-phase workflow definitions
-│   ├── scripts/            # Experiment execution scripts
+│   ├── scripts/            # Experiment execution
 │   └── tests/              # Automated test suite
+│
+├── prar/                   # PRAR methodology (formal contribution)
+│   ├── configs/            # Reusable configurations
+│   ├── templates/          # Baseline answer sets, agent skeletons
+│   └── outputs/            # Canonical PRAR outputs
+│       └── YYYY-MM-DD_*/   # state.json, canvas, document
+│
+├── agents/                 # Agent system (Phase 1)
+│   ├── agent_config.py     # AgentConfig dataclass
+│   ├── agent_factory.py    # Canvas-to-agent instantiation
+│   ├── persona_library/    # Reusable persona templates
+│   └── ces_generators/     # CES-to-agent transformation
+│
+├── experiments/            # Research instances (contextualized runs)
+│   └── YYYY-MM-DD_name/    # Notes, analysis, comparisons
 │
 ├── notebooks/              # Canonical notebook + Colab links
 │   ├── baseline_snapshot.ipynb
-│   └── README.md           # Links to external Colab notebooks
-│
-├── experiments/            # Versioned experiment outputs
-│   └── YYYY-MM-DD_name/    # Timestamped experiment folders
-│       ├── state.json      # Complete workflow state
-│       ├── document.txt    # Compiled output
-│       ├── config.json     # Experiment metadata
-│       └── notes.md        # Run summary
+│   └── README.md           # Links to external notebooks
 │
 ├── production/             # GPT Builder deployment (v8.4)
-│   ├── system-prompt/      # Monolithic prompt
-│   └── knowledge-base/     # Theory files and templates
-│
-├── theory/                 # Shared theoretical knowledge base
-│   └── *.txt               # Lecture notes (Marx, Tocqueville, et al.)
-│
-├── docs/                   # Project documentation
-├── literature/             # Academic references
-└── archive/                # Historical versions and deprecated branches
+├── theory/                 # Theoretical knowledge base
+├── docs/                   # Documentation
+└── archive/                # Historical versions
 ```
 
 ---
@@ -195,11 +196,13 @@ Previous development branches are preserved in `archive/`:
 | Resource | Location |
 |----------|----------|
 | Project overview | This file |
-| Living development notes | [WORKING_DOCUMENT.md](WORKING_DOCUMENT.md) |
+| Development roadmap | [ROADMAP.md](ROADMAP.md) |
+| PRAR methodology | [prar/README.md](prar/README.md) |
+| Agent system | [agents/README.md](agents/README.md) |
 | Local orchestrator | [local_rcm/README.md](local_rcm/README.md) |
 | Notebooks and Colab links | [notebooks/README.md](notebooks/README.md) |
 | Production deployment | [production/README.md](production/README.md) |
-| Architecture documentation | [docs/](docs/) |
+| Living development notes | [WORKING_DOCUMENT.md](WORKING_DOCUMENT.md) |
 
 ---
 
