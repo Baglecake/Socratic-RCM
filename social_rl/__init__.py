@@ -86,6 +86,26 @@ __all__ = [
     "SocialRLMessage",
     "SocialRLRoundResult",
     "create_social_rl_runner",
+
+    # Dual-LLM Client
+    "DualLLMClient",
+    "DualLLMConfig",
+    "create_dual_llm_client",
+    "create_dual_llm_from_single",
+
+    # Schema
+    "SCHEMA_VERSION",
 ]
 
-__version__ = "0.1.0"
+# Import dual-LLM client
+from .dual_llm_client import (
+    DualLLMClient,
+    DualLLMConfig,
+    create_dual_llm_client,
+    create_dual_llm_from_single,
+)
+
+# Import schema version
+from .schema import SCHEMA_VERSION
+
+__version__ = "0.2.0"
