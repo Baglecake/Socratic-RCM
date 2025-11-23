@@ -1,24 +1,17 @@
 # The Reflect and Connect Model (RCM)
-## A Socratic RAG Framework For Process-Retrieval Augmented Reasoning (PRAR)
 
-> **Socratic AI Beyond the Oracle**
+## A Framework for Process-Retrieval Augmented Reasoning in Pedagogical Applications
 
-[![Status](https://img.shields.io/badge/status-production-brightgreen)]()
-[![Version](https://img.shields.io/badge/version-8.4-blue)]()
-[![Framework](https://img.shields.io/badge/framework-RCM-purple)]()
-[![GPT Builder](https://img.shields.io/badge/OpenAI-GPT%20Builder-412991)]()
+[![Status](https://img.shields.io/badge/status-active_development-blue)]()
+[![Framework](https://img.shields.io/badge/framework-RCM%2FPRAR-purple)]()
 
 ---
 
-## Quick Links
+## Abstract
 
-| Component | Location | Status | Use Case |
-|-----------|----------|--------|----------|
-| **Production System** | [production/](production/) | Stable | GPT Builder deployment |
-| **Local Orchestrator** | [local_rcm/](local_rcm/) | Active | Local/vLLM execution |
-| **Experimental** | [experimental/](experimental/) | Research | Architecture testing |
-| **Theory KB** | [theory/](theory/) | Stable | Shared lecture notes |
-| **Documentation** | [docs/](docs/) | Current | Architecture, papers |
+The Reflect and Connect Model (RCM) is a Socratic framework for guiding learners through complex creative tasks without generating content on their behalf. Unlike conventional retrieval-augmented generation (RAG) systems that retrieve information to produce answers, RCM implements Process-Retrieval Augmented Reasoning (PRAR): retrieving procedural schemas that scaffold learner cognition through structured questioning.
+
+This repository contains the reference implementation, experiment infrastructure, and archived development history of RCM as applied to the B42 Chatstorm assignment at the University of Toronto.
 
 ---
 
@@ -26,228 +19,191 @@
 
 ```
 Socratic-RCM/
-├── production/             #  GPT Builder system (v8.4)
-│   ├── system-prompt/      # GPT Builder instructions
-│   ├── knowledge-base/     # Assignment docs & templates
-│   └── deployment/         # Deployment checklist
-│
-├── local_rcm/              # Local Python orchestrator
-│   ├── orchestrator.py     # Core workflow engine
-│   ├── canvas_state.py     # Data model & compilation
-│   ├── llm_client.py       # LLM abstraction (mock/vLLM)
-│   ├── runtime-files/      # Workflow definitions
+├── local_rcm/              # Primary development: Python orchestrator
+│   ├── orchestrator.py     # Workflow state machine
+│   ├── canvas_state.py     # Data model and compilation
+│   ├── llm_client.py       # LLM abstraction layer
+│   ├── runtime_parser.py   # Step definition parser
+│   ├── runtime-files/      # 3-phase workflow definitions
+│   ├── scripts/            # Experiment execution scripts
 │   ├── tests/              # Automated test suite
-│   └── notebooks/          # Colab/Jupyter support
+│   └── PRAR/               # Colab development notebooks
 │
-├── experimental/           # Research branches
-│   └── bios-architecture/  # BIOS + Runtime approach
+├── experiments/            # Versioned experiment outputs
+│   └── YYYY-MM-DD_name/    # Timestamped experiment folders
+│       ├── state.json      # Complete workflow state
+│       ├── document.txt    # Compiled output
+│       ├── config.json     # Experiment metadata
+│       └── notes.md        # Run summary
 │
-├── theory/                 # Shared theory knowledge base
-│   └── *.txt               # Marx, Tocqueville, Wollstonecraft, Smith
+├── production/             # GPT Builder deployment (v8.4)
+│   ├── system-prompt/      # Monolithic prompt
+│   └── knowledge-base/     # Theory files and templates
+│
+├── theory/                 # Shared theoretical knowledge base
+│   └── *.txt               # Lecture notes (Marx, Tocqueville, et al.)
 │
 ├── docs/                   # Project documentation
-│   ├── research/          # Validation protocols
-│   ├── architecture/      # System design
-│   └── papers/            # Research papers (LaTeX)
-│
 ├── literature/             # Academic references
-└── archive/                # Deprecated versions (v3-v8)
+└── archive/                # Historical versions and deprecated branches
 ```
 
 ---
 
-## Current Versions
+## Core Components
 
-**Last Updated:** 2025-11-22
-**Framework:** Reflect and Connect Model (RCM)
+### Local Orchestrator (`local_rcm/`)
 
-### Which Version Should I Use?
+The primary development target is a Python-based workflow orchestrator that executes the 112-step PRAR workflow independently of GPT Builder. Key characteristics:
 
-| Deployment Target | Recommended Version | Location |
-|-------------------|---------------------|----------|
-| GPT Builder (students) | v8.4 Monolithic | [production/](production/) |
-| Local Python (vLLM/API) | Local Orchestrator | [local_rcm/](local_rcm/) |
-| Research/Testing | BIOS Architecture | [experimental/](experimental/) |
+- **State machine architecture**: The orchestrator owns step advancement; the LLM never controls flow
+- **LLM-agnostic design**: Supports mock, vLLM, OpenAI API, and Anthropic backends
+- **Canvas data model**: Accumulates student responses into a structured representation
+- **Deterministic execution**: Same inputs produce identical workflow progression
 
-### Quick Start
+**Execution**:
+```bash
+cd local_rcm
 
-**Option A: GPT Builder Deployment** (v8.4)
-1. See [production/README.md](production/README.md) for instructions
-2. Upload system prompt + knowledge base to GPT Builder
-3. Disable DALL-E image generation in settings
+# Mock mode (no LLM calls)
+python scripts/run_baseline_experiment.py --mock
 
-**Option B: Local Python Orchestrator**
-1. See [local_rcm/README.md](local_rcm/README.md) for setup
-2. Run with mock LLM: `python example_usage.py --mode mock`
-3. Run with vLLM: `python example_usage.py --mode vllm --base-url URL`
-
-**Option C: Explore Experimental**
-- [experimental/bios-architecture/](experimental/bios-architecture/) - BIOS + Runtime research
-
----
-
-## The Reflect and Connect Model (RCM)
-
-**RCM** is a Socratic RAG (Retrieval-Augmented Generation) framework designed for pedagogical applications where the goal is to guide learners through complex creative tasks without doing the work for them.
-
-### Core Innovation: Process-Retrieval Architecture
-
-Traditional RAG: `Query → Retrieve Information → Generate Answer`
-Pedagogical RAG (RCM): `Query → Retrieve Process Schema → Generate Socratic Scaffold`
-
-This architectural shift enables:
-
-1. **Dynamic Protocol Adaptation**: The system retrieves context-appropriate questioning strategies
-2. **Generative Restraint Through Process Guardrails**: Retrieved processes include boundary conditions (what NOT to generate)
-3. **Recursive Reflection Architecture**: Multi-layered feedback loop (mechanics → theory → meta-cognition)
-
-### RCM in Practice: B42 Chatstorm T.A.
-
-The B42 Chatstorm T.A. implements RCM to guide sociology students through multi-agent experiment design:
-
-- **Reflect**: Students articulate theoretical tensions (e.g., Marx's alienation vs. Wollstonecraft's domination)
-- **Connect**: System prompts connections to social theory from lecture notes
-- **Ask**: Socratic questions scaffold design without providing answers
-
-**Key Constraint**: Students create ALL content. System NEVER fills placeholders or generates creative work.
-
----
-
-## Technical Architecture
-
-### Production System (v8.4)
-
-**Monolithic Prompt Architecture**:
-- Single 8KB system prompt contains all workflow steps
-- Embedded in GPT Builder "Instructions" field
-- Knowledge base: Assignment docs + theory lecture notes
-- **Advantages**: Proven stability, high reliability, always in attention
-- **Limitations**: At 99% character capacity (7,994/8,000 bytes)
-
-See: [production/README.md](production/README.md)
-
-### Local Orchestrator (local_rcm/)
-
-**Python-based workflow engine**:
-- Runs 112-step workflow locally (no GPT Builder required)
-- Supports multiple LLM backends: mock, vLLM, OpenAI API
-- Canvas state management with JSON export
-- Automated test suite for validation
-- Jupyter/Colab support for GPU inference via ngrok
-
-See: [local_rcm/README.md](local_rcm/README.md)
-
-### Experimental: BIOS + Runtime (Research)
-
-**Separated Architecture**:
-- BIOS (~7KB): Execution engine with prohibitions & force-read protocol
-- Runtime Files (unlimited): Step-by-step workflow instructions
-- **Goal**: Overcome 8KB limit while maintaining strict control
-- **Status**: Research branch - force-read reliability under investigation
-
-See: [experimental/bios-architecture/README.md](experimental/bios-architecture/README.md)
-
----
-
-## Key Features
-
-### Absolute Prohibitions (Hardware-Level Constraints)
-
-1. **NO CREATIVE WRITING**: System never writes, rewrites, or paraphrases student ideas
-2. **NO BATCHING**: ONE question at a time, wait for answer, then proceed
-3. **NO PLACEHOLDER ACCEPTANCE**: Rejects [...], "TBD", vague responses
-4. **NO TRAINING DATA THEORY**: Uses ONLY lecture notes (KB[5-8]), cites "Per lecture..."
-5. **NO FILE CREATION**: Displays compiled templates in chat with `||...||` markers
-
-### Socratic Method (RCM Protocol)
-
-For EVERY question: **Reflect** requirement, **Connect** to theory, **Ask** with encouragement
-
-**Example**:
-```
-❌ "What's your goal?"
-✅ "Think about [A] vs [B]—what tension? What observable dynamic? (2-3 sent.)"
+# With vLLM backend
+python scripts/run_baseline_experiment.py \
+  --base-url http://127.0.0.1:8000/v1 \
+  --model Qwen/Qwen2.5-7B-Instruct
 ```
 
-### Three-Phase Workflow
+### Experiments Directory (`experiments/`)
 
-1. **Phase 1: Conceptualization** - Theoretical framework, agents, setting
-2. **Phase 2: Drafting** - Agent prompts, round instructions, platform config
-3. **Phase 3: Review & Export** - Checklist, final review, export for testing
+Versioned outputs from workflow executions. Each experiment folder contains:
+
+| File | Description |
+|------|-------------|
+| `state.json` | Complete workflow state including canvas |
+| `document.txt` | Human-readable compiled output |
+| `config.json` | Model, backend, and design metadata |
+| `notes.md` | Execution summary and observations |
+
+### Production System (`production/`)
+
+The GPT Builder deployment (v8.4) remains available for student-facing use. This monolithic prompt architecture embeds the complete workflow in an 8KB system prompt. See [production/README.md](production/README.md) for deployment instructions.
 
 ---
 
-## Testing & Validation
+## Theoretical Foundation
 
-### Production Testing (v8.4)
+### Process-Retrieval vs. Information-Retrieval
 
-**Test Results (2025-01-19)**:
-- File creation prohibition working (in-chat display with `||...||`)
-- Sequential workflow maintained (no step-skipping)
-- Theory queries accurate (routes to KB[5-8])
-- Clean student-facing output (no debugging info)
-- Socratic guidance shown (RCM cues visible)
+| Dimension | Traditional RAG | PRAR (RCM) |
+|-----------|-----------------|------------|
+| Retrieval target | Information | Process schemas |
+| Generation goal | Answers | Scaffolding questions |
+| Learner role | Consumer | Producer |
+| System constraint | Accuracy | Restraint |
 
-**Known Issues**:
-- Image generation requires DALL-E disabled in GPT settings
-- Character limit prevents further enhancements (7,994/8,000)
+### The RCM Protocol
 
-### Experimental Testing (BIOS v2.1)
+For each interaction, the system executes:
 
-**Test Results (2025-01-19)**:
-- UI improvements successful (clean output, RCM shown)
-- Force-read failures persist (step-skipping observed)
-- Not recommended for student deployment
+1. **Reflect**: Identify the pedagogical requirement of the current step
+2. **Connect**: Link to relevant theoretical concepts from the knowledge base
+3. **Ask**: Pose a Socratic question that advances learner cognition
+
+### Absolute Constraints
+
+The following prohibitions are enforced at the architectural level:
+
+1. The system never writes, rewrites, or paraphrases student content
+2. Questions are posed individually; batching is prohibited
+3. Placeholder responses (e.g., "TBD", "[...]") are rejected
+4. Theory references derive exclusively from provided lecture materials
+5. All output is displayed in-chat; no file creation occurs
+
+---
+
+## Three-Phase Workflow
+
+The B42 Chatstorm workflow comprises 112 steps across three phases:
+
+**Phase 1: Conceptualization** (38 steps)
+- Theoretical framework selection
+- Concept definition and contrast
+- Experiment design specification
+- Agent and setting configuration
+
+**Phase 2: Drafting** (66 steps)
+- Agent prompt compilation
+- Round instruction development
+- Platform configuration
+- Helper function setup
+
+**Phase 3: Review** (4 steps)
+- Design verification
+- Completeness check
+- Export preparation
+
+---
+
+## Development Status
+
+### Completed
+
+- Full 112-step workflow execution with mock and real LLM backends
+- Canvas data model with JSON serialization
+- Experiment versioning infrastructure
+- Colab/A100 validation with Qwen 7B via vLLM
+
+### Current Work
+
+- Agent factory abstraction for multi-agent simulation
+- RunPod serverless deployment configuration
+
+### Archived
+
+Previous development branches are preserved in `archive/`:
+- `v8_development/`: GPT Builder prompt evolution
+- `experimental-bios/`: Split BIOS + Runtime architecture research
+- `v3_era/` through `v7_era/`: Historical versions
 
 ---
 
 ## Documentation
 
-### For Deployment
-- [production/README.md](production/README.md) - Production system deployment
-- [production/deployment/DEPLOYMENT_CHECKLIST.md](production/deployment/DEPLOYMENT_CHECKLIST.md) - Step-by-step setup
-
-### For Development
-- [experimental/bios-architecture/README.md](experimental/bios-architecture/README.md) - BIOS architecture overview
-- [experimental/bios-architecture/docs/](experimental/bios-architecture/docs/) - Technical design docs
-- [docs/architecture/](docs/architecture/) - System architecture documentation
-
-### For Research
-- [docs/research/](docs/research/) - Validation protocols, corpus construction
-- [docs/papers/](docs/papers/) - Research papers on Pedagogical RAG
-- [literature/](literature/) - Academic references on RAG, Socratic pedagogy
+| Resource | Location |
+|----------|----------|
+| Project overview | This file |
+| Living development notes | [WORKING_DOCUMENT.md](WORKING_DOCUMENT.md) |
+| Local orchestrator | [local_rcm/README.md](local_rcm/README.md) |
+| Production deployment | [production/README.md](production/README.md) |
+| Architecture documentation | [docs/](docs/) |
 
 ---
 
 ## Citation
 
-If you use this framework in your research or teaching, please cite:
-
-```
-Coburn, D. (2025). The Reflect and Connect Model: Socratic Process-Retrieval Augmented Reasoning
-for Pedagogical Applications. GitHub repository:
-https://github.com/delcoburn/Socratic-RCM
+```bibtex
+@misc{coburn2025rcm,
+  author = {Coburn, Del},
+  title = {The Reflect and Connect Model: Process-Retrieval Augmented Reasoning for Pedagogical Applications},
+  year = {2025},
+  publisher = {GitHub},
+  url = {https://github.com/Baglecake/Socratic-RCM}
+}
 ```
 
 ---
 
 ## License
-  
-License: [LICENSE](https://github.com/Baglecake/Socratic-RCM/LICENSE)
+
+See [LICENSE](LICENSE) for terms.
 
 ---
 
 ## Contact
 
-For questions or collaboration:  
-Issues: [GitHub Issues](https://github.com/Baglecake/Socratic-RCM/issues)
-  
-> **Del Coburn**  
-> University of Toronto  
-> 📧 del.coburn@mail.utoronto.ca  
----
+Del Coburn
+University of Toronto
+del.coburn@mail.utoronto.ca
 
-**Status Summary**:
-- ✅ **Production (v8.4)**: Ready for GPT Builder student deployment
-- ✅ **Local Orchestrator**: Ready for local/vLLM execution
-- ⚠️ **Experimental (BIOS)**: Research branch - not for production use
+For issues or contributions: [GitHub Issues](https://github.com/Baglecake/Socratic-RCM/issues)
