@@ -36,17 +36,12 @@ from process_retriever import ProcessRetriever, ReasoningPolicy
 def _get_default_output_dir() -> str:
     """Get default output directory based on environment."""
     import datetime
+    import os
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H%M%S")
 
-    # Check if running in Colab
-    try:
-        import google.colab
-        return f"/content/Socratic-RCM/outputs/social_rl_{timestamp}"
-    except ImportError:
-        pass
-
-    # Local - use relative path from current working directory
-    return f"./outputs/social_rl_{timestamp}"
+    # Always use current working directory - works for local, Colab, VS Code + Colab
+    cwd = os.getcwd()
+    return os.path.join(cwd, "outputs", f"social_rl_{timestamp}")
 
 
 @dataclass
