@@ -1,146 +1,280 @@
-# Socratic-RCM Local Orchestrator
+# Local Orchestrator
 
-A local implementation of the Socratic Research Co-pilot Machine (RCM) workflow for designing agent-based simulations grounded in theoretical frameworks.
+The local orchestrator executes the 112-step PRAR workflow independently of GPT Builder, providing a Python-based implementation suitable for research, testing, and integration with various LLM backends.
 
-## Overview
+## Architecture
 
-This orchestrator guides users through a 3-phase workflow to design agent-based simulations:
+```mermaid
+flowchart TB
+    subgraph Input
+        RF[Runtime Files]
+        BP[BIOS Prompt]
+    end
 
-- **Phase 1: Conceptualization** - Define theoretical framework, concepts, variables, setting, and agents
-- **Phase 2: Drafting** - Configure round instructions, agent prompts, and platform settings
-- **Phase 3: Review** - Validate and export the complete simulation design
+    subgraph Orchestrator
+        RP[Runtime Parser]
+        WO[Workflow Orchestrator]
+        CS[Canvas State]
+    end
+
+    subgraph LLM Layer
+        LC[LLM Client]
+        SH[Student Handler]
+    end
+
+    subgraph Backends
+        MK[Mock]
+        VL[vLLM]
+        OA[OpenAI]
+        AN[Anthropic]
+    end
+
+    subgraph Output
+        ST[state.json]
+        DC[document.txt]
+    end
+
+    RF --> RP
+    RP --> WO
+    BP --> SH
+    WO --> CS
+    WO --> SH
+    SH --> LC
+    LC --> MK
+    LC --> VL
+    LC --> OA
+    LC --> AN
+    CS --> ST
+    CS --> DC
+```
+
+## Workflow Execution
+
+```mermaid
+sequenceDiagram
+    participant U as User/Simulator
+    participant O as Orchestrator
+    participant L as LLM Client
+    participant C as Canvas State
+
+    O->>O: Load runtime files
+    O->>O: Initialize at step 1.1
+
+    loop Each Step
+        O->>L: Generate question
+        L-->>O: Formatted question
+        O->>U: Present question
+        U-->>O: Answer
+        O->>L: Validate answer
+        L-->>O: Validation result
+        O->>C: Store answer
+        O->>O: Resolve next step
+    end
+
+    O->>C: Compile canvas
+    C-->>O: Final document
+```
 
 ## Directory Structure
 
 ```
 local_rcm/
-├── app.py                # Streamlit web interface
-├── orchestrator.py       # Core workflow engine
-├── canvas_state.py       # Canvas data model and compilation
+├── orchestrator.py       # Workflow state machine (owns step advancement)
+├── canvas_state.py       # Data model, compilation, JSON export
 ├── llm_client.py         # LLM abstraction + StudentSimulator
-├── runtime_parser.py     # Runtime file parser
-├── runpod_setup.py       # RunPod connectivity test
+├── runtime_parser.py     # Step definition parser
+├── app.py                # Streamlit web interface
 ├── example_usage.py      # CLI entry point
 ├── bios_reduced_prompt.txt
 ├── requirements.txt
-├── runtime-files/        # Workflow definition files
-│   ├── B42_Runtime_Logic_v2.0-COMPLETE.txt
+│
+├── runtime-files/        # Workflow definitions (56 steps total)
 │   ├── B42_Runtime_Phase1_Conceptualization.txt
 │   ├── B42_Runtime_Phase2_Drafting.txt
 │   └── B42_Runtime_Phase3_Review.txt
-├── tests/                # Test suite
+│
+├── scripts/              # Experiment execution
+│   └── run_baseline_experiment.py
+│
+├── tests/                # Automated test suite
 │   ├── test_auto.py
 │   ├── test_realistic.py
-│   ├── test_full_workflow.py
-│   └── test_simulator.py
+│   └── test_full_workflow.py
+│
 └── output/               # Generated outputs (gitignored)
 ```
 
 ## Installation
 
 ```bash
+cd local_rcm
 pip install -r requirements.txt
-```
-
-## RunPod Setup (Recommended for GPU)
-
-RunPod provides reliable GPU access via serverless endpoints.
-
-### 1. Create RunPod Account
-- Sign up at https://runpod.io
-
-### 2. Deploy vLLM Endpoint
-- Go to **Serverless** > **+ New Endpoint**
-- Select the **vLLM** template
-- Choose model: `Qwen/Qwen2.5-7B-Instruct`
-- Configure resources (24GB+ VRAM recommended)
-- Deploy and wait for status: **Ready**
-
-### 3. Get Credentials
-- **Endpoint ID**: From the endpoint dashboard URL
-- **API Key**: Settings > API Keys > Create new key
-
-### 4. Test Connection
-```bash
-python runpod_setup.py --endpoint-id YOUR_ENDPOINT_ID --api-key YOUR_API_KEY
 ```
 
 ## Usage
 
-### Streamlit Web Interface (Recommended)
+### Baseline Experiment (Recommended)
+
+Execute the complete 3-phase workflow with automatic output versioning:
+
+```bash
+# Mock mode (no LLM calls, instant execution)
+python scripts/run_baseline_experiment.py --mock
+
+# With vLLM backend (requires running vLLM server)
+python scripts/run_baseline_experiment.py \
+  --base-url http://127.0.0.1:8000/v1 \
+  --model Qwen/Qwen2.5-7B-Instruct
+```
+
+Outputs are saved to `experiments/YYYY-MM-DD_name/`.
+
+### Streamlit Interface
+
+Interactive web interface for step-by-step execution:
 
 ```bash
 streamlit run app.py
 ```
 
-1. Select **RunPod** mode in the sidebar
-2. Enter your endpoint URL: `https://api.runpod.ai/v2/YOUR_ENDPOINT_ID/openai/v1`
-3. Enter your RunPod API key
-4. Enable **Auto-Mode** for LLM-simulated student responses
-5. Click **Start/Reset Workflow**
-
-### Mock Mode (Testing)
+### Test Suite
 
 ```bash
-python example_usage.py --mode mock
+# Full workflow (112 steps, mock mode)
+python tests/test_full_workflow.py --mock
+
+# Phase 1 only (42 steps)
+python tests/test_realistic.py --mock
 ```
 
-### OpenAI Mode
+## Three-Phase Workflow
+
+```mermaid
+flowchart LR
+    subgraph Phase1[Phase 1: Conceptualization]
+        direction TB
+        P1A[Framework Selection]
+        P1B[Concept Definition]
+        P1C[Experiment Design]
+        P1D[Agent Configuration]
+        P1A --> P1B --> P1C --> P1D
+    end
+
+    subgraph Phase2[Phase 2: Drafting]
+        direction TB
+        P2A[Agent Prompts]
+        P2B[Round Instructions]
+        P2C[Platform Config]
+        P2D[Helper Functions]
+        P2A --> P2B --> P2C --> P2D
+    end
+
+    subgraph Phase3[Phase 3: Review]
+        direction TB
+        P3A[Design Verification]
+        P3B[Export Preparation]
+        P3A --> P3B
+    end
+
+    Phase1 --> Phase2 --> Phase3
+```
+
+| Phase | Steps | Purpose |
+|-------|-------|---------|
+| Phase 1 | 38 | Theoretical framework, concepts, agents, setting |
+| Phase 2 | 66 | Round instructions, prompts, platform configuration |
+| Phase 3 | 4 | Verification and export |
+
+## Canvas Data Model
+
+The canvas accumulates structured data throughout the workflow:
+
+```mermaid
+erDiagram
+    CANVAS ||--|| PROJECT : contains
+    CANVAS ||--o{ AGENT : has
+    CANVAS ||--o{ ROUND : has
+    CANVAS ||--|| HELPERS : configures
+    CANVAS ||--|| STATUS : tracks
+
+    PROJECT {
+        string goal
+        string theoretical_option
+        object concept_a
+        object concept_b
+        object variable
+        string setting
+        int rounds_count
+    }
+
+    AGENT {
+        string identifier
+        string goal
+        string persona
+        string prompt
+    }
+
+    ROUND {
+        int round_number
+        string scenario
+        string rules
+        string tasks
+        object platform_config
+    }
+
+    HELPERS {
+        string analyst_function
+        string moderator_function
+        string self_reflection
+        string non_anthropomorphic
+    }
+
+    STATUS {
+        bool phase1_complete
+        bool phase2_complete
+        bool phase3_complete
+        bool ready_for_export
+    }
+```
+
+## LLM Backend Configuration
+
+| Backend | Use Case | Configuration |
+|---------|----------|---------------|
+| Mock | Testing, CI | `--mock` flag |
+| vLLM | Local GPU, Colab | `--base-url http://host:8000/v1` |
+| OpenAI | API access | `--api-key YOUR_KEY` |
+| Anthropic | Claude models | Requires anthropic package |
+
+### vLLM Setup (Colab/RunPod)
 
 ```bash
-python example_usage.py --mode openai --api-key YOUR_KEY
+# Start vLLM server
+python -m vllm.entrypoints.openai.api_server \
+  --model Qwen/Qwen2.5-7B-Instruct \
+  --dtype bfloat16 \
+  --port 8000
+
+# Run orchestrator
+python scripts/run_baseline_experiment.py \
+  --base-url http://127.0.0.1:8000/v1 \
+  --model Qwen/Qwen2.5-7B-Instruct
 ```
 
-## Auto-Mode (Student Simulator)
+## Output Files
 
-The simulator uses a sociology student persona that:
-- References Marx, Wollstonecraft, Tocqueville, Adam Smith
-- Gives substantive 2-4 sentence responses
-- Switches persona based on chosen theoretical framework (Options A-E)
-- Maintains conversation consistency
+Each experiment produces:
 
-## Running Tests
+| File | Description |
+|------|-------------|
+| `state.json` | Complete workflow state including all student answers and compiled canvas |
+| `document.txt` | Human-readable simulation design document |
+| `config.json` | Experiment metadata (model, backend, phases completed) |
+| `notes.md` | Execution summary and observations |
 
-```bash
-# Full workflow test (mock)
-python tests/test_full_workflow.py
+## Design Principles
 
-# Phase 1 only
-python tests/test_realistic.py
-```
-
-## Workflow Output
-
-The orchestrator produces:
-
-1. **State JSON** - Complete student responses and canvas data
-2. **Document TXT** - Human-readable simulation design document
-
-### Helper Functions
-
-| Function | Type | Description |
-|----------|------|-------------|
-| Analyst | Required | Summarizes behavioral patterns |
-| Moderator | Advanced | Controls conversation flow |
-| Self-Reflections | Advanced | Agent introspection prompts |
-| Non-Anthropomorphic | Advanced | Environmental cues instead of facial expressions |
-
-Users select **2 of 3** advanced functions during the workflow.
-
-## Architecture
-
-```
-┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
-│  Runtime Files  │────▶│   Orchestrator  │────▶│   Canvas State  │
-└─────────────────┘     └─────────────────┘     └─────────────────┘
-                               │
-                               ▼
-                        ┌─────────────────┐
-                        │   LLM Client    │
-                        │(Mock/RunPod/API)│
-                        └─────────────────┘
-```
-
-## License
-
-Part of the Socratic-RCM research project.
+1. **Orchestrator owns state**: The LLM never controls workflow progression
+2. **Deterministic execution**: Same inputs produce identical step sequences
+3. **LLM-agnostic**: Backend can be swapped without code changes
+4. **Incremental compilation**: Canvas builds progressively from student responses

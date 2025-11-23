@@ -26,8 +26,11 @@ Socratic-RCM/
 │   ├── runtime_parser.py   # Step definition parser
 │   ├── runtime-files/      # 3-phase workflow definitions
 │   ├── scripts/            # Experiment execution scripts
-│   ├── tests/              # Automated test suite
-│   └── PRAR/               # Colab development notebooks
+│   └── tests/              # Automated test suite
+│
+├── notebooks/              # Canonical notebook + Colab links
+│   ├── baseline_snapshot.ipynb
+│   └── README.md           # Links to external Colab notebooks
 │
 ├── experiments/            # Versioned experiment outputs
 │   └── YYYY-MM-DD_name/    # Timestamped experiment folders
@@ -94,6 +97,25 @@ The GPT Builder deployment (v8.4) remains available for student-facing use. This
 ## Theoretical Foundation
 
 ### Process-Retrieval vs. Information-Retrieval
+
+```mermaid
+flowchart LR
+    subgraph Traditional[Traditional RAG]
+        direction TB
+        Q1[Query] --> R1[Retrieve Information]
+        R1 --> G1[Generate Answer]
+        G1 --> U1[User receives answer]
+    end
+
+    subgraph PRAR[PRAR / RCM]
+        direction TB
+        Q2[Query] --> R2[Retrieve Process Schema]
+        R2 --> G2[Generate Socratic Question]
+        G2 --> U2[Learner produces answer]
+        U2 --> V2[Validate & Scaffold]
+        V2 --> Q2
+    end
+```
 
 | Dimension | Traditional RAG | PRAR (RCM) |
 |-----------|-----------------|------------|
@@ -175,6 +197,7 @@ Previous development branches are preserved in `archive/`:
 | Project overview | This file |
 | Living development notes | [WORKING_DOCUMENT.md](WORKING_DOCUMENT.md) |
 | Local orchestrator | [local_rcm/README.md](local_rcm/README.md) |
+| Notebooks and Colab links | [notebooks/README.md](notebooks/README.md) |
 | Production deployment | [production/README.md](production/README.md) |
 | Architecture documentation | [docs/](docs/) |
 
