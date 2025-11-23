@@ -23,6 +23,7 @@ Active notebooks are hosted on Google Colab to leverage GPU resources and avoid 
 |----------|---------|------|
 | PRAR Phase 1 | Phase 1 validation with Qwen 7B via vLLM | [Open in Colab](https://colab.research.google.com/drive/13aaQFlCmEREAaliogKGwPA9xOfQ0mddo?usp=sharing) |
 | PRAR Full Baseline | Complete 3-phase workflow (112 steps) | [Open in Colab](https://colab.research.google.com/drive/1MsDxrTfQArZHEiWfbruZdqR2o0aq0RCS?usp=sharing) |
+| Dual-Instance Pipeline | Coach/Performer architecture validation | [Open in Colab](https://colab.research.google.com/drive/1AgA37uoZje-KQ6Pl3uCwaBQzfgfXd33B?usp=sharing) |
 
 ## Running the Baseline Notebook
 
@@ -44,10 +45,10 @@ Active notebooks are hosted on Google Colab to leverage GPU resources and avoid 
 ### Expected Output
 
 The notebook produces:
-- `experiments/YYYY-MM-DD_baseline_full_qwen/state.json`
-- `experiments/YYYY-MM-DD_baseline_full_qwen/document.txt`
-- `experiments/YYYY-MM-DD_baseline_full_qwen/config.json`
-- `experiments/YYYY-MM-DD_baseline_full_qwen/notes.md`
+- `prar/outputs/YYYY-MM-DD_baseline_full_qwen/state.json`
+- `prar/outputs/YYYY-MM-DD_baseline_full_qwen/document.txt`
+- `prar/outputs/YYYY-MM-DD_baseline_full_qwen/config.json`
+- `prar/outputs/YYYY-MM-DD_baseline_full_qwen/notes.md`
 
 ## Notebook Management Policy
 
