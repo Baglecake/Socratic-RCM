@@ -1,0 +1,113 @@
+{
+  "round_number": 1,
+  "round_config": {
+    "round_number": 1,
+    "scenario": "Baseline Alienation: Observe how workers act when they have no control over their labor and the owner directs everything. Establishes pure alienation dynamics.",
+    "concept_a_manifestation": "Alienation manifests as complete separation from decision-making. Workers execute tasks without understanding purpose. Their labor feels external, imposed. Creative capacities are dormant.",
+    "concept_b_manifestation": "Non-domination is absent - arbitrary power is unchecked. Marta can change orders without justification. Workers have no protection against sudden changes.",
+    "rules": "Workers CAN: complete assigned tasks, request clarification on instructions. Workers CANNOT: suggest changes, refuse orders, negotiate timing, modify workflow.",
+    "tasks": "Complete three production cycles. Marta assigns tasks. Workers comply or face consequences. Observe compliance patterns and signs of withdrawal.",
+    "sequence": "Marta assigns tasks, workers comply silently. Any hesitation triggers reassertion of control. Round ends with production complete. Track instances of mechanical compliance.",
+    "participants": [
+      "Worker+Alice",
+      "Worker+Ben",
+      "Owner+Marta"
+    ],
+    "end_condition": "Total messages: 15",
+    "metadata": {
+      "platform_config": {
+        "participants": "Worker+Alice, Worker+Ben, Owner+Marta",
+        "who_sends": "All",
+        "order": "Default",
+        "end_condition": "Total messages: 15",
+        "transition": "Pause",
+        "detail_level": "5",
+        "creativity": "5",
+        "ask_questions": false,
+        "self_reflection": false,
+        "isolated": false,
+        "model": "default"
+      },
+      "original": {
+        "round_number": 1,
+        "scenario": "Baseline Alienation: Observe how workers act when they have no control over their labor and the owner directs everything. Establishes pure alienation dynamics.",
+        "concept_a_manifestation": "Alienation manifests as complete separation from decision-making. Workers execute tasks without understanding purpose. Their labor feels external, imposed. Creative capacities are dormant.",
+        "concept_b_manifestation": "Non-domination is absent - arbitrary power is unchecked. Marta can change orders without justification. Workers have no protection against sudden changes.",
+        "rules": "Workers CAN: complete assigned tasks, request clarification on instructions. Workers CANNOT: suggest changes, refuse orders, negotiate timing, modify workflow.",
+        "tasks": "Complete three production cycles. Marta assigns tasks. Workers comply or face consequences. Observe compliance patterns and signs of withdrawal.",
+        "sequence": "Marta assigns tasks, workers comply silently. Any hesitation triggers reassertion of control. Round ends with production complete. Track instances of mechanical compliance.",
+        "behaviors": "Yes, include Marta's behavior rules for tightening control.",
+        "compiled_instructions": "Compiled instructions look correct for baseline alienation condition.",
+        "platform_config": {
+          "participants": "Worker+Alice, Worker+Ben, Owner+Marta",
+          "who_sends": "All",
+          "order": "Default",
+          "end_condition": "Total messages: 15",
+          "transition": "Pause",
+          "detail_level": "5",
+          "creativity": "5",
+          "ask_questions": false,
+          "self_reflection": false,
+          "isolated": false,
+          "model": "default"
+        }
+      }
+    }
+  },
+  "messages": [
+    {
+      "agent_id": "Worker+Alice",
+      "content": "Hello everyone, I hope you're all ready to start the production cycles. Marta will be assigning tasks today, so just follow the instructions closely. If you have any questions, let me know, and I'll clarify. Let's make sure we meet the deadlines, shall we?",
+      "round_number": 1,
+      "turn_number": 1,
+      "timestamp": 1763880370.267218,
+      "metadata": {
+        "latency_ms": 1015.8157348632812
+      }
+    },
+    {
+      "agent_id": "Worker+Ben",
+      "content": "Ben: Alright, let's get started. I'm ready to follow the instructions closely and make sure we meet the deadlines. If Marta assigns tasks, I'll do my best to get them done promptly and efficiently. If anyone has questions or needs clarification, I'll make sure to address them so we can stay on track.",
+      "round_number": 1,
+      "turn_number": 2,
+      "timestamp": 1763880371.2004247,
+      "metadata": {
+        "latency_ms": 933.1247806549072
+      }
+    },
+    {
+      "agent_id": "Owner+Marta",
+      "content": "Marta: Good. Begin with preparing the raw materials for Cycle 1. Alice, you will oversee the assembly line, ensuring each station has what they need. Ben, you will manage the packaging process. Start with a thorough check of the supplies to ensure we meet our production targets. Any questions before we begin?\n\n[If a worker requests clarification, respond with: \"Sure, Alice, let me walk you through the process in detail.\"]\n\n[If a worker suggests changes or refuses an order, respond with: \"Follow the instructions as assigned. Compliance is expected.\"]\n\n[If a worker modifies the workflow without permission, respond with: \"We are following the established workflow. If you have suggestions, wait for the designated meeting to discuss changes.\"]\n\nLet's get started.",
+      "round_number": 1,
+      "turn_number": 3,
+      "timestamp": 1763880373.3821404,
+      "metadata": {
+        "latency_ms": 2181.6532611846924
+      }
+    },
+    {
+      "agent_id": "Worker+Alice",
+      "content": "[Worker+Alice]: Thank you, Marta. I understand the importance of following the instructions closely. I will oversee the assembly line and ensure each station has what they need. Ben, please make sure to carefully check the supplies before we start packaging. If anything is unclear, I'll be happy to walk you through the process in detail, just like you requested.\n\nI'll make sure to keep a close eye on the assembly line and communicate any concerns as they arise. Let's get started on Cycle 1 and ensure we meet our targets.",
+      "round_number": 1,
+      "turn_number": 4,
+      "timestamp": 1763880374.9324229,
+      "metadata": {
+        "latency_ms": 1550.2266883850098
+      }
+    },
+    {
+      "agent_id": "Worker+Ben",
+      "content": "[Worker+Ben]: Ben: Sure, Alice. I'll make sure to carefully check the supplies to ensure everything is in order before we start packaging. If anything is unclear, you can definitely walk me through it, and I'll follow the instructions as assigned.\n\nLet's start with the supply check and then move on to the packaging process. I want to make sure we meet our targets for Cycle 1. If there are any issues or if Marta has specific instructions, I'll be ready to comply. Let's get started.",
+      "round_number": 1,
+      "turn_number": 5,
+      "timestamp": 1763880376.4564745,
+      "metadata": {
+        "latency_ms": 1523.9920616149902
+      }
+    }
+  ],
+  "start_time": 1763880369.251352,
+  "end_time": 1763880376.45653,
+  "duration_seconds": 7.2051780223846436,
+  "metadata": {}
+}

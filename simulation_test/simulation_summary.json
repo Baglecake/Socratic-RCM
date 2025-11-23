@@ -1,0 +1,7 @@
+{
+  "canvas_summary": "=== Canvas Summary ===\nGoal: I want to model how workers lose control over their labor and how that shapes th...\nFramework: Class Conflict / Alienation\nAgents (4): Worker+Alice, Worker+Ben, Owner+Marta, Analyst+Reporter\nRounds: 3\n\n  Round 1: Worker+Alice, Worker+Ben, Owner+Marta\n  Round 2: Worker+Alice, Worker+Ben, Owner+Marta\n  Round 3: Analyst+Reporter",
+  "rounds_executed": 3,
+  "total_messages": 15,
+  "provider": "vllm",
+  "model": "Qwen/Qwen2.5-7B-Instruct"
+}
