@@ -15,7 +15,17 @@ from typing import List, Dict, Any
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from social_rl.schema import FeedbackVector, AgentFeedback
+# Import schema module directly (bypasses __init__.py which loads runner.py)
+import importlib.util
+spec = importlib.util.spec_from_file_location(
+    "schema",
+    str(Path(__file__).parent.parent / "social_rl" / "schema.py")
+)
+schema = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(schema)
+
+FeedbackVector = schema.FeedbackVector
+AgentFeedback = schema.AgentFeedback
 
 
 class TestFeedbackBounds:

@@ -15,12 +15,19 @@ from pathlib import Path
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from social_rl.schema import (
-    validate_round_result,
-    SocialRLMessageDict,
-    FeedbackVector,
-    SCHEMA_VERSION
+# Import schema module directly (bypasses __init__.py which loads runner.py)
+import importlib.util
+spec = importlib.util.spec_from_file_location(
+    "schema",
+    str(Path(__file__).parent.parent / "social_rl" / "schema.py")
 )
+schema = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(schema)
+
+validate_round_result = schema.validate_round_result
+SocialRLMessageDict = schema.SocialRLMessageDict
+FeedbackVector = schema.FeedbackVector
+SCHEMA_VERSION = schema.SCHEMA_VERSION
 
 
 class MockLLMClient:
