@@ -15,9 +15,21 @@ from .row_to_agent import (
     CESVariableMapper,
 )
 
+from .identity_metrics import (
+    compute_identity_salience,
+    compute_tie_to_place,
+    compute_identity_metrics,
+    get_identity_category,
+)
+
 __all__ = [
     "CESAgentConfig",
     "ces_row_to_agent",
     "ces_cluster_to_prototype",
     "CESVariableMapper",
+    # Identity metrics (Weber's "tie to place")
+    "compute_identity_salience",
+    "compute_tie_to_place",
+    "compute_identity_metrics",
+    "get_identity_category",
 ]

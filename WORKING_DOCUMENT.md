@@ -1436,6 +1436,87 @@ ADAPTIVE Mode = PROGRESSIVE + émile-style existential pressure + hysteresis
 
 ---
 
+### 2025-11-24 (Session 3) - Multi-Seed Sweep Complete & Identity Metrics Implemented
+
+**Session Goals**:
+- Fix Ollama 404 connectivity errors in multi-seed runs
+- Complete full seed 2-3 sweep with valid data
+- Derive identity_salience + tie_to_place metrics from CES profiles
+
+**Completed**:
+
+1. **Diagnosed Connectivity Issue**
+   - Recent runs (G_seed2-5, A-H seed2-3) had Ollama 404 errors
+   - Root cause: Commands defaulted to `--provider ollama` instead of `--provider vllm`
+   - Fixed by explicitly specifying RunPod endpoints
+
+2. **Re-ran All Experiments with Proper Endpoints**
+   - G seeds 2-5: TRUE dual-LLM (14B Performer + 7B Coach)
+   - A-H seeds 2-3: Full 2×2×2 sweep
+   - All outputs saved to `outputs/*_fixed/` directories
+
+3. **Multi-Seed Results Summary**
+
+   **G Seeds (ENGAGED_HARMONY Replication)**:
+   | Seed | R1 | R2 | R3 |
+   |------|-----|-----|-----|
+   | G1 (sweep) | SD | SD | UN |
+   | G2 | **EH** | UN | **EH** |
+   | G3 | **EH** | UN | SD |
+   | G4 | **EH** | UN | AC |
+   | G5 | **EH** | - | - |
+
+   **Result: 4/4 fixed seeds show ENGAGED_HARMONY in Round 1 (100% replication)**
+
+   **Full Seed 2-3 Results**:
+   | Cond | S2 R1 | S2 R3 | S3 R1 | S3 R3 | EH Count |
+   |------|-------|-------|-------|-------|----------|
+   | A | UN | UN | **EH** | UN | 1 |
+   | B | **EH** | **EH** | UN | SD | 2 |
+   | C | UN | - | UN | AC | 0 |
+   | D | **EH** | AC | **EH** | SD | 2 |
+   | E | SD | **EH** | **EH** | UN | 2 |
+   | F | **EH** | UN | **EH** | AC | 2 |
+   | G | **EH** | **EH** | **EH** | SD | 3 |
+   | H | UN | - | UN | UN | **0** |
+
+   **Key Findings**:
+   - **G produces EH most reliably** (3 instances across 2 seeds)
+   - **H never produces EH** (0/6 rounds) - single-LLM + adaptive is problematic
+   - **Round 1 EH rate**: 56% (9/16 observations)
+   - **Round 2 is transition**: almost always UNKNOWN
+
+4. **Identity Metrics Implemented**
+
+   Created `agents/ces_generators/identity_metrics.py` with:
+   - `compute_identity_salience()`: partisanship + turnout + ideological clarity
+   - `compute_tie_to_place()`: urban/rural + birthplace + age + income
+   - `get_identity_category()`: rooted_partisan, urban_engaged, settled_swing, unanchored
+
+   **Agent Identity Profiles**:
+   | Agent | Salience | Tie | Category |
+   |-------|----------|-----|----------|
+   | Urban Progressive | 0.83 | 0.55 | urban_engaged |
+   | Suburban Swing | 0.20 | 0.78 | settled_swing |
+   | Rural Conservative | 0.83 | 0.90 | **rooted_partisan** |
+   | Disengaged Renter | 0.17 | 0.48 | unanchored |
+
+**Key Files Added**:
+- `agents/ces_generators/identity_metrics.py` - Identity salience derivation
+- `outputs/*_fixed/` - 16 fixed experiment outputs
+
+**Theoretical Insight**:
+The identity metrics now enable the G-identity experiment proposed in `notes/Next`:
+- G-base: current G settings
+- G-identity: when `identity_salience` and `tie_to_place` are both high, add prompt nudge to maintain positional commitment
+
+**Next Steps**:
+1. Implement G-identity variant with identity-aware prompts
+2. Run G-base vs G-identity comparison
+3. Update Section 4 of Social Aesthetics paper with multi-seed results
+
+---
+
 ## Appendix A: File Count by Directory
 
 ```
