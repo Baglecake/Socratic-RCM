@@ -8,7 +8,7 @@ from typing import Dict, Any, List, Optional
 from pathlib import Path
 import json
 
-from agent_config import AgentConfig, RoundConfig
+from .agent_config import AgentConfig, RoundConfig
 
 
 class AgentFactory:

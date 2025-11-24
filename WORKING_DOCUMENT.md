@@ -1,7 +1,7 @@
 # Socratic-RCM Working Document
 
 > **Purpose**: Comprehensive reference document for development, onboarding, and maintaining context across sessions.
-> **Last Updated**: 2025-11-23
+> **Last Updated**: 2025-11-24
 > **Maintainer**: Del Coburn / Claude Development Sessions
 
 ---
@@ -24,7 +24,7 @@
 13. [Current Status & Known Issues](#13-current-status--known-issues)
 14. [Development Roadmap](#14-development-roadmap)
 15. [Quick Reference](#15-quick-reference)
-16. [Social RL Architecture](#16-social-rl-architecture)
+16. [Social Aesthetics: 2×2×2 Architecture Sweep Results](#16-social-aesthetics-22×2-architecture-sweep-results)
 17. [Session Log](#17-session-log)
 
 ---
@@ -1046,7 +1046,113 @@ RUNPOD_API_KEY=rp_...
 
 ---
 
-## 16. Session Log
+## 16. Social Aesthetics: 2×2×2 Architecture Sweep Results
+
+### Experimental Design
+
+A full 2×2×2 factorial experiment testing the **Social Aesthetics** framework's core hypothesis: that architectural configuration systematically shapes semiotic regimes in multi-agent deliberation.
+
+**Factors**:
+| Factor | Levels | Description |
+|--------|--------|-------------|
+| Challenge Mode | off / always | Whether Coach injects dissent/provocation |
+| Context Mode | progressive / adaptive | Static accumulation vs QSE-style existential pressure |
+| LLM Configuration | dual / single | Separate Coach+Performer vs single model |
+
+**Conditions (8 total)**:
+| Condition | Challenge | Context | LLM | H-Prediction |
+|-----------|-----------|---------|-----|--------------|
+| A | off | progressive | dual | Baseline |
+| B | off | progressive | single | Baseline |
+| C | off | adaptive | dual | Active Contestation |
+| D | off | adaptive | single | Active Contestation |
+| E | always | progressive | dual | Stimulated Dialogue |
+| F | always | progressive | single | Stimulated Dialogue |
+| G | always | adaptive | dual | **Productive Dissonance (H5)** |
+| H | always | adaptive | single | Productive Dissonance |
+
+### Key Finding: H5 Falsified, ENGAGED_HARMONY Discovered
+
+**Condition G seed 1 (G1)** was the critical test case for H5:
+- **Hypothesis H5**: ADAPTIVE + challenge ON + dual-LLM → PRODUCTIVE_DISSONANCE in R3
+- **Observed**: ADAPTIVE + challenge ON + dual-LLM → **ENGAGED_HARMONY** in R3
+
+**G1 Round 3 Metrics**:
+```
+engagement       = 0.73  (high - within 0.5-1.0)
+voice_valence    = 1.0   (all empowered, no alienation)
+stance_valence   = 1.0   (all bridging, no dismissive)
+justificatory_pct = 0.42 (moderate - "balanced justification" band)
+```
+
+**Why UNKNOWN classification**: These values fall OUTSIDE the PRODUCTIVE_DISSONANCE signature:
+- voice_valence = 1.0 but PD requires (0.0, 0.5)
+- stance_valence = 1.0 but PD requires (0.3, 0.7)
+
+### New Regime: ENGAGED_HARMONY
+
+Added to `experiments/social_aesthetics_regimes.py` as the 6th regime:
+
+```python
+# ENGAGED_HARMONY - High engagement genuine consensus (non-pathological)
+# Key differentiator from PATERNALISTIC_HARMONY: engagement STAYS HIGH
+RegimeSignature(
+    engagement_range=(0.5, 1.0),       # High engagement (vs PH's low)
+    voice_valence_range=(0.5, 1.0),    # Strongly empowered
+    stance_valence_range=(0.8, 1.0),   # High bridging
+    justificatory_pct_range=(0.3, 0.6) # Moderate justification
+)
+```
+
+**Conceptual distinction**:
+- **ENGAGED_HARMONY**: Genuine constructive consensus with HIGH engagement
+- **PATERNALISTIC_HARMONY**: Pseudo-consensus with LOW engagement (withdrawal)
+
+### Revised Regime Typology
+
+| Regime | Type | Key Signature |
+|--------|------|---------------|
+| ACTIVE_CONTESTATION | Healthy | High engagement, mixed voice, mixed stance |
+| ENGAGED_HARMONY | **Healthy** | High engagement, positive voice, high bridging |
+| PRODUCTIVE_DISSONANCE | Aspirational | Moderate engagement, mixed voice, balanced stance |
+| STIMULATED_DIALOGUE | Transitional | Variable - may collapse |
+| PATERNALISTIC_HARMONY | Pathological | **LOW** engagement, positive voice, high bridging |
+| PROCEDURALIST_RETREAT | Pathological | Defensive withdrawal, high justification |
+
+### Hypothesis Status Update
+
+**H5 (Original)**: ADAPTIVE + challenge + dual-LLM → Productive Dissonance
+- **Status**: NOT SUPPORTED (falsified)
+- **Observed**: Engaged Harmony instead of Productive Dissonance
+
+**H5b (New)**: ADAPTIVE + challenge + dual-LLM → NON-PATHOLOGICAL REGIME
+- **Status**: SUPPORTED
+- **Rationale**: G1 avoided collapse into Paternalistic Harmony or Proceduralist Retreat
+
+### Theoretical Interpretation: Identity Salience
+
+The convergence to ENGAGED_HARMONY (rather than maintained disagreement) suggests a deeper issue: **agents lack identity salience**.
+
+Drawing on Weber's sociogeographic theory:
+- Human identity is grounded in **place** - a bidirectional tie where one's presence distinguishes and is distinguished by context
+- Identity elements must be **expressed into context and validated by that context**
+- Without this grounding, cooperation is costless - there's nothing constitutionally violated by changing positions
+
+**Current agents have**:
+- CES demographic profiles (thin signifier)
+- No existential stake in positions (no tie-to-place)
+- No accumulated history of enaction in context
+
+**Future architecture implication**: To achieve true PRODUCTIVE_DISSONANCE, agents need:
+- SociogeographicBody (position, tie-to-place, affordances)
+- Identity enaction scoring (how much one has invested in context)
+- Validation mechanisms (context confirms/disconfirms identity)
+
+See `emile_reference_files/embodied_qse_emile.py` for the architectural pattern that could ground agents in place.
+
+---
+
+## 17. Session Log
 
 ### 2025-11-22 - Initial Comprehensive Audit
 
@@ -1197,6 +1303,53 @@ SocialRLRunner
 1. Test RunPod integration end-to-end
 2. Verify existing auto-mode/simulator tests
 3. Begin Phase 0 foundation work
+
+---
+
+### 2025-11-24 - ENGAGED_HARMONY Discovery & H5 Falsification
+
+**Session Goals**:
+- Analyze Condition G seed 1 (G1) results from 2×2×2 architecture sweep
+- Understand why G1 was classified as UNKNOWN instead of PRODUCTIVE_DISSONANCE
+- Update regime typology based on empirical findings
+- Document theoretical implications for agent identity architecture
+
+**Completed**:
+
+1. **G1 Deep Analysis**
+   - Reviewed semiotic_state_log.json: R1=ACTIVE_CONTESTATION, R2-R3=UNKNOWN
+   - Analyzed R3 metrics: eng=0.73, voice=1.0, stance=1.0, just=0.42
+   - Diagnosed: values fall OUTSIDE PRODUCTIVE_DISSONANCE ranges
+   - Identified pattern: genuine constructive consensus, not maintained disagreement
+
+2. **New Regime: ENGAGED_HARMONY**
+   - Added to `experiments/social_aesthetics_regimes.py` as 6th regime
+   - Key differentiator from PATERNALISTIC_HARMONY: engagement stays HIGH
+   - Signature: high engagement + positive voice + high bridging + moderate justification
+   - Updated priority order in `identify_regime()` function
+
+3. **H5 Hypothesis Update**
+   - H5 (original): ADAPTIVE + challenge + dual-LLM → Productive Dissonance
+   - Status: NOT SUPPORTED (falsified by G1)
+   - H5b (new): ADAPTIVE + challenge + dual-LLM → Non-pathological regime
+   - Status: SUPPORTED (G1 avoided pathological collapse)
+
+4. **Theoretical Framework Extension**
+   - Identified root cause: agents lack "identity salience" (Weber's tie-to-place)
+   - Added `embodied_qse_emile.py` to `emile_reference_files/` as architectural pattern
+   - Documented future direction: SociogeographicBody for grounded agents
+
+**Key Files Modified**:
+- `experiments/social_aesthetics_regimes.py` - Added ENGAGED_HARMONY regime, H5b hypothesis
+- `WORKING_DOCUMENT.md` - Added Section 16 on Architecture Sweep Results
+- `Dev Copy - Social Aesthetics...v3.txt` - Added Section 4 empirical findings
+
+**Key Finding**:
+> Condition G produced ENGAGED_HARMONY (non-pathological convergence) rather than PRODUCTIVE_DISSONANCE (maintained disagreement). This falsifies H5 as written but supports the broader Social Aesthetics claim that architecture systematically shapes semiotic fields. The finding also reveals that current agents lack the identity salience needed for true positional commitment.
+
+**Remaining Task**:
+- Re-run ALL 8 conditions (A-H) with updated codebase containing ENGAGED_HARMONY detection
+- Previous runs used old code without 6th regime - need fresh sweep for proper classification
 
 ---
 

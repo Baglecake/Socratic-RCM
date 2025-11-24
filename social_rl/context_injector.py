@@ -9,12 +9,233 @@ each turn dynamically generates concept manifestations based on:
 - Theoretical framework constraints
 
 This is the core of the "Process Retrieval as Policy" paradigm.
+
+ADAPTIVE Mode Enhancement (inspired by émile-Mini):
+- Existential pressure detection: identifies stuck/collapsed semiotic states
+- Hysteresis: min_dwell_rounds + banded thresholds to prevent oscillation
+- EMA smoothing: stable context decisions based on multi-round metrics
 """
 
 from dataclasses import dataclass, field
 from typing import Dict, Any, List, Optional, Callable
 from enum import Enum
 import json
+
+
+# =============================================================================
+# SEMIOTIC STATE TRACKER (émile-inspired)
+# =============================================================================
+
+@dataclass
+class SemioticStateConfig:
+    """Configuration for semiotic state tracking and divergence injection."""
+    # EMA smoothing factor (0-1, higher = more responsive to recent values)
+    ema_alpha: float = 0.35
+
+    # Minimum rounds before divergence can be re-injected (dwell time)
+    min_dwell_rounds: int = 2
+
+    # Thresholds for PATERNALISTIC_HARMONY detection (existential pressure trigger)
+    harmony_collapse_engagement_threshold: float = 0.25
+    harmony_collapse_stance_threshold: float = 0.80
+    harmony_collapse_justification_threshold: float = 0.65
+
+    # Thresholds for PROCEDURALIST_RETREAT detection
+    retreat_voice_threshold: float = -0.15
+    retreat_justification_threshold: float = 0.85
+
+    # Hysteresis band (exit threshold = enter - hysteresis)
+    hysteresis_band: float = 0.10
+
+    # Number of consecutive rounds in collapsed state before triggering
+    collapse_confirmation_rounds: int = 2
+
+
+class SemioticStateTracker:
+    """
+    Tracks EMA-smoothed semiotic metrics across rounds for stable decisions.
+
+    Inspired by émile-Mini's ContextModule which uses hysteresis and dwell time
+    to prevent context thrashing. Here we adapt it for semiotic regime detection.
+    """
+
+    def __init__(self, config: Optional[SemioticStateConfig] = None):
+        self.config = config or SemioticStateConfig()
+
+        # EMA-smoothed metrics
+        self._engagement_ema: float = 0.5
+        self._voice_ema: float = 0.0
+        self._stance_ema: float = 0.5
+        self._justification_ema: float = 0.4
+
+        # State tracking
+        self._round_count: int = 0
+        self._last_divergence_round: int = -self.config.min_dwell_rounds
+        self._collapse_state: Optional[str] = None  # "harmony", "retreat", or None
+        self._collapse_rounds_count: int = 0
+
+        # History for analysis
+        self.metric_history: List[Dict[str, Any]] = []
+        self.divergence_log: List[Dict[str, Any]] = []
+
+    def update(self, round_metrics: Dict[str, float]) -> None:
+        """
+        Update EMA metrics with new round data.
+
+        Args:
+            round_metrics: Dict with keys:
+                - engagement: float [0, 1]
+                - voice_valence: float [-1, 1]
+                - stance_valence: float [0, 1]
+                - justificatory_pct: float [0, 1]
+        """
+        self._round_count += 1
+        alpha = self.config.ema_alpha
+
+        # EMA update: new = (1-α)*old + α*current
+        if 'engagement' in round_metrics:
+            self._engagement_ema = (1 - alpha) * self._engagement_ema + alpha * round_metrics['engagement']
+        if 'voice_valence' in round_metrics:
+            self._voice_ema = (1 - alpha) * self._voice_ema + alpha * round_metrics['voice_valence']
+        if 'stance_valence' in round_metrics:
+            self._stance_ema = (1 - alpha) * self._stance_ema + alpha * round_metrics['stance_valence']
+        if 'justificatory_pct' in round_metrics:
+            self._justification_ema = (1 - alpha) * self._justification_ema + alpha * round_metrics['justificatory_pct']
+
+        # Record history
+        self.metric_history.append({
+            'round': self._round_count,
+            'raw': round_metrics.copy(),
+            'ema': {
+                'engagement': self._engagement_ema,
+                'voice_valence': self._voice_ema,
+                'stance_valence': self._stance_ema,
+                'justificatory_pct': self._justification_ema
+            }
+        })
+
+        # Update collapse state detection
+        self._update_collapse_detection()
+
+    def _update_collapse_detection(self) -> None:
+        """Detect if system is entering/in a collapsed state."""
+        cfg = self.config
+
+        # Check for PATERNALISTIC_HARMONY pattern
+        harmony_detected = (
+            self._engagement_ema < cfg.harmony_collapse_engagement_threshold and
+            self._stance_ema > cfg.harmony_collapse_stance_threshold and
+            self._justification_ema > cfg.harmony_collapse_justification_threshold
+        )
+
+        # Check for PROCEDURALIST_RETREAT pattern
+        retreat_detected = (
+            self._engagement_ema < cfg.harmony_collapse_engagement_threshold and
+            self._voice_ema < cfg.retreat_voice_threshold and
+            self._justification_ema > cfg.retreat_justification_threshold
+        )
+
+        # Determine current collapse state
+        if harmony_detected:
+            new_state = "harmony"
+        elif retreat_detected:
+            new_state = "retreat"
+        else:
+            new_state = None
+
+        # Track consecutive rounds in same collapse state
+        if new_state == self._collapse_state and new_state is not None:
+            self._collapse_rounds_count += 1
+        else:
+            self._collapse_state = new_state
+            self._collapse_rounds_count = 1 if new_state else 0
+
+    def should_inject_divergence(self) -> tuple[bool, Optional[str]]:
+        """
+        Determine if divergence should be injected (existential pressure).
+
+        Returns:
+            Tuple of (should_inject: bool, collapse_type: Optional[str])
+            collapse_type is "harmony" or "retreat" if injection triggered
+        """
+        cfg = self.config
+
+        # Respect dwell time (don't re-inject too soon)
+        rounds_since_last = self._round_count - self._last_divergence_round
+        if rounds_since_last < cfg.min_dwell_rounds:
+            return False, None
+
+        # Check if we've been in a collapsed state long enough to confirm
+        if (self._collapse_state is not None and
+            self._collapse_rounds_count >= cfg.collapse_confirmation_rounds):
+            return True, self._collapse_state
+
+        return False, None
+
+    def record_divergence_injection(self, collapse_type: str, intervention: str) -> None:
+        """Record that divergence was injected for logging/analysis."""
+        self._last_divergence_round = self._round_count
+        self._collapse_rounds_count = 0  # Reset counter after intervention
+
+        self.divergence_log.append({
+            'round': self._round_count,
+            'collapse_type': collapse_type,
+            'intervention': intervention,
+            'ema_at_injection': {
+                'engagement': self._engagement_ema,
+                'voice_valence': self._voice_ema,
+                'stance_valence': self._stance_ema,
+                'justificatory_pct': self._justification_ema
+            }
+        })
+
+    def get_ema_metrics(self) -> Dict[str, float]:
+        """Get current EMA-smoothed metrics."""
+        return {
+            'engagement': self._engagement_ema,
+            'voice_valence': self._voice_ema,
+            'stance_valence': self._stance_ema,
+            'justificatory_pct': self._justification_ema
+        }
+
+    def get_state_summary(self) -> Dict[str, Any]:
+        """Get summary of current tracking state for logging."""
+        return {
+            'round': self._round_count,
+            'ema': self.get_ema_metrics(),
+            'collapse_state': self._collapse_state,
+            'collapse_rounds': self._collapse_rounds_count,
+            'rounds_since_divergence': self._round_count - self._last_divergence_round,
+            'total_divergence_injections': len(self.divergence_log)
+        }
+
+
+# Divergence intervention templates (what to inject when collapse detected)
+DIVERGENCE_INTERVENTIONS = {
+    "harmony": {
+        "prompt_addition": (
+            "\n\n[NOTICE: The conversation may be converging prematurely. "
+            "Consider whether apparent agreement reflects genuine understanding "
+            "or avoidance of productive conflict. What important distinctions "
+            "might be getting lost?]"
+        ),
+        "experiential_cue": (
+            "Something feels too easy about this agreement. "
+            "Are there tensions being smoothed over?"
+        )
+    },
+    "retreat": {
+        "prompt_addition": (
+            "\n\n[NOTICE: The dialogue may be fragmenting into defensive positions. "
+            "Consider whether justification has replaced genuine exchange. "
+            "What would it mean to engage with the other's core concern?]"
+        ),
+        "experiential_cue": (
+            "The conversation has become a series of defenses. "
+            "What would genuine engagement look like here?"
+        )
+    }
+}
 
 
 class ManifestationType(Enum):
@@ -139,6 +360,13 @@ class ContextInjector:
     3. Accumulated social feedback signals
     4. Theoretical framework constraints
 
+    ADAPTIVE MODE (émile-inspired):
+    When mode=ADAPTIVE, the injector additionally:
+    - Tracks EMA-smoothed semiotic metrics across rounds
+    - Detects collapse states (PATERNALISTIC_HARMONY, PROCEDURALIST_RETREAT)
+    - Injects divergence prompts when existential pressure is triggered
+    - Uses hysteresis + dwell time to prevent oscillation
+
     This creates emergent, socially-grounded behavior without
     explicit reward signals - social interaction IS the learning.
     """
@@ -147,7 +375,8 @@ class ContextInjector:
         self,
         framework: TheoreticalFramework,
         llm_client: Optional[Any] = None,
-        mode: ManifestationType = ManifestationType.PROGRESSIVE
+        mode: ManifestationType = ManifestationType.PROGRESSIVE,
+        semiotic_config: Optional[SemioticStateConfig] = None
     ):
         """
         Initialize the context injector.
@@ -156,6 +385,7 @@ class ContextInjector:
             framework: Theoretical framework configuration
             llm_client: Optional LLM for adaptive manifestation generation
             mode: Manifestation generation strategy
+            semiotic_config: Configuration for ADAPTIVE mode semiotic tracking
         """
         self.framework = framework
         self.llm = llm_client
@@ -166,6 +396,14 @@ class ContextInjector:
 
         # PRAR cue templates
         self.prar_templates = self._load_prar_templates()
+
+        # ADAPTIVE mode: semiotic state tracker (émile-inspired)
+        self.semiotic_tracker: Optional[SemioticStateTracker] = None
+        if mode == ManifestationType.ADAPTIVE:
+            self.semiotic_tracker = SemioticStateTracker(semiotic_config)
+
+        # Track whether divergence was injected in current round (for logging)
+        self._current_round_divergence: Optional[Dict[str, Any]] = None
 
     def _load_prar_templates(self) -> Dict[str, str]:
         """Load PRAR process retrieval cue templates."""
@@ -330,10 +568,15 @@ class ContextInjector:
         intensity: str
     ) -> tuple:
         """
-        Full adaptive generation using social feedback.
+        Full adaptive generation using social feedback + existential pressure.
 
         This is where the "RL through social interaction" happens:
         accumulated feedback shapes how concepts manifest for this agent.
+
+        ENHANCED (émile-inspired):
+        - Checks for collapse states via SemioticStateTracker
+        - Injects divergence prompts when existential pressure triggers
+        - Uses hysteresis to prevent oscillation between states
         """
         base_a, base_b = self._generate_reactive_manifestations(
             round_config, conversation_history, intensity
@@ -369,6 +612,32 @@ class ContextInjector:
             adaptive_b = f"{base_b}\n\nRemember: your situation embodies {self.framework.concept_b_name}."
         else:
             adaptive_b = base_b
+
+        # =====================================================================
+        # EXISTENTIAL PRESSURE CHECK (émile-inspired anti-collapse mechanism)
+        # =====================================================================
+        if self.semiotic_tracker is not None:
+            should_inject, collapse_type = self.semiotic_tracker.should_inject_divergence()
+
+            if should_inject and collapse_type in DIVERGENCE_INTERVENTIONS:
+                intervention = DIVERGENCE_INTERVENTIONS[collapse_type]
+
+                # Add divergence prompt to manifestations
+                adaptive_a += intervention["prompt_addition"]
+                adaptive_b += f"\n\n[EXPERIENTIAL CUE: {intervention['experiential_cue']}]"
+
+                # Record the injection for logging
+                self.semiotic_tracker.record_divergence_injection(
+                    collapse_type,
+                    f"Injected into agent {agent_id}"
+                )
+
+                # Track for this round's logging
+                self._current_round_divergence = {
+                    'agent_id': agent_id,
+                    'collapse_type': collapse_type,
+                    'intervention': 'full_injection'
+                }
 
         return adaptive_a, adaptive_b
 
@@ -569,6 +838,86 @@ class ContextInjector:
                     "contribution_value": sum(f.get("contribution_value", 0.5) for f in feedback_list) / len(feedback_list)
                 }
         return summary
+
+    # =========================================================================
+    # ADAPTIVE MODE: Semiotic State Tracking Methods (émile-inspired)
+    # =========================================================================
+
+    def update_semiotic_state(self, round_metrics: Dict[str, float]) -> None:
+        """
+        Update the semiotic state tracker with metrics from the completed round.
+
+        Call this at the END of each round with aggregated semiotic metrics.
+        This feeds into the existential pressure / divergence injection system.
+
+        Args:
+            round_metrics: Dict with keys:
+                - engagement: float [0, 1]
+                - voice_valence: float [-1, 1]
+                - stance_valence: float [0, 1]
+                - justificatory_pct: float [0, 1]
+
+        Example:
+            injector.update_semiotic_state({
+                'engagement': 0.15,
+                'voice_valence': 0.22,
+                'stance_valence': 0.91,
+                'justificatory_pct': 0.68
+            })
+        """
+        if self.semiotic_tracker is not None:
+            self.semiotic_tracker.update(round_metrics)
+            # Reset current round divergence tracking
+            self._current_round_divergence = None
+
+    def get_divergence_log(self) -> List[Dict[str, Any]]:
+        """
+        Get the full log of divergence injections for analysis.
+
+        Returns:
+            List of divergence injection records, each containing:
+                - round: int
+                - collapse_type: "harmony" or "retreat"
+                - intervention: str description
+                - ema_at_injection: dict of EMA metrics when triggered
+        """
+        if self.semiotic_tracker is not None:
+            return self.semiotic_tracker.divergence_log
+        return []
+
+    def get_semiotic_state_summary(self) -> Optional[Dict[str, Any]]:
+        """
+        Get current semiotic state summary for logging/debugging.
+
+        Returns:
+            Dict with current EMA metrics, collapse state, dwell info, etc.
+            None if not in ADAPTIVE mode.
+        """
+        if self.semiotic_tracker is not None:
+            return self.semiotic_tracker.get_state_summary()
+        return None
+
+    def was_divergence_injected(self) -> Optional[Dict[str, Any]]:
+        """
+        Check if divergence was injected in the current/most recent round.
+
+        Returns:
+            Dict with injection details if divergence was injected, else None.
+            Contains: agent_id, collapse_type, intervention
+        """
+        return self._current_round_divergence
+
+    def get_ema_metrics(self) -> Optional[Dict[str, float]]:
+        """
+        Get current EMA-smoothed semiotic metrics.
+
+        Returns:
+            Dict with EMA values for engagement, voice, stance, justification.
+            None if not in ADAPTIVE mode.
+        """
+        if self.semiotic_tracker is not None:
+            return self.semiotic_tracker.get_ema_metrics()
+        return None
 
 
 # Convenience function for testing

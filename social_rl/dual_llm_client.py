@@ -415,3 +415,85 @@ def create_dual_llm_from_single(
         performer_temp=performer_temp,
         coach_temp=coach_temp
     )
+
+
+def create_true_dual_llm(
+    performer_base_url: str,
+    performer_model: str,
+    coach_base_url: str,
+    coach_model: str,
+    performer_temp: float = 0.7,
+    coach_temp: float = 0.1,
+    api_key: str = "not-needed",
+    timeout: float = 180.0
+) -> DualLLMClient:
+    """
+    Create a TRUE dual-LLM client with two separate endpoints/models.
+
+    This is the research-grade setup where Coach and Performer are
+    genuinely different models running on separate GPUs.
+
+    Args:
+        performer_base_url: vLLM endpoint for Performer (e.g., A100 with 14B)
+        performer_model: Model name for Performer
+        coach_base_url: vLLM endpoint for Coach (e.g., A40 with 7B)
+        coach_model: Model name for Coach
+        performer_temp: Temperature for Performer (default 0.7)
+        coach_temp: Temperature for Coach (default 0.1)
+        api_key: API key if required
+        timeout: Request timeout in seconds
+
+    Returns:
+        DualLLMClient with two separate model backends
+
+    Example:
+        dual = create_true_dual_llm(
+            performer_base_url="https://a100-pod-8000.proxy.runpod.net/v1",
+            performer_model="Qwen/Qwen2.5-14B-Instruct",
+            coach_base_url="https://a40-pod-8000.proxy.runpod.net/v1",
+            coach_model="Qwen/Qwen2.5-7B-Instruct"
+        )
+    """
+    # Import here to avoid circular deps
+    from openai import OpenAI
+
+    class VLLMClient:
+        """Lightweight vLLM client wrapper."""
+        def __init__(self, base_url: str, model: str, api_key: str, timeout: float):
+            self.client = OpenAI(
+                api_key=api_key,
+                base_url=base_url,
+                timeout=timeout,
+                default_headers={"ngrok-skip-browser-warning": "true"}  # Fix 403 errors with ngrok tunnels
+            )
+            self.model = model
+
+        def send_message(
+            self,
+            system_prompt: str,
+            user_message: str,
+            temperature: float = 0.7,
+            max_tokens: int = 512
+        ) -> str:
+            response = self.client.chat.completions.create(
+                model=self.model,
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_message}
+                ],
+                temperature=temperature,
+                max_tokens=max_tokens
+            )
+            return response.choices[0].message.content
+
+    # Create separate clients
+    performer_client = VLLMClient(performer_base_url, performer_model, api_key, timeout)
+    coach_client = VLLMClient(coach_base_url, coach_model, api_key, timeout)
+
+    config = DualLLMConfig(
+        performer_temperature=performer_temp,
+        coach_temperature=coach_temp,
+        log_coach_critiques=True
+    )
+
+    return DualLLMClient(performer_client, coach_client, config)

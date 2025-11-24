@@ -62,15 +62,27 @@ class DualLLMCompatibleClient:
         max_tokens: int = 512
     ) -> str:
         """Send message with optional temperature override."""
+        effective_temp = temperature if temperature is not None else self._default_temperature
+
         # Track the call for analysis
         self._calls.append({
-            "temperature": temperature or self._default_temperature,
+            "temperature": effective_temp,
             "max_tokens": max_tokens,
             "prompt_length": len(system_prompt) + len(user_message)
         })
 
-        # Most local models don't support temperature per-call,
-        # but we can still route through the client
+        # Try to pass temperature if the client supports it
+        try:
+            import inspect
+            sig = inspect.signature(self._client.send_message)
+            if 'temperature' in sig.parameters:
+                return self._client.send_message(
+                    system_prompt, user_message, temperature=effective_temp
+                )
+        except Exception:
+            pass
+
+        # Fallback for clients without temperature support
         return self._client.send_message(system_prompt, user_message)
 
     @property

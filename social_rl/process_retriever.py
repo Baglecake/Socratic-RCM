@@ -83,14 +83,23 @@ class ProcessRetriever:
     through feedback without weight updates.
     """
 
-    def __init__(self, framework_option: str = "A"):
+    def __init__(
+        self,
+        framework_option: str = "A",
+        challenge_mode: str = "adaptive"
+    ):
         """
         Initialize with framework-specific policies.
 
         Args:
             framework_option: Theoretical framework (A, B, C, D, E)
+            challenge_mode: How to apply challenge cues:
+                - "off": Never add challenge cues
+                - "adaptive": Add when engagement < threshold (default)
+                - "always": Always include challenge cues (for A/B testing)
         """
         self.framework = framework_option
+        self.challenge_mode = challenge_mode
         self.policies = self._load_default_policies()
         self.policy_history: List[Dict[str, Any]] = []
 
@@ -196,6 +205,34 @@ class ProcessRetriever:
             feedback_thresholds={"engagement": 0.3}
         )
 
+        # CES/Voter-specific challenge policy - for political discourse
+        policies["voter_challenge"] = ReasoningPolicy(
+            name="voter_challenge",
+            description="Prompts voters to articulate political voice and challenge consensus",
+            cues=[
+                ProcessCue(
+                    mode=ReasoningMode.REFLECT,
+                    cue_text="People like you often feel unheard in these discussions. What would you say if your perspective truly mattered?",
+                    intensity=0.7,
+                    theoretical_grounding="Political alienation: feeling excluded from democratic process"
+                ),
+                ProcessCue(
+                    mode=ReasoningMode.CHALLENGE,
+                    cue_text="The others seem to agree. But does their view reflect your actual experience? Push back if needed.",
+                    intensity=0.8,
+                    theoretical_grounding="Non-domination requires capacity to challenge"
+                ),
+                ProcessCue(
+                    mode=ReasoningMode.CONNECT,
+                    cue_text="How does your social position (where you live, your work, your community) shape how you see this issue differently?",
+                    intensity=0.6,
+                    theoretical_grounding="Social aesthetics: place shapes political perception"
+                )
+            ],
+            applicable_roles=["Voter", "CES"],  # Applies to CES agents
+            feedback_thresholds={"engagement": 0.3}
+        )
+
         return policies
 
     def retrieve_policy(
@@ -209,7 +246,7 @@ class ProcessRetriever:
         Retrieve appropriate reasoning policy for an agent.
 
         Args:
-            role: Agent role (Worker, Owner, Analyst, etc.)
+            role: Agent role (Worker, Owner, Analyst, CES_*, etc.)
             feedback: Social feedback signals
             round_number: Current round
             turn_number: Current turn
@@ -217,32 +254,62 @@ class ProcessRetriever:
         Returns:
             ReasoningPolicy adapted to context
         """
-        # Start with role-specific policy
+        # Start with role-specific policy, fall back to Worker for unknown roles
         base_policy = self.policies.get(role, self.policies.get("Worker"))
 
-        # Check if feedback triggers policy adaptation
-        if feedback and role == "Worker":
-            if feedback.get("engagement", 0.5) < 0.3:
-                # Low engagement - consider challenge activation
-                challenge_policy = self.policies.get("challenge_activation")
-                if challenge_policy:
-                    # Merge policies
-                    merged_cues = base_policy.cues + challenge_policy.cues
-                    return ReasoningPolicy(
-                        name=f"{base_policy.name}_adapted",
-                        description=f"Adapted: {base_policy.description}",
-                        cues=merged_cues,
-                        applicable_roles=base_policy.applicable_roles,
-                        feedback_thresholds=base_policy.feedback_thresholds
-                    )
+        # Determine if we should add challenge cues
+        should_challenge = False
+        challenge_policy = None
 
-        # Record policy retrieval
+        if self.challenge_mode == "always":
+            # Always add challenge cues (for A/B testing)
+            should_challenge = True
+        elif self.challenge_mode == "adaptive" and feedback:
+            # Add challenge cues when engagement is low
+            if feedback.get("engagement", 0.5) < 0.3:
+                should_challenge = True
+        # challenge_mode == "off" -> never add challenge cues
+
+        if should_challenge:
+            # Select appropriate challenge policy based on role
+            if role.startswith("CES") or "Voter" in role:
+                challenge_policy = self.policies.get("voter_challenge")
+            else:
+                challenge_policy = self.policies.get("challenge_activation")
+
+            if challenge_policy:
+                # Merge base policy with challenge cues
+                merged_cues = base_policy.cues + challenge_policy.cues
+                adapted_policy = ReasoningPolicy(
+                    name=f"{base_policy.name}_challenged",
+                    description=f"Challenge-adapted: {base_policy.description}",
+                    cues=merged_cues,
+                    applicable_roles=base_policy.applicable_roles,
+                    feedback_thresholds=base_policy.feedback_thresholds
+                )
+
+                # Record policy retrieval with challenge flag
+                self.policy_history.append({
+                    "role": role,
+                    "policy": adapted_policy.name,
+                    "round": round_number,
+                    "turn": turn_number,
+                    "feedback": feedback,
+                    "challenge_mode": self.challenge_mode,
+                    "challenge_applied": True
+                })
+
+                return adapted_policy
+
+        # Record policy retrieval without challenge
         self.policy_history.append({
             "role": role,
             "policy": base_policy.name,
             "round": round_number,
             "turn": turn_number,
-            "feedback": feedback
+            "feedback": feedback,
+            "challenge_mode": self.challenge_mode,
+            "challenge_applied": False
         })
 
         return base_policy
@@ -270,10 +337,11 @@ class ProcessRetriever:
         cues = policy.get_active_cues(feedback)
 
         # Filter by intensity if override specified
+        # But ALWAYS preserve CHALLENGE mode cues (they were explicitly added)
         if intensity_override:
             intensity_map = {"low": 0.3, "medium": 0.5, "high": 0.7}
             threshold = intensity_map.get(intensity_override, 0.5)
-            cues = [c for c in cues if c.intensity <= threshold + 0.2]
+            cues = [c for c in cues if c.intensity <= threshold + 0.2 or c.mode == ReasoningMode.CHALLENGE]
 
         if not cues:
             cues = policy.cues[:1]  # At least one cue

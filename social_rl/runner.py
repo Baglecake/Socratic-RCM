@@ -74,6 +74,9 @@ class SocialRLConfig:
     auto_save: bool = True  # Auto-save after each round
     output_dir: str = ""    # Empty = auto-detect
 
+    # Challenge mode for A/B testing (empirical semiotics)
+    challenge_mode: str = "adaptive"  # off, adaptive, always
+
 
 @dataclass
 class SocialRLMessage:
@@ -171,7 +174,10 @@ class SocialRLRunner:
             canvas, self.config.manifestation_mode
         )
         self.feedback_extractor = create_extractor_for_framework(self.framework_option)
-        self.process_retriever = ProcessRetriever(self.framework_option)
+        self.process_retriever = ProcessRetriever(
+            self.framework_option,
+            challenge_mode=self.config.challenge_mode
+        )
 
         # State
         self.round_results: Dict[int, SocialRLRoundResult] = {}
