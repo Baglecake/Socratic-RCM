@@ -1,0 +1,129 @@
+Based on the updated files you shared, you are ready to move from local "dev mode" to cloud "production simulation."
+
+Here is the specific guide to setting up your **RunPod Serverless** engine and connecting it to your **VS Code** orchestrator.
+
+### 1\. RunPod Serverless Setup (The Engine)
+
+Since your `Social RL` framework requires keeping a "TurnContext" with evolving manifestations, you need a GPU that can handle **32k context windows**.
+
+1.  **Create the Endpoint:**
+
+      * Go to **Serverless** \> **+ New Endpoint**.
+      * **Template:** Search for and select **vLLM** (official).
+      * **GPU:** Select **A100 (80GB)** or **A6000 Ada**. *Do not use smaller cards; the KV cache for 32k context will cause Out-Of-Memory errors.*
+      * **Container Disk:** Increase to **50GB** (to store the Qwen weights).
+
+2.  **Configuration (Crucial):**
+    Expand the **Environment Variables** section and add these exactly:
+
+    | Variable | Value | Why? |
+    | :--- | :--- | :--- |
+    | `MODEL_NAME` | `Qwen/Qwen2.5-7B-Instruct` | Your target model. |
+    | `MAX_MODEL_LEN` | `32768` | **Critical.** Default vLLM is 4k. Your workflow will crash without this. |
+    | `VLLM_ARGS` | `--dtype bfloat16` | Required for optimal memory usage on Ampere GPUs. |
+
+3.  **Deploy:** Click deploy and wait \~3-5 minutes for the "Ready" status.
+
+4.  **Get Credentials:**
+
+      * Copy the **Endpoint ID** (e.g., `abc123xyz`).
+      * Go to **Settings** \> **API Keys** and generate a key (e.g., `rp_...`).
+
+-----
+
+### 2\. VS Code Setup (The Cockpit)
+
+You do not need to run VS Code *on* the RunPod server. The best pattern is to run your `orchestrator` locally in VS Code and send the heavy compute requests to the RunPod API.
+
+#### Step A: Configure Environment Variables
+
+Create a file named `.env` in the same directory as `run_social_rl_local.py` (if you haven't already). Your code checks this file.
+
+**File: `.env`**
+
+```ini
+# RunPod API Key
+OPENAI_API_KEY=rp_xxxxxxxxxxxxxxxxxxxxxxxxx
+
+# The RunPod vLLM Endpoint (Note the /v1 suffix)
+# Replace [ENDPOINT_ID] with your actual ID
+OPENAI_BASE_URL=https://api.runpod.ai/v2/[ENDPOINT_ID]/openai/v1
+
+# The Model Name (Must match what you deployed)
+OPENAI_MODEL_NAME=Qwen/Qwen2.5-7B-Instruct
+```
+
+#### Step B: Patch `run_social_rl_local.py`
+
+Your current script hardcodes `gpt-4o-mini` when using the OpenAI client. RunPod requires the model name to match exactly.
+
+Update the `OpenAIClient` class and `get_llm` function in `run_social_rl_local.py`:
+
+```python
+class OpenAIClient:
+    """LLM client using OpenAI API (compatible with RunPod)."""
+
+    def __init__(self, model=None): # Changed default to None
+        from openai import OpenAI
+        import os
+        
+        # If no model provided, try env var, then fallback to config
+        self.model = model or os.environ.get("OPENAI_MODEL_NAME", "Qwen/Qwen2.5-7B-Instruct")
+        
+        # Initialize client - it automatically reads OPENAI_API_KEY and OPENAI_BASE_URL
+        self.client = OpenAI()
+        self.call_count = 0
+        print(f"Initialized OpenAIClient with model: {self.model}")
+
+# ... (send_message method remains the same)
+
+def get_llm():
+    """Get best available LLM client."""
+    # ... (Ollama checks remain the same) ...
+
+    # Try OpenAI / RunPod
+    if os.environ.get("OPENAI_API_KEY"):
+        print("Using OpenAI API (Compatible with RunPod)")
+        # Pass the model name from env var if available
+        model_name = os.environ.get("OPENAI_MODEL_NAME")
+        return OpenAIClient(model=model_name)
+        
+    # ... (Rest of function)
+```
+
+-----
+
+### 3\. Testing the Connection
+
+Before running the full simulation, use your updated setup script to verify the pipe is open.
+
+1.  Open VS Code Terminal.
+2.  Navigate to `local_rcm`.
+3.  Run the setup script using the credentials you just created:
+
+<!-- end list -->
+
+```bash
+python runpod_setup.py \
+  --endpoint-id [YOUR_ENDPOINT_ID] \
+  --api-key [YOUR_API_KEY] \
+  --model "Qwen/Qwen2.5-7B-Instruct"
+```
+
+If this returns **SUCCESS**, you are ready to run the full simulation.
+
+### 4\. Running the Social RL Simulation
+
+Now simply run your main script. Because you set the `.env` file, it will automatically detect the RunPod configuration.
+
+```bash
+# From the root directory
+python run_social_rl_local.py
+```
+
+**Monitoring:**
+
+  * **VS Code Terminal:** Watch the "Turn" logs and "Feedback" scores.
+  * **RunPod Dashboard:** Go to your Endpoint \> **Logs**. You should see requests hitting the server (e.g., `POST /v1/chat/completions 200 OK`). If you see `400 Bad Request`, check your `MAX_MODEL_LEN`.
+
+This setup gives you the power of an A100 GPU with the convenience of your local VS Code environment.
