@@ -420,10 +420,10 @@ The following roadmap outlines concrete implementation tasks to move from the cu
    ```
 
 **Deliverables:**
-- [ ] `social_rl/schema.py`
-- [ ] `prar/schema.py`
-- [ ] Updated runner with schema validation
-- [ ] `docs/architecture/SOCIAL_RL_SCHEMA.md`
+- [x] `social_rl/schema.py` - COMPLETE (TypedDicts, dataclasses, validation)
+- [ ] `prar/schema.py` - Deferred
+- [x] Updated runner with schema validation - COMPLETE
+- [ ] `docs/architecture/SOCIAL_RL_SCHEMA.md` - Optional
 
 ---
 
@@ -462,9 +462,9 @@ The following roadmap outlines concrete implementation tasks to move from the cu
 4. Extract dual-instance logic from notebook to module
 
 **Deliverables:**
-- [ ] `social_rl/dual_llm_client.py`
-- [ ] Updated `SocialRLRunner` integration
-- [ ] CLI flag support in `run_social_rl_local.py`
+- [x] `social_rl/dual_llm_client.py` - COMPLETE
+- [x] Updated `SocialRLRunner` integration - COMPLETE
+- [x] CLI flag support in `experiments/run_social_rl_experiment.py` - COMPLETE (--no-dual-llm)
 - [ ] Documentation in `social_rl/README.md`
 
 ---
@@ -563,8 +563,8 @@ The following roadmap outlines concrete implementation tasks to move from the cu
    - Generate visualizations
 
 **Deliverables:**
-- [ ] `social_rl/metrics.py`
-- [ ] Extended `SocialFeedbackExtractor`
+- [x] `social_rl/metrics.py` - COMPLETE (RelationalMetricsComputer with alienation, domination, justification markers)
+- [x] Extended `SocialFeedbackExtractor` - COMPLETE (integrated with runner)
 - [ ] Analysis notebook template
 
 ---
@@ -622,12 +622,12 @@ The following roadmap outlines concrete implementation tasks to move from the cu
 
 | Task | Priority | Dependency | Complexity | Status |
 |------|----------|------------|------------|--------|
-| Schema formalization | High | None | Low | Planned |
-| Dual-LLM client | High | Schema | Medium | Planned |
-| Social RL tests | High | Schema | Medium | Planned |
-| Experiment structure | Medium | None | Low | Planned |
-| Behavioral metrics | Medium | Tests | Medium | Planned |
-| CES generators | Low | Metrics | High | Future |
+| Schema formalization | High | None | Low | **COMPLETE** |
+| Dual-LLM client | High | Schema | Medium | **COMPLETE** |
+| Social RL tests | High | Schema | Medium | Partial |
+| Experiment structure | Medium | None | Low | **COMPLETE** |
+| Behavioral metrics | Medium | Tests | Medium | **COMPLETE** |
+| CES generators | Low | Metrics | High | **NEXT** |
 | Publication | Low | All | Documentation | Future |
 
 ---
@@ -638,3 +638,7 @@ The following roadmap outlines concrete implementation tasks to move from the cu
 2. ~~Implement Social RL architecture (Phase 2.5)~~ DONE
 3. ~~Test Social RL with real LLM backend (vLLM/Qwen)~~ DONE
 4. ~~Local runner with Ollama support~~ DONE
+5. ~~Schema formalization (`social_rl/schema.py`)~~ DONE (2025-11-23)
+6. ~~Dual-LLM client implementation~~ DONE (2025-11-23)
+7. ~~Behavioral metrics (`social_rl/metrics.py`)~~ DONE (2025-11-23)
+8. ~~Experiment runner with CLI (`experiments/run_social_rl_experiment.py`)~~ DONE (2025-11-23)
