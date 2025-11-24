@@ -113,7 +113,7 @@ Socratic-RCM/
 │   └── dual-instance-v1.ipynb
 │
 ├── production/             # GPT Builder deployment (v8.4)
-├── theory/                 # Theoretical knowledge base
+├── b42_theory_library/     # [B42-Pedagogy] Theory texts for student exercises
 ├── literature/             # Academic literature
 ├── docs/                   # Documentation
 └── archive/                # Historical versions
@@ -358,7 +358,7 @@ Previous development branches are preserved in `archive/`:
 | Local orchestrator | [local_rcm/README.md](local_rcm/README.md) |
 | Notebooks and Colab links | [notebooks/README.md](notebooks/README.md) |
 | Production deployment | [production/README.md](production/README.md) |
-| Theoretical knowledge base | [theory/README.md](theory/README.md) |
+| B42 Theory Library | [b42_theory_library/README.md](b42_theory_library/README.md) |
 | Development notes | [WORKING_DOCUMENT.md](WORKING_DOCUMENT.md) |
 
 ---

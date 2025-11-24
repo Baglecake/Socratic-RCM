@@ -118,4 +118,4 @@ When referencing the PRAR methodology:
 - [local_rcm/README.md](../local_rcm/README.md) - Orchestrator documentation
 - [agents/README.md](../agents/README.md) - Agent system (consumes PRAR outputs)
 - [social_rl/README.md](../social_rl/README.md) - Social RL framework
-- [theory/README.md](../theory/README.md) - Theoretical knowledge base
+- [b42_theory_library/README.md](../b42_theory_library/README.md) - [B42-Pedagogy] Theory texts for student exercises

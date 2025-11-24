@@ -18,7 +18,7 @@
 ├── B42 Step-by-Step Guide to Your Final Project.txt ← KB[3]
 ├── Appendix A - Required Values Index v3.2.txt      ← KB[4]
 │
-├── theory/
+├── b42_theory_library/                  ← [B42-Pedagogy] Theory texts for student exercises
 │   ├── marx_theory.txt                  ← KB[5]
 │   ├── tocqueville_theory.txt           ← KB[6]
 │   ├── wollstonecraft_theory.txt        ← KB[7]
@@ -82,7 +82,7 @@
 | Directory | Files |
 |-----------|-------|
 | Root (production) | 9 core files |
-| theory/ | 4 lecture note files |
+| b42_theory_library/ | [B42-Pedagogy] 4 lecture note files for student exercises |
 | archive/v7_era/ | 2 system prompts + README |
 | archive/v8_development/ | 4 system prompts + 11 docs + README |
 | archive/documentation/ | Legacy enhancement docs |

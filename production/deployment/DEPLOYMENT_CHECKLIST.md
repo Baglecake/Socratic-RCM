@@ -10,7 +10,7 @@
 
 - [x] System prompt at 8,000 bytes (exactly at limit)
 - [x] KB[1] Guide updated with Analyst requirement
-- [x] All theory files present in `/theory/` folder
+- [x] All theory files present in `/b42_theory_library/` folder
 - [x] Legacy versions archived
 - [x] Documentation complete
 
@@ -34,10 +34,10 @@
 - [ ] Upload `Appendix A - Required Values Index v3.2.txt` → KB[4]
 
 #### Theory Lecture Notes
-- [ ] Upload `theory/marx_theory.txt` → KB[5]
-- [ ] Upload `theory/tocqueville_theory.txt` → KB[6]
-- [ ] Upload `theory/wollstonecraft_theory.txt` → KB[7]
-- [ ] Upload `theory/smith_theory.txt` → KB[8]
+- [ ] Upload `b42_theory_library/marx_theory.txt` → KB[5]
+- [ ] Upload `b42_theory_library/tocqueville_theory.txt` → KB[6]
+- [ ] Upload `b42_theory_library/wollstonecraft_theory.txt` → KB[7]
+- [ ] Upload `b42_theory_library/smith_theory.txt` → KB[8]
 
 **Total files**: 9 (1 system prompt + 8 knowledge base files)
 
@@ -131,7 +131,7 @@ If v8.4 has issues, revert to v8.3:
 
 ### Issue: Theory queries use general knowledge
 **Cause**: Theory files not uploaded or not retrievable
-**Solution**: Re-upload all 4 theory files from `/theory/` folder
+**Solution**: Re-upload all 4 theory files from `/b42_theory_library/` folder
 
 ### Issue: GPT batches multiple questions
 **Cause**: "—wait between each" marker missing

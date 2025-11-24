@@ -1,13 +1,14 @@
 # Socratic-RCM Working Document
 
 > **Purpose**: Comprehensive reference document for development, onboarding, and maintaining context across sessions.
-> **Last Updated**: 2025-11-22
+> **Last Updated**: 2025-11-23
 > **Maintainer**: Del Coburn / Claude Development Sessions
 
 ---
 
 ## Table of Contents
 
+0. [Social Aesthetics & Research Programme](#0-social-aesthetics--research-programme)
 1. [Project Overview](#1-project-overview)
 2. [Vision: Dual-LLM Agent Simulation](#2-vision-dual-llm-agent-simulation)
 3. [Architecture Summary](#3-architecture-summary)
@@ -23,7 +24,50 @@
 13. [Current Status & Known Issues](#13-current-status--known-issues)
 14. [Development Roadmap](#14-development-roadmap)
 15. [Quick Reference](#15-quick-reference)
-16. [Session Log](#16-session-log)
+16. [Social RL Architecture](#16-social-rl-architecture)
+17. [Session Log](#17-session-log)
+
+---
+
+## 0. Social Aesthetics & Research Programme
+
+### Theoretical Foundation
+
+**Social Aesthetics** is the governing theory of this research programme. It addresses the question: *under what conditions do social aesthetics embed themselves into a cybernetic order of relationality between AI architecture and the human presence?*
+
+Drawing on Bateson's simulacra, Baudrillard's hyperreal, and Weber's sociogeographies, Social Aesthetics proposes that:
+
+1. **LLMs traffic in pure simulacra** - signs without original referents, tokens without lived experience
+2. **Meaning cannot be grounded semantically** for current LLMs
+3. **Meaning CAN be grounded architecturally** - through material configuration of roles, rules, and feedback
+4. **Social conditions emerge from architectural constraints**, not model "intelligence"
+
+### Architecturally Grounded Simulacra
+
+Rather than pursuing impossible semantic understanding, this system creates what we term **architecturally grounded simulacra** - where the "original" exists not in semantic understanding but in:
+
+- **Temperature parameters** that create genuine behavioral difference (Coach τ=0.1 vs Performer τ=0.7)
+- **Canvas configurations** that encode institutional rules (CAN/CANNOT constraints)
+- **Process schemas (PRAR)** that structure reasoning as policy
+- **Social RL feedback** that turns interaction into consistent pressure on behavior
+
+### Socratic-RCM as Research Platform
+
+This repository implements a **Social Aesthetics engine**: it turns social theory + design ethics into architectural constraints that shape how simulacra interact. The platform enables:
+
+1. **Encoding classical theory into architecture** (alienation/non-domination as rules, not psychology)
+2. **Running simulations that expose relational dynamics** (measurable shifts in speech patterns)
+3. **Eventually grounding agents in sociogeographic conditions** (CES data, Weberian stratification)
+
+### Critical Distinction: B42 vs Research
+
+| Component | Purpose | Theory Source |
+|-----------|---------|---------------|
+| `b42_theory_library/` | **[B42-Pedagogy]** Theory texts for student exercises (Marx, Wollstonecraft, etc.) | Lecture materials |
+| Social Aesthetics paper | **[Research Core]** The theoretical framework for this research programme | `Dev Copy - Social Aesthetics...txt` |
+| Alienation vs Non-Domination | **[Use-Case]** A demonstration framework, not THE theory | Worked example |
+
+> **Note on Alienation vs Non-Domination**: This is used as the primary demonstration framework because it provides a clean, theoretically grounded contrast between arbitrary and constrained power. We do NOT claim it as the unique or privileged theory; it is a worked example of how Social Aesthetics can be operationalized. Changing one architectural rule (requiring justification) yields measurable shifts in interaction patterns (alienation markers: 3→0, justification: 1→7).
 
 ---
 
@@ -990,7 +1034,7 @@ python tests/test_realistic.py --mock
 | `local_rcm/app.py` | Streamlit web interface |
 | `local_rcm/runtime-files/` | Workflow step definitions |
 | `production/system-prompt/` | GPT Builder system prompt |
-| `theory/` | Shared theory lecture notes |
+| `b42_theory_library/` | [B42-Pedagogy] Theory texts for student exercises |
 
 ### Environment Variables (if needed)
 
@@ -1027,6 +1071,91 @@ RUNPOD_API_KEY=rp_...
 3. Canvas compilation works but has placeholder logic
 4. Experimental BIOS has reliability issues
 5. Production v8.4 is at capacity limit
+
+---
+
+### 2025-11-23 - Social RL Framework Complete + RunPod GPU Integration
+
+**Session Goals**:
+- Complete Social RL framework implementation
+- Integrate Dual-LLM Coach/Performer architecture
+- Deploy GPU-accelerated inference via RunPod Pod
+- Run robust experiments validating the relational dynamics framework
+
+**Completed**:
+
+1. **Social RL Framework (Phase 2.5)**
+   - `SocialRLRunner`: Main execution engine integrating all components
+   - `ContextInjector`: Dynamic per-turn manifestation generation
+   - `SocialFeedbackExtractor`: Extract engagement, alignment, contribution
+   - `ProcessRetriever`: PRAR-based reasoning policy with adaptation
+   - `DualLLMClient`: Coach (temp=0.1) validates Performer (temp=0.7) outputs
+
+2. **Relational Dynamics Metrics (`social_rl/metrics.py`)**
+   - Participation asymmetry (worker vs owner ratios)
+   - Justification density (owner utterances with reasons)
+   - Domination markers ("that's final", "because I said so")
+   - Alienation markers ("just doing my job", "I suppose")
+   - Automatic computation and `metrics.json` output
+
+3. **Experiment CLI (`experiments/run_social_rl_experiment.py`)**
+   - Supports: mock, ollama, openai, vllm providers
+   - Custom `--experiment-id` for descriptive output naming
+   - Auto-saves: `meta.json`, `metrics.json`, round results, policy state
+   - Git commit hash captured for reproducibility
+
+4. **RunPod GPU Integration**
+   - Deployed A40 GPU Pod with vLLM serving Qwen2.5-7B-Instruct
+   - Pod endpoint: `https://dinz851kfl1ztt-644118d9-8000.proxy.runpod.net/v1`
+   - ~10 seconds per LLM call vs minutes on CPU
+   - Successfully ran multiple parallel experiments
+
+**Key Experimental Results**:
+
+| Experiment | Rounds | Dual-LLM | Messages | Duration | Key Finding |
+|------------|--------|----------|----------|----------|-------------|
+| robust_test_12turns | 1 | Yes | 12 | 124s | Baseline metrics established |
+| robust_test_no_dual_llm | 1 | No | 9 | ~90s | Comparison without validation |
+| **robust_test_2rounds_prar** | 2 | Yes | 18 | 218s | **Alienation markers: 3 → 0** |
+
+**Critical Finding**: The 2-round experiment (`robust_test_2rounds_prar`) showed:
+- Round 1 (Baseline Alienation): 3 alienation markers from Worker+Alice ("I suppose")
+- Round 2 (Reduced Domination): 0 alienation markers
+
+This is exactly the measurable shift GPT recommended for the Social Aesthetics paper:
+> "When we flip one architectural rule—from arbitrary power to constrained power with justification—the system produces measurable shifts in alienation-coded speech."
+
+**Files Modified**:
+- `social_rl/runner.py`: Added `experiment_id` parameter for output naming
+- `experiments/run_social_rl_experiment.py`: Full CLI with all providers
+- `social_rl/metrics.py`: Relational dynamics metrics computation
+- `experiments/README.md`: Documentation for running experiments
+
+**Current Architecture**:
+```
+PRAR State (112-step workflow)
+    ↓
+Canvas (agents, rounds, rules)
+    ↓
+SocialRLRunner
+    ├── ContextInjector (dynamic manifestations)
+    ├── FeedbackExtractor (social signals)
+    ├── ProcessRetriever (policy guidance)
+    └── DualLLMClient (Coach + Performer)
+            ↓
+        vLLM/RunPod
+        (Qwen2.5-7B-Instruct)
+            ↓
+        Validated Output
+            ↓
+        Metrics + Transcripts
+```
+
+**Next Steps**:
+1. Run extended 3-round experiment with Analyst round
+2. Generate multiple runs for statistical stability
+3. Implement behavioral metrics extraction for paper
+4. Prepare reproducibility package for publication
 
 ---
 
@@ -1077,7 +1206,7 @@ RUNPOD_API_KEY=rp_...
 production/           ~10 files (system prompt + knowledge base)
 local_rcm/            ~20 files (orchestrator + tests)
 experimental/         ~30 files (BIOS versions + docs)
-theory/               4 files (theorist lecture notes)
+b42_theory_library/   4 files [B42-Pedagogy] (theorist lecture notes for student exercises)
 docs/                 ~15 files (architecture + research docs)
 literature/           11 files (academic papers)
 archive/              ~50 files (deprecated versions)

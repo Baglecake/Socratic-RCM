@@ -50,6 +50,6 @@ When referencing these works in project documentation or publications, use stand
 
 ## See Also
 
-- [theory/README.md](../theory/README.md) - Theoretical knowledge base (lecture materials)
+- [b42_theory_library/README.md](../b42_theory_library/README.md) - [B42-Pedagogy] Theory texts for student exercises
 - [prar/README.md](../prar/README.md) - PRAR methodology
 - [docs/research/](../docs/research/) - Research protocols and validation

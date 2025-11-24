@@ -32,11 +32,11 @@
 - **[Appendix A - Required Values Index v3.2.txt](Appendix A - Required Values Index v3.2.txt)**
   - Complete index of required values
 
-#### KB[5-8] - Theory Lecture Notes
-- **[theory/marx_theory.txt](theory/marx_theory.txt)** - Marx (criticism, ideology, alienation, capital)
-- **[theory/tocqueville_theory.txt](theory/tocqueville_theory.txt)** - Tocqueville (democracy, equality, majority)
-- **[theory/wollstonecraft_theory.txt](theory/wollstonecraft_theory.txt)** - Wollstonecraft (gender, virtue, domination)
-- **[theory/smith_theory.txt](theory/smith_theory.txt)** - Smith (commerce, division of labor, sympathy)
+#### KB[5-8] - Theory Lecture Notes [B42-Pedagogy]
+- **[b42_theory_library/marx_theory.txt](b42_theory_library/marx_theory.txt)** - Marx (criticism, ideology, alienation, capital)
+- **[b42_theory_library/tocqueville_theory.txt](b42_theory_library/tocqueville_theory.txt)** - Tocqueville (democracy, equality, majority)
+- **[b42_theory_library/wollstonecraft_theory.txt](b42_theory_library/wollstonecraft_theory.txt)** - Wollstonecraft (gender, virtue, domination)
+- **[b42_theory_library/smith_theory.txt](b42_theory_library/smith_theory.txt)** - Smith (commerce, division of labor, sympathy)
 
 ---
 
@@ -82,7 +82,7 @@
    - Upload `B42 Final Project.txt`
    - Upload `B42 Step-by-Step Guide to Your Final Project.txt`
    - Upload `Appendix A - Required Values Index v3.2.txt`
-   - Upload all 4 theory files from `theory/` folder
+   - Upload all 4 theory files from `b42_theory_library/` folder
 
 ### Verify Deployment
 

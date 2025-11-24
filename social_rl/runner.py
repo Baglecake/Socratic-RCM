@@ -18,30 +18,34 @@ from pathlib import Path
 from typing import Dict, Any, List, Optional, Callable
 from dataclasses import dataclass, field
 
-# Add paths for imports
-sys.path.insert(0, str(Path(__file__).parent.parent / "agents"))
-sys.path.insert(0, str(Path(__file__).parent.parent / "local_rcm"))
-
-from context_injector import (
+# Use relative imports for social_rl modules
+from .context_injector import (
     ContextInjector, TheoreticalFramework, TurnContext,
     ManifestationType, create_context_injector_from_canvas
 )
-from feedback_extractor import (
+from .feedback_extractor import (
     SocialFeedbackExtractor, SocialFeedback, ConceptMarkers,
     create_extractor_for_framework
 )
-from process_retriever import ProcessRetriever, ReasoningPolicy
+from .process_retriever import ProcessRetriever, ReasoningPolicy
+from .dual_llm_client import DualLLMClient, DualLLMConfig, GenerationResult
 
 
-def _get_default_output_dir() -> str:
+def _get_default_output_dir(experiment_id: str = None) -> str:
     """Get default output directory based on environment."""
     import datetime
     import os
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H%M%S")
 
+    # Use experiment_id if provided, otherwise use timestamp
+    if experiment_id:
+        dir_name = experiment_id
+    else:
+        dir_name = f"social_rl_{timestamp}"
+
     # Always use current working directory - works for local, Colab, VS Code + Colab
     cwd = os.getcwd()
-    return os.path.join(cwd, "outputs", f"social_rl_{timestamp}")
+    return os.path.join(cwd, "outputs", dir_name)
 
 
 @dataclass
@@ -138,19 +142,25 @@ class SocialRLRunner:
         self,
         canvas: Dict[str, Any],
         llm_client: Any,
-        config: SocialRLConfig = None
+        config: SocialRLConfig = None,
+        dual_llm_client: Optional[DualLLMClient] = None,
+        experiment_id: Optional[str] = None
     ):
         """
         Initialize the Social RL runner.
 
         Args:
             canvas: Canvas configuration (from state.json["canvas"])
-            llm_client: LLM client for generation
+            llm_client: LLM client for generation (used if dual_llm_client not provided)
             config: Social RL configuration
+            dual_llm_client: Optional DualLLMClient for Coach/Performer architecture
+            experiment_id: Optional experiment ID for output directory naming
         """
         self.canvas = canvas
         self.llm = llm_client
         self.config = config or SocialRLConfig()
+        self.dual_llm = dual_llm_client
+        self.experiment_id = experiment_id
 
         # Extract framework info
         project = canvas.get("project", {})
@@ -171,7 +181,7 @@ class SocialRLRunner:
         if self.config.output_dir:
             self.output_dir = Path(self.config.output_dir)
         else:
-            self.output_dir = Path(_get_default_output_dir())
+            self.output_dir = Path(_get_default_output_dir(experiment_id))
 
         # Create output directory
         if self.config.auto_save:
@@ -182,6 +192,7 @@ class SocialRLRunner:
             print(f"  Framework: {project.get('theoretical_option_label', self.framework_option)}")
             print(f"  Manifestation mode: {self.config.manifestation_mode}")
             print(f"  PRAR cues: {self.config.use_prar_cues}")
+            print(f"  Dual-LLM Client: {'enabled' if self.dual_llm else 'disabled'}")
             if self.config.auto_save:
                 print(f"  Output dir: {self.output_dir}")
 
@@ -350,7 +361,9 @@ class SocialRLRunner:
         if self.config.use_coach_validation:
             content, validation_meta = self._generate_with_validation(
                 system_prompt, user_message, round_config.get("rules", ""),
-                agent.get("behaviors", {}).get("raw", "")
+                agent.get("behaviors", {}).get("raw", ""),
+                agent_id=agent_id,
+                turn_number=turn_number
             )
         else:
             content = self._generate_simple(system_prompt, user_message)
@@ -389,11 +402,41 @@ class SocialRLRunner:
         system_prompt: str,
         user_message: str,
         rules: str,
-        behaviors: str
+        behaviors: str,
+        agent_id: str = "Unknown",
+        turn_number: int = 0
     ) -> tuple:
         """Generate with Coach/Performer validation pattern."""
-        metadata = {"attempts": 0, "validations": [], "filtered": False}
+        metadata = {"attempts": 0, "validations": [], "filtered": False, "used_dual_llm": False}
 
+        # Use DualLLMClient if available
+        if self.dual_llm is not None:
+            metadata["used_dual_llm"] = True
+            rules_list = [r.strip() for r in rules.split(".") if r.strip()] if rules else []
+
+            result: GenerationResult = self.dual_llm.generate_validated(
+                system_prompt=system_prompt,
+                user_message=user_message,
+                agent_id=agent_id,
+                rules=rules_list,
+                context={"behaviors": behaviors},
+                turn_number=turn_number
+            )
+
+            metadata["attempts"] = result.retries + 1
+            metadata["validations"] = [
+                {"valid": c.accepted, "issues": c.violations}
+                for c in result.coach_critiques
+            ]
+
+            content = result.content
+            if "[If " in content or "[if " in content:
+                content = self._filter_prompt_leaks(content)
+                metadata["filtered"] = True
+
+            return content, metadata
+
+        # Fallback: Original validation logic
         for attempt in range(self.config.max_validation_retries + 1):
             metadata["attempts"] = attempt + 1
 
@@ -637,9 +680,20 @@ class SocialRLRunner:
 def create_social_rl_runner(
     state_path: str,
     llm_client: Any,
-    mode: str = "progressive"
+    mode: str = "progressive",
+    dual_llm_client: Optional[DualLLMClient] = None
 ) -> SocialRLRunner:
-    """Create a SocialRLRunner from a state file."""
+    """Create a SocialRLRunner from a state file.
+
+    Args:
+        state_path: Path to state.json file
+        llm_client: LLM client for generation
+        mode: Manifestation mode (static, progressive, reactive, adaptive)
+        dual_llm_client: Optional DualLLMClient for Coach/Performer architecture
+
+    Returns:
+        Configured SocialRLRunner
+    """
     with open(state_path, "r") as f:
         state = json.load(f)
 
@@ -650,7 +704,7 @@ def create_social_rl_runner(
         verbose=True
     )
 
-    return SocialRLRunner(canvas, llm_client, config)
+    return SocialRLRunner(canvas, llm_client, config, dual_llm_client=dual_llm_client)
 
 
 if __name__ == "__main__":

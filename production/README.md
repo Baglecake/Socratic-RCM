@@ -34,7 +34,7 @@ production/
 
 2. **Knowledge Base** (Upload to "Knowledge" section):
    - Upload all 4 files from `knowledge-base/` directory
-   - Plus theory files from `../theory/` directory (shared KB):
+   - Plus theory files from `../b42_theory_library/` directory (shared KB):
      - marx_theory.txt
      - tocqueville_theory.txt
      - wollstonecraft_theory.txt
