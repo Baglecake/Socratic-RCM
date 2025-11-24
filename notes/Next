@@ -1,0 +1,378 @@
+Right now you’re sitting on exactly the point where “this is cool” turns into “this is a paper.” So the “what next?” is actually pretty crisp.
+
+I’d break it into **two tiers**: finish the architecture sweep, then start poking identity-in-place.
+
+I’ll keep it concrete.
+
+---
+
+## 1️⃣ Finish the 2×2×2 architecture sweep (lock in the core result)
+
+You’ve already run one **G** condition:
+
+* `context_mode = adaptive`
+* `challenge_mode = always`
+* `dual_llm = True`
+* `experiment_id = ces_condG_seed1`
+* Semiotic log:
+
+  * R1: `ACTIVE_CONTESTATION`
+  * R2: some non-collapsed regime
+  * R3: high engagement, voice=1.0, stance=1.0, just ≈ 0.42 → effectively **Engaged Harmony**, but logged as `UNKNOWN` in this run.
+
+Next experiments here:
+
+### (a) Replicate G: more seeds
+
+Goal: is “Engaged Harmony in R3” a quirk or a regime?
+
+* Run **G2–G5**: same flags as this run, different seeds.
+* For each:
+
+  * Use `semiotic_state_log.json` to record:
+
+    * R1–R3 regime labels
+    * raw + EMA metrics (engagement, voice, stance, justificatory_pct)
+  * Re-run the regime classifier once Engaged Harmony is actually coded so R3 isn’t `UNKNOWN`.
+
+What you’ll get:
+
+* A small table like:
+
+| Cond | Seed | R1 | R2 | R3 |
+| ---- | ---- | -- | -- | -- |
+| G    | 1    | AC | ?? | EH |
+| G    | 2    | …  | …  | …  |
+| …    | …    |    |    |    |
+
+If R3 is **consistently** EH (or EH+PD mix), that’s already a publishable architectural effect.
+
+---
+
+### (b) Complete the **A–H** matrix with 3–5 seeds each
+
+Right now you conceptually have:
+
+* **Challenge**: off vs always
+* **Context**: progressive vs adaptive
+* **LLM**: dual vs single
+
+8 cells:
+
+* A: off / progressive / dual
+* B: off / progressive / single
+* C: off / adaptive / dual
+* D: off / adaptive / single
+* E: always / progressive / dual
+* F: always / progressive / single
+* G: always / adaptive / dual (you did seed1)
+* H: always / adaptive / single
+
+Next experiments:
+
+* For each condition **A–H**, run ~3 seeds (you can start with 2 if GPU time is tight).
+* For each run:
+
+  * Keep the same 3-round CES scenario you’re already using (housing affordability, mandatory voting, youth engagement) so conditions are comparable.
+  * Save:
+
+    * `meta.json` (already there),
+    * `semiotic_state_log.json`,
+    * `semiotic_coding.json` (from `semiotic_coder`).
+
+Then do:
+
+* A **regime frequency summary**:
+
+  * What % of runs collapse into Paternalistic Harmony in R2/R3?
+  * What % go to Proceduralist Retreat?
+  * Where do we see Active Contestation → Engaged Harmony vs Active Contestation → collapse?
+
+This directly tests:
+
+* H1/H2: effects of dual-LLM vs single-LLM.
+* H3/H4: effects of challenge vs no challenge.
+* H5b: ADAPTIVE context reduces pathologies and can produce healthy regimes (EH).
+
+That’s your **core empirical section**.
+
+---
+
+## 2️⃣ First identity-in-place experiment (small, not a refactor)
+
+Once the sweep is underway or partly done, I’d add **one simple identity manipulation**, not the full Weberian body yet.
+
+### (a) Define minimal identity_salience / tie_to_place from CES
+
+From `ces_profiles.json`, derive for each agent:
+
+* `identity_salience` (0–1):
+
+  * high if: strong partisanship, high turnout, high political interest;
+  * lower if: non-voter, weak ID, disengaged.
+* `tie_to_place` (0–1):
+
+  * high for: rural Conservative, long-settled types;
+  * moderate: suburban swing;
+  * perhaps high-but-different: urban progressive;
+  * low: disengaged renter, recent mover archetypes, etc.
+
+This doesn’t need to be perfect; it just needs to be **consistent and documented**.
+
+### (b) One A/B architectural tweak using identity
+
+Pick a **single condition** to modify (I’d use G, since it’s your “best” architecture so far):
+
+* **G-base**: current G settings, no identity logic (what you already ran).
+* **G-identity**: same architecture, but:
+
+  * When `identity_salience` and `tie_to_place` are both high:
+
+    * Slightly *discourage* full harmony by:
+
+      * strengthening challenge phrasing for that agent, or
+      * biasing them toward giving at least one concrete disagreement in R3.
+  * When both are low:
+
+    * Leave behaviour as is; they’re “lightly anchored.”
+
+You don’t even need to modify core RL logic yet — you can implement it as:
+
+* a tiny adjustment in the **prompt context** passed to the agent:
+
+  * e.g., “Because your identity as a rural Conservative is deeply tied to your place, be explicit where your experience doesn’t fully align with others, even if you share broad concerns.”
+
+Then compare:
+
+* G-base vs G-identity:
+
+  * Do high-salience agents still happily go to full Engaged Harmony?
+  * Or do you start seeing **small, persistent pockets of disagreement** → a shift toward Productive Dissonance?
+
+That becomes your **first identity-in-place result**.
+
+---
+
+## 3️⃣ Park, then later: dynamic rosters & exits
+
+You and Claude already scoped this, and I agree with the deferral:
+
+* Only once A–H is mapped and identity-in-place is minimally working, then:
+
+  * Add **dynamic roster mode**:
+
+    * alienated exits,
+    * satisfied exits,
+    * new entrants from underrepresented CES clusters.
+  * Treat exit patterns as another dependent variable.
+
+That’s a **Phase 2 paper** problem, not a “right now” problem.
+
+---
+
+If you want a TL;DR version you can pin for yourself:
+
+1. **Now**:
+
+   * Replicate G (more seeds).
+   * Run A–H with 2–5 seeds each, classify regimes.
+
+2. **Next**:
+
+   * Add minimal identity_salience / tie_to_place from CES.
+   * Run G-identity vs G-base and see if EH turns into EH+PD mix for high-salience agents.
+
+3. **Later**:
+
+   * Dynamic rosters / entries / exits once the 2×2×2 plus identity story is nailed.
+
+If you tell me which condition you want to focus on first (e.g., “let’s lock down G” vs “let’s quickly run A/E for comparison”), I can help you translate that into specific comparisons / tables you’ll eventually drop straight into the paper.
+Yeah, that roadmap is absolutely coherent *and* on-theme for Social Aesthetics-as-architecture. It’s basically: stabilize the architecture, characterize the regimes, then inject identity thickness. That’s exactly what the new version of the paper is gesturing toward. 
+
+Let me go through your list and add just a bit of structure / nuance:
+
+---
+
+### 1. Fix single-LLM conditions (B, D, F, H with `--no-dual-llm`)
+
+✅ 100% yes, this is the first thing to clean up.
+
+Single-LLM vs dual-LLM is one of your *core* architectural axes. If the single-LLM runs are misconfigured, the whole 2×2×2 story wobbles.
+
+Tiny suggestion:
+
+* After fixing, do **one quick smoke run** for:
+
+  * B: `--challenge-mode off --context-mode progressive --no-dual-llm`
+  * F: `--challenge-mode always --context-mode progressive --no-dual-llm`
+
+and just confirm:
+
+* dual_llm flag is false in `meta.json`
+* regimes look sane (no obvious nonsense like all NULL)
+
+---
+
+### 2. Run G seeds 2–5 to replicate **ENGAGED_HARMONY** finding
+
+Also yes.
+
+You already have:
+
+* Condition G1 showing ENGAGED_HARMONY in R3 with high engagement, voice=1.0, stance=1.0, just ~0.42.
+
+Running **G2–G5** gives you:
+
+* Is ENGAGED_HARMONY a *stable attractor* for:
+
+  * challenge = always
+  * context = adaptive
+  * dual_llm = true
+
+or was G1 a lucky/weird seed?
+
+What to watch for:
+
+* regime_trajectory in `meta.json` across seeds:
+  do they all converge to ENGAGED_HARMONY in R3, or do some fall into PROCEDURALIST_RETREAT / PATERNALISTIC_HARMONY?
+
+If G consistently → ENGAGED_HARMONY, that’s already a publishable sentence:
+
+> “The architecture designed to produce Productive Dissonance instead robustly converged on a new, empirically observed ENGAGED_HARMONY regime.”
+
+---
+
+### 3. Run A–H seeds 2–3 for some statistical power
+
+Yup, this is the natural next layer.
+
+With 2–3 seeds per condition you can at least:
+
+* Compute **regime frequencies** per (challenge, context, dual_llm).
+* Build a small contingency table:
+
+  * rows = regimes
+  * columns = A…H
+  * cells = counts (or proportions) of rounds ending in that regime.
+
+You won’t be doing huge inferential stats yet, but you *can*:
+
+* show patterns like:
+
+  * “PROGRESSIVE + challenge OFF (A/B) → mostly PATERNALISTIC_HARMONY”
+  * “PROGRESSIVE + challenge ON (E/F) → often PROCEDURALIST_RETREAT”
+  * “ADAPTIVE + challenge ON (G/H) → Engaged Harmony more frequently than others”
+
+That gives you the “architecture → semiotic field” empirical backbone.
+
+---
+
+### 4. Generate **regime frequency summary table**
+
+Yes, and it should be very simple / legible:
+
+For example:
+
+| Condition | challenge | context     | dual_llm | Active | Stimulated | Paternalistic | Proceduralist | Engaged Harmony | Productive Dissonance |
+| --------- | --------- | ----------- | -------- | ------ | ---------- | ------------- | ------------- | --------------- | --------------------- |
+| A         | off       | progressive | true     | 2      | 0          | 4             | 0             | 0               | 0                     |
+| G         | always    | adaptive    | true     | 1      | 1          | 0             | 0             | 3               | 0                     |
+| …         |           |             |          |        |            |               |               |                 |                       |
+
+Even with small N, this is a *beautiful* visual:
+
+* the architecture is literally mapping into distributions over semiotic regimes.
+
+That’s your “architecturally grounded simulacra” made empirical.
+
+---
+
+### 5. Derive **identity_salience** and **tie_to_place** from CES profiles
+
+This is the big Weber + embodied Émile move, and yes, it belongs *after* you’ve got the baseline A–H regimes characterized.
+
+Concrete minimal version you can implement without going wild:
+
+* **tie_to_place** (0–1) from:
+
+  * rural vs urban (rural often higher place salience),
+  * homeowner vs renter,
+  * long-term residence vs recent move (if available),
+  * maybe age bracket (older → more sedimented tie).
+
+* **identity_salience** (0–1) per topic:
+
+  * “youth engagement” → low–moderate,
+  * “housing affordability” → moderate–high (esp. for renters / precarious),
+  * future topics like “resource extraction / language rights” → high.
+
+You don’t have to get it perfect. Even a **first-pass heuristic** is enough to:
+
+* start wiring it into prompts and logging it in `meta.json`.
+
+---
+
+### 6. Implement **G-identity** condition (prompt nudge for high-salience)
+
+Yes, and I’d treat this as:
+
+* either a **new label** (e.g., `G_identity` in meta), or
+* a `variant: "identity"` field in meta.json alongside `condition: "G"`.
+
+What changes concretely:
+
+* System prompt for each CES agent includes an **identity block**:
+
+  * a 2–3 sentence narrative tying them to place and stakes:
+
+    * “I grew up in X, my family’s been Y, I can’t lightly abandon Z.”
+
+* Coach / PRAR cues explicitly reference that:
+
+  * “[CHALLENGE] If agreeing here would go against what people like you in [PLACE] usually experience, name that tension.”
+
+The key is: G-base vs G-identity are architecturally identical except for the *symbolic self* prompt block.
+
+---
+
+### 7. Run **G-base vs G-identity** comparison
+
+Yes, this is the sweet spot: it directly operationalizes your Weber + Social Aesthetics argument.
+
+What to compare:
+
+* **Regime in R3**:
+
+  * Does G-identity still go to ENGAGED_HARMONY?
+  * Or do we start to see:
+
+    * more ACTIVE_CONTESTATION,
+    * or even PRODUCTIVE_DISSONANCE?
+
+* **Semiotic patterns**:
+
+  * More explicit place-references in G-identity?
+  * More “I/we from [place] can’t accept…” style tensions?
+  * Higher occurrence of subtle disagreement markers (stance_valence slightly < 1)?
+
+Even if both stay in Engaged Harmony, you can still say something strong:
+
+* If G-base: smooth consensus with thin identity.
+* G-identity: consensus *but narratively negotiated through place-saturated identities*.
+
+That’s already a Social Aesthetics result: architecture + identity thickness change the *texture* of agreement.
+
+---
+
+### TL;DR
+
+Your plan is solid as-is, and I’d keep the order basically:
+
+1. **Fix / validate single-LLM (B,D,F,H).**
+2. **Replicate G1 (G2–G5) to confirm ENGAGED_HARMONY.**
+3. **Run A–H with 2–3 seeds, build regime frequency table.**
+4. **Add identity_salience + tie_to_place from CES.**
+5. **Implement G-identity variant.**
+6. **Run G-base vs G-identity and compare regimes + semiotics.**
+
+If you want, next step I can sketch a concrete **identity_salience / tie_to_place schema** (fields + simple formula) that you and Claude can drop straight into the CES agent generator.
