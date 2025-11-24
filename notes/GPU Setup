@@ -1,0 +1,212 @@
+
+Edit Endpoint
+Endpoint Name
+vLLM v2.11.0
+Any name you like.
+GPU Configuration
+Max Workers
+The maximum number of workers that can be deployed at the same time.
+
+3
+Active Workers (up to ~30% off)
+Active workers always stay running to reduce response times.
+3 active workers recommended
+
+0
+GPU Count
+Number of GPUs per worker.
+
+1
+Idle Timeout
+The amount of time workers keep running without an active request (you are charged for active and idle workers at the same rate). An idle timeout of at least 5 seconds is recommended to minimize cold starts.
+Tip: Setting this number higher will improve performance and reduce cold starts.
+
+5
+
+Enable Execution Timeout
+Execution Timeout
+The maximum amount of time in seconds a request can run for.
+
+600
+
+Enable Flashboot
+FlashBoot reduces majority cold-starts down to 2s, even for LLMs. Make sure to test output quality before enabling.
+
+Model
+
+
+Paste in a link from Hugging Face or type your model name.
+
+https://huggingface.co/qwen/qwen2.5-7b-instruct:a09a35458c702b33eeacc393d103063234e8bc28
+
+Environment Variables are not encrypted. For sensitive keys, click  to use/create a Secret.
+MODEL_NAME
+qwen/qwen2.5-7b-instruct
+TOKENIZER_MODE
+auto
+SKIP_TOKENIZER_INIT
+false
+TRUST_REMOTE_CODE
+false
+LOAD_FORMAT
+auto
+DTYPE
+bfloat16
+KV_CACHE_DTYPE
+auto
+MAX_MODEL_LEN
+32768
+GUIDED_DECODING_BACKEND
+outlines
+DISTRIBUTED_EXECUTOR_BACKEND
+ray
+WORKER_USE_RAY
+false
+RAY_WORKERS_USE_NSIGHT
+false
+PIPELINE_PARALLEL_SIZE
+1
+TENSOR_PARALLEL_SIZE
+1
+MAX_PARALLEL_LOADING_WORKERS
+0
+ENABLE_PREFIX_CACHING
+false
+DISABLE_SLIDING_WINDOW
+false
+USE_V2_BLOCK_MANAGER
+false
+NUM_LOOKAHEAD_SLOTS
+0
+SEED
+0
+NUM_GPU_BLOCKS_OVERRIDE
+0
+MAX_NUM_BATCHED_TOKENS
+0
+MAX_NUM_SEQS
+256
+MAX_LOGPROBS
+20
+DISABLE_LOG_STATS
+false
+QUANTIZATION
+None
+ROPE_THETA
+0
+TOKENIZER_POOL_SIZE
+0
+TOKENIZER_POOL_TYPE
+ray
+ENABLE_LORA
+false
+MAX_LORAS
+1
+MAX_LORA_RANK
+16
+LORA_EXTRA_VOCAB_SIZE
+256
+LORA_DTYPE
+auto
+MAX_CPU_LORAS
+0
+FULLY_SHARDED_LORAS
+false
+DEVICE
+auto
+SCHEDULER_DELAY_FACTOR
+0
+ENABLE_CHUNKED_PREFILL
+false
+NUM_SPECULATIVE_TOKENS
+0
+SPECULATIVE_DRAFT_TENSOR_PARALLEL_SIZE
+0
+SPECULATIVE_MAX_MODEL_LEN
+0
+SPECULATIVE_DISABLE_BY_BATCH_SIZE
+0
+NGRAM_PROMPT_LOOKUP_MAX
+0
+NGRAM_PROMPT_LOOKUP_MIN
+0
+SPEC_DECODING_ACCEPTANCE_METHOD
+rejection_sampler
+TYPICAL_ACCEPTANCE_SAMPLER_POSTERIOR_THRESHOLD
+0
+TYPICAL_ACCEPTANCE_SAMPLER_POSTERIOR_ALPHA
+0
+PREEMPTION_CHECK_PERIOD
+1
+PREEMPTION_CPU_CAPACITY
+2
+MAX_LOG_LEN
+0
+DISABLE_LOGGING_REQUEST
+false
+GPU_MEMORY_UTILIZATION
+1
+BLOCK_SIZE
+16
+SWAP_SPACE
+4
+ENFORCE_EAGER
+false
+MAX_SEQ_LEN_TO_CAPTURE
+8192
+DISABLE_CUSTOM_ALL_REDUCE
+false
+DEFAULT_BATCH_SIZE
+50
+DEFAULT_MIN_BATCH_SIZE
+1
+DEFAULT_BATCH_SIZE_GROWTH_FACTOR
+3
+RAW_OPENAI_OUTPUT
+true
+OPENAI_RESPONSE_ROLE
+assistant
+OPENAI_SERVED_MODEL_NAME_OVERRIDE
+Qwen/Qwen2.5-7B-Instruct
+MAX_CONCURRENCY
+30
+ENABLE_EXPERT_PARALLEL
+false
+BASE_PATH
+/runpod-volume
+DISABLE_LOG_REQUESTS
+true
+ENABLE_AUTO_TOOL_CHOICE
+false
+Container Image
+This can be a public image from Docker Hub or a private image from your own registry.
+
+registry.runpod.net/runpod-workers-worker-vllm-main-dockerfile:3851d53f9
+Container Disk
+Temporary storage that will be erased when the Pod is stopped.
+
+150
+Expose HTTP Ports (Max 10)
+Expose TCP Ports
+Data Centers
+Network Volume
+Allowed CUDA Versions
+Auto Scaling Type
+Queue Delay
+Queue delay scaling strategy adjusts worker numbers based on request wait times. With zero workers initially, the first request adds one worker. Subsequent requests add workers only after waiting in the queue for 4 seconds.
+Tip: Set this lower if your cold start is short and you want to scale faster. Set it higher if your cold start takes longer and you don't need to scale up too quickly.
+
+4
+Enabled GPU Types
+
+A100 80GB PCIe
+
+A100 80GB SXM
+
+H100 PCIe
+
+H100 HBM3
+
+H100 NVL
+My Endpoint
+0
