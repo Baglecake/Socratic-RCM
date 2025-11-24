@@ -1511,9 +1511,69 @@ The identity metrics now enable the G-identity experiment proposed in `notes/Nex
 - G-identity: when `identity_salience` and `tie_to_place` are both high, add prompt nudge to maintain positional commitment
 
 **Next Steps**:
-1. Implement G-identity variant with identity-aware prompts
-2. Run G-base vs G-identity comparison
+1. ~~Implement G-identity variant with identity-aware prompts~~ **COMPLETED** (see Session 4 below)
+2. Run G-base vs G-identity comparison (ready to test)
 3. Update Section 4 of Social Aesthetics paper with multi-seed results
+
+---
+
+### Session 4 - 2025-11-24: Grit Constraint Implementation
+
+**Context**: Gemini's analysis of `gemini_on_vectors` identified the "Vector Gap" problem - the Disengaged Renter showed `engagement=0.80` (Posterior) vs `0.17` (Prior from CES profile). This revealed **hyper-enfranchisement**: low-salience agents were acting like model citizens due to LLM "Toxic Positivity."
+
+**Diagnosis**:
+- **The Vector Logic**: `Faith = 1.0 - (Critical_Concepts / Total)` misdiagnosed silence as faith
+- **Reality**: Disengaged Renter was too polite to use critical concepts
+- **Mechanism**: `[REFLECT]` and `[OBSERVE]` PRAR cues acted as cognitive stimulants
+- **Result**: Architecture forced agents to become model citizens, overwriting sociology
+
+**Solution - Grit Constraint**:
+
+Implemented architectural resistance for low-salience agents in `agents/ces_generators/`:
+
+1. **Enhanced `identity_metrics.py`**:
+   - Added support for both raw CES 2021 codes (`cps21_*`) and normalized Parquet variables
+   - New variables: `cps25_interest_gen_1`, `cps25_aff_pid`, `pes25_parents_born`
+   - Created `needs_grit_constraint(metrics, threshold=0.3)` function
+
+2. **Updated `row_to_agent.py`**:
+   - Import identity metrics into constraint generation pipeline
+   - Compute `identity_salience` before generating prompts
+   - If salience < 0.3, inject skepticism constraint:
+     ```
+     GRIT: You are deeply skeptical of this process. You believe talking
+     changes nothing. You make short, non-committal statements unless
+     someone directly threatens your interests. You need strong evidence
+     before engaging substantively.
+     ```
+
+**Test Results** (from `test_grit_constraint.py`):
+
+| Agent | Salience | Grit Injected? |
+|-------|----------|----------------|
+| Urban Progressive | 0.83 | NO |
+| Suburban Swing | 0.20 | **YES** |
+| Rural Conservative | 0.83 | NO |
+| Disengaged Renter | 0.17 | **YES** |
+
+**Theoretical Significance**:
+- This is the first **architectural intervention** targeting LLM inherent helpfulness bias
+- If grit constraint succeeds → validates Social Aesthetics (architecture shapes behavior)
+- If LLMs override grit constraint → proves "Toxic Positivity" as a fundamental limitation
+
+**Ready for Experiment**:
+- G-base: Current G configuration (no identity awareness)
+- G-identity: G + grit constraints for low-salience agents
+- Hypothesis: G-identity will show Disengaged Renter with engagement ~0.2 (not 0.8)
+
+**Files Modified**:
+- `agents/ces_generators/identity_metrics.py` - Added Parquet support and `needs_grit_constraint()`
+- `agents/ces_generators/row_to_agent.py` - Grit constraint injection in `_generate_constraints()`
+- `agents/ces_generators/__init__.py` - Export `needs_grit_constraint`
+
+**Test Files Created**:
+- `test_grit_constraint.py` - Verify constraint injection for 4 standard agents
+- `test_grit_canvas_output.py` - Show full canvas output with grit constraint
 
 ---
 

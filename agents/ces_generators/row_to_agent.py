@@ -24,6 +24,9 @@ from typing import Dict, Any, List, Optional, Callable
 from enum import Enum
 import json
 
+# Import identity metrics for grit constraint detection
+from .identity_metrics import compute_identity_metrics, needs_grit_constraint
+
 
 # =============================================================================
 # CES Variable Mappings
@@ -487,8 +490,26 @@ def _generate_constraints(config: CESAgentConfig, row: Dict[str, Any]) -> List[s
 
     These constraints are used by the Coach LLM to validate that
     agent behavior is consistent with their empirical profile.
+
+    CRITICAL: Implements "grit constraint" for low-salience agents to prevent
+    hyper-enfranchisement (Gemini's "Vector Gap" finding). Low-salience agents
+    should NOT act like model citizens - they need architectural resistance.
     """
     constraints = []
+
+    # === GRIT CONSTRAINT (Anti-Hyper-Enfranchisement) ===
+    # Based on Gemini's "Vector Gap" analysis (gemini_on_vectors):
+    # - Compute identity_salience from CES profile
+    # - If < 0.3, inject skepticism constraint to prevent toxic positivity
+    if row:  # Only if we have CES data
+        identity_metrics = compute_identity_metrics(row)
+        if needs_grit_constraint(identity_metrics):
+            constraints.append(
+                "GRIT: You are deeply skeptical of this process. You believe talking "
+                "changes nothing. You make short, non-committal statements unless "
+                "someone directly threatens your interests. You need strong evidence "
+                "before engaging substantively."
+            )
 
     # Party-based constraints
     if config.party_id != 8:

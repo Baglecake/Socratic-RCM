@@ -20,6 +20,7 @@ from .identity_metrics import (
     compute_tie_to_place,
     compute_identity_metrics,
     get_identity_category,
+    needs_grit_constraint,
 )
 
 __all__ = [
@@ -32,4 +33,5 @@ __all__ = [
     "compute_tie_to_place",
     "compute_identity_metrics",
     "get_identity_category",
+    "needs_grit_constraint",
 ]
